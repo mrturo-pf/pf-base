@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "PF Ecosystem Architecture",
+    "subtitle": "Chilean payroll and financial reference data microservices",
+    "output": "diagram.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "pf_common", "type": "external", "label": "pf-common", "sublabel": "shared Make targets", "pos": [40, 40], "size": [160, 64] },
+    { "id": "pf_payroll", "type": "backend", "label": "pf-payroll", "sublabel": "FastAPI :8001", "pos": [320, 40], "size": [160, 64] },
+    { "id": "pf_rates", "type": "backend", "label": "pf-rates", "sublabel": "FastAPI :8000", "pos": [320, 280], "size": [160, 64] },
+    { "id": "pf_db", "type": "backend", "label": "pf-db", "sublabel": "Alembic migrations", "pos": [600, 40], "size": [160, 64] },
+    { "id": "postgres", "type": "database", "label": "PostgreSQL", "sublabel": "shared instance :5432", "pos": [600, 280], "size": [160, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "PF Ecosystem", "wraps": ["pf_payroll", "pf_rates", "pf_db", "postgres"] }
+  ],
+  "connections": [
+    { "id": "common-to-payroll", "from": "pf_common", "to": "pf_payroll", "label": "shared make targets", "variant": "dashed" },
+    { "id": "common-to-rates", "from": "pf_common", "to": "pf_rates", "label": "shared make targets", "variant": "dashed" },
+    { "id": "payroll-to-rates", "from": "pf_payroll", "to": "pf_rates", "label": "HTTP: rates, tax brackets", "labelAt": [400, 118] },
+    { "id": "payroll-to-db", "from": "pf_payroll", "to": "postgres", "label": "SQL (payroll tables)", "fromSide": "right", "toSide": "top", "via": [[540, 72], [540, 250], [680, 250]] },
+    { "id": "rates-to-db", "from": "pf_rates", "to": "postgres", "label": "SQL (rates tables)" },
+    { "id": "pfdb-to-db", "from": "pf_db", "to": "postgres", "label": "alembic upgrade head", "variant": "dashed", "labelAt": [680, 118] }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Runtime", "items": ["pf-payroll and pf-rates are independent FastAPI microservices", "Both connect to the same PostgreSQL instance"] },
+    { "dot": "emerald", "title": "Schema ownership", "items": ["pf-db is the single source of truth for DDL and migrations", "pf-rates owns currencies, exchange_rates, economic_indices, income_tax_brackets", "pf-payroll owns all other payroll tables"] },
+    { "dot": "violet", "title": "Shared tooling", "items": ["pf-common provides reusable Make targets used by pf-payroll and pf-rates", "Not used by pf-db"] }
+  ]
+}
