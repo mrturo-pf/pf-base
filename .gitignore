@@ -1,0 +1,20 @@
+# Subprojects are independent git repos (their own .git, remote, history).
+# This root repo (pf-base) only tracks ecosystem-level docs/config
+# (AGENTS.md, README.md, pf-architecture/) — ignore the subrepo folders
+# so `git status` here stays clean instead of showing them as untracked.
+/pf-db/
+/pf-rates/
+/pf-payroll/
+/pf-common/
+
+# OS cruft
+.DS_Store
+
+# Common local-only stuff, in case anything ever lands directly at root
+node_modules/
+.env
+.env.*
+venv/
+.venv/
+__pycache__/
+*.pyc
