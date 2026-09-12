@@ -17,6 +17,15 @@ income tax brackets).
 | [`pf-payroll`](pf-payroll/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, dashboard and CLI. | [README](pf-payroll/README.md) · [AGENTS](pf-payroll/AGENTS.md) |
 | [`pf-common`](pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-rates` and `pf-payroll`. **Not** used by `pf-db`. | [README](pf-common/README.md) |
 
+## Repository structure
+
+This root directory is itself a git repo (`pf-base`) that tracks only ecosystem-level
+files — this `README.md`, `AGENTS.md`, and `pf-architecture/`. Each subproject folder
+(`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`) is a **separate, independent git repo**
+with its own remote and commit history; root's `.gitignore` excludes them on purpose so
+they never show up as untracked files here. Clone, pull, and push each subproject from
+inside its own folder — there is no submodule wiring between them.
+
 ## How they relate
 
 ```
@@ -55,6 +64,16 @@ cd pf-architecture
 1. Bring up the database: follow the quick start in [`pf-db`](pf-db/docs/getting-started.md).
 2. Bring up `pf-rates`: [`pf-rates/docs/getting-started.md`](pf-rates/docs/getting-started.md).
 3. Bring up `pf-payroll`: [`pf-payroll/docs/getting-started.md`](pf-payroll/docs/getting-started.md).
+
+## Scripts
+
+Utility scripts that operate across the whole ecosystem live in [`scripts/`](scripts/),
+separate from each subproject's own `scripts/` (e.g. `pf-common/scripts/`, which holds
+service-level tooling instead).
+
+| Script | Purpose |
+| --- | --- |
+| [`scripts/find-md.sh`](scripts/find-md.sh) | Recursively lists `*.md` files, skipping noise dirs (`.venv`, `.git`, `node_modules`, etc.). Supports `-d DIR` to scope the search and `-i FILE1,FILE2` to exclude filenames. Run `./scripts/find-md.sh --help` for details. |
 
 ## Global conventions
 

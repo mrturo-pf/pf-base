@@ -13,8 +13,15 @@ touching code there.
 | [`pf-payroll`](pf-payroll/AGENTS.md) | FastAPI microservice, hexagonal architecture. | Payroll/tax |
 | [`pf-common`](pf-common/README.md) | No own AGENTS.md; just a README with shared Make targets. | Shared infra |
 
-This root directory (`pf/`) **is not a git repo** — do not run `git commit`/`push` here;
-each subfolder has its own `.git`.
+This root directory (`pf/`) **is its own git repo** (`pf-base`, remote on GitHub) — it
+tracks only ecosystem-level files: this `AGENTS.md`, `README.md`, `pf-architecture/`,
+and `.gitignore`. The four subprojects (`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`)
+remain **independent git repos** with their own `.git`, remote, and history — root's
+`.gitignore` deliberately excludes their folders so `git status` here stays clean and
+never shows them as untracked. To commit/push inside a subproject, `cd` into it first;
+committing from root only ever touches ecosystem-level docs. As always: no agent
+commits, pushes, or opens a PR without explicit user instruction — in the root repo or
+any subproject repo.
 
 ## Rules common to the 3 services/schema repo
 
