@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# find-md.sh — list all *.md files recursively, skipping noise dirs by default.
+# find-docs.sh — list all *.md and *.txt files recursively, skipping noise dirs by default.
 #
 # Usage:
-#   ./scripts/find-md.sh [-d DIR] [-i FILE1,FILE2,...] [-h]
+#   ./scripts/find-docs.sh [-d DIR] [-i FILE1,FILE2,...] [-h]
 #
 # Options:
 #   -d, --dir DIR       Directory to search (default: current directory)
@@ -10,10 +10,10 @@
 #   -h, --help          Show this help message
 #
 # Examples:
-#   ./scripts/find-md.sh
-#   ./scripts/find-md.sh -d pf-rates
-#   ./scripts/find-md.sh -i AGENTS.md,README.md
-#   ./scripts/find-md.sh -d pf-payroll -i README.md
+#   ./scripts/find-docs.sh
+#   ./scripts/find-docs.sh -d pf-rates
+#   ./scripts/find-docs.sh -i AGENTS.md,README.md
+#   ./scripts/find-docs.sh -d pf-payroll -i README.md
 
 set -euo pipefail
 
@@ -53,6 +53,7 @@ EXCLUDE_ARGS=(
   -not -path "*/.git/*"
   -not -path "*/.pytest_cache/*"
   -not -path "*/node_modules/*"
+  -not -path "*.egg-info/*"
 )
 
 # Turn "AGENTS.md,README.md" into -not -name AGENTS.md -not -name README.md
@@ -63,4 +64,4 @@ if [[ -n "$IGNORE" ]]; then
   done
 fi
 
-find "$DIR" -name "*.md" "${EXCLUDE_ARGS[@]}" | sort
+find "$DIR" \( -name "*.md" -o -name "*.txt" \) "${EXCLUDE_ARGS[@]}" | sort
