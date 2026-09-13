@@ -34,7 +34,7 @@ secrets/
 
 | Path | Used by | Docs |
 | --- | --- | --- |
-| `pf-rates/gdrive-oauth-token.json` | `POST /exchange-rates/export` (Google Drive upload) | [`pf-rates/docs/google-drive-credentials-setup.md`](../pf-rates/docs/google-drive-credentials-setup.md) |
+| `pf-rates/gdrive-oauth-token.json` | `POST /exchange-rates/export` (Google Drive upload) | [`pf-rates/docs/api.md`](../pf-rates/docs/api.md) |
 
 ## Rules
 
