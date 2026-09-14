@@ -44,6 +44,14 @@ time re-reading the same thing three times.)
   commits, pushes, creates issues, or opens PRs — requires explicit user instruction.
 - **Cross-repo coordination:** schema changes are coordinated in `pf-db`; `pf-rates` and
   `pf-payroll` never edit their ORM models without a corresponding migration in `pf-db`.
+- **Cloud cost optimization — always the priority:** any decision touching cloud
+  infrastructure (compute, storage, scanning, networking, managed services) must default
+  to the cheapest viable option before anything else. Scale-to-zero, free/cheaper
+  equivalents over paid add-ons, on-demand jobs over always-on services, no
+  over-provisioning "just in case". Existing examples already baked into pf-rates and
+  pf-payroll: `--min-instances=0`, Trivy (free) instead of paid Artifact Registry
+  scanning, external DB option to avoid Cloud SQL when not needed. Any new infra
+  proposal must state its cost impact and the cheaper alternatives considered.
 
 ## Where to go deeper
 
