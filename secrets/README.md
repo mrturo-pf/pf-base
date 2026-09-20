@@ -26,8 +26,9 @@ One subfolder per subproject that needs local secrets:
 secrets/
   pf-rates/
     gdrive-oauth-token.json   # Google Drive export (see pf-rates docs)
-  pf-payroll/
-    ...
+  pf-sheets/
+    client_secret_<id>.apps.googleusercontent.com.json   # OAuth Desktop app Client ID (from GCP Console)
+    clasprc.json                                          # clasp 3.x credentials (mirrors the CLASP_CREDENTIALS GitHub secret)
 ```
 
 ## Current contents
@@ -35,6 +36,8 @@ secrets/
 | Path | Used by | Docs |
 | --- | --- | --- |
 | `pf-rates/gdrive-oauth-token.json` | `POST /exchange-rates/export` (Google Drive upload) | [`pf-rates/docs/api.md`](../pf-rates/docs/api.md) |
+| `pf-sheets/client_secret_*.json` | One-time `clasp login --creds` (reuses the same GCP project as `pf-rates/gdrive-oauth-token.json`, different OAuth scopes) | [`pf-sheets/docs/ci.md`](../pf-sheets/docs/ci.md) |
+| `pf-sheets/clasprc.json` | Local mirror of the `CLASP_CREDENTIALS` GitHub secret, for running `clasp push`/`pull` by hand | [`pf-sheets/docs/ci.md`](../pf-sheets/docs/ci.md) |
 
 ## Rules
 

@@ -16,12 +16,14 @@ income tax brackets).
 | [`pf-rates`](pf-rates/README.md) | FastAPI microservice for financial reference data: exchange rates (USD/EUR), indices (UF/UTM/CPI), income tax brackets. | [README](pf-rates/README.md) · [AGENTS](pf-rates/AGENTS.md) |
 | [`pf-payroll`](pf-payroll/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, dashboard and CLI. | [README](pf-payroll/README.md) · [AGENTS](pf-payroll/AGENTS.md) |
 | [`pf-common`](pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-rates` and `pf-payroll`. **Not** used by `pf-db`. | [README](pf-common/README.md) |
+| [`pf-sheets`](pf-sheets/README.md) | Google Apps Script (bound to a Sheet) that syncs `pf-rates` exchange rates into a spreadsheet. Versioned in Git, deployed via `clasp`. | [README](pf-sheets/README.md) · [AGENTS](pf-sheets/AGENTS.md) |
 
 ## Repository structure
 
 This root directory is itself a git repo (`pf-base`) that tracks only ecosystem-level
 files — this `README.md`, `AGENTS.md`, and `pf-architecture/`. Each subproject folder
-(`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`) is a **separate, independent git repo**
+(`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`, `pf-sheets`) is a **separate,
+independent git repo**
 with its own remote and commit history; root's `.gitignore` excludes them on purpose so
 they never show up as untracked files here. Clone, pull, and push each subproject from
 inside its own folder — there is no submodule wiring between them.
@@ -34,19 +36,23 @@ pf-rates  ──┐
 pf-payroll ─┘
 
 pf-rates, pf-payroll ──> share Makefiles/scripts from pf-common
+
+pf-sheets ──> HTTP: triggers pf-rates export ──> Google Sheets/Drive (Apps Script APIs)
 ```
 
 - `pf-db` owns the schema; `pf-rates` and `pf-payroll` each keep their own ORM
   models/repositories but connect to the same Postgres instance.
 - `pf-payroll` consumes `pf-rates` over HTTP for exchange rates and tax brackets.
 - `pf-common` provides reusable `make install/test/lint/check/...` targets for FastAPI services.
+- `pf-sheets` is a Google Apps Script macro: it triggers a `pf-rates` export over HTTP,
+  then reads the resulting CSV from Google Drive and upserts it into a Sheet.
 
 ## Architecture diagram
 
 [`pf-architecture/diagram.html`](pf-architecture/diagram.html) is a self-contained, interactive diagram
-(generated with [Archify](https://github.com/tt-a1i/archify)) of how the four subprojects
+(generated with [Archify](https://github.com/tt-a1i/archify)) of how the five subprojects
 fit together at runtime: the two FastAPI services, the shared PostgreSQL instance, the
-schema owner, and the shared build tooling. Open it in a browser for pan/zoom, theme
+schema owner, the shared build tooling, and the Apps Script integration. Open it in a browser for pan/zoom, theme
 toggle, and relationship tracing — it's the visual companion to the "How they relate"
 section above, not a replacement for the per-subproject docs.
 
@@ -64,6 +70,7 @@ cd pf-architecture
 1. Bring up the database: follow the quick start in [`pf-db`](pf-db/docs/getting-started.md).
 2. Bring up `pf-rates`: [`pf-rates/docs/getting-started.md`](pf-rates/docs/getting-started.md).
 3. Bring up `pf-payroll`: [`pf-payroll/docs/getting-started.md`](pf-payroll/docs/getting-started.md).
+4. Set up `pf-sheets`: [`pf-sheets/docs/getting-started.md`](pf-sheets/docs/getting-started.md).
 
 ## Scripts
 

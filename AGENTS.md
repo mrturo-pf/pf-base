@@ -12,11 +12,13 @@ touching code there.
 | [`pf-rates`](pf-rates/AGENTS.md) | FastAPI microservice, hexagonal architecture. | Financial reference data |
 | [`pf-payroll`](pf-payroll/AGENTS.md) | FastAPI microservice, hexagonal architecture. | Payroll/tax |
 | [`pf-common`](pf-common/README.md) | No own AGENTS.md; just a README with shared Make targets. | Shared infra |
+| [`pf-sheets`](pf-sheets/AGENTS.md) | Google Apps Script bound to a Sheet (JavaScript, not Python — see its own `AGENTS.md`, it does not follow the Python rules below). Deployed via `clasp`. | Sheets/Drive integration |
 
 This root directory (`pf/`) **is its own git repo** (`pf-base`, remote on GitHub) — it
 tracks only ecosystem-level files: this `AGENTS.md`, `README.md`, `pf-architecture/`,
-and `.gitignore`. The four subprojects (`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`)
-remain **independent git repos** with their own `.git`, remote, and history — root's
+and `.gitignore`. The five subprojects (`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`,
+`pf-sheets`) remain **independent git repos** with their own `.git`, remote, and
+history — root's
 `.gitignore` deliberately excludes their folders so `git status` here stays clean and
 never shows them as untracked. To commit/push inside a subproject, `cd` into it first;
 committing from root only ever touches ecosystem-level docs. As always: no agent
@@ -26,7 +28,9 @@ any subproject repo.
 ## Rules common to the 3 services/schema repo
 
 (Full detail in each one's `AGENTS.md` — this is just the summary so you don't waste
-time re-reading the same thing three times.)
+time re-reading the same thing three times. **`pf-sheets` is out of scope for this
+section** — it's a JavaScript/Apps Script repo, not Python, and follows its own
+conventions documented in `pf-sheets/AGENTS.md` instead.)
 
 - **Language:** all code, identifiers, comments, and docstrings in English. Exception:
   official Chilean regulatory terms/SQL literals/seed data, only when translating would
@@ -61,3 +65,4 @@ Don't repeat context here — go straight to the relevant doc:
 - How to run something → the subproject's `docs/getting-started.md`.
 - CI/CD → `docs/deployment.md` (pf-rates, pf-payroll) or `docs/ci.md` (pf-db).
 - Schema/tables → `pf-db/docs/tables.md` and `pf-db/docs/migrations.md`.
+- Apps Script/Sheets integration → `pf-sheets/AGENTS.md` and `pf-sheets/docs/ci.md`.

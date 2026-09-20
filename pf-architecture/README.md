@@ -16,11 +16,15 @@ replacement for each subproject's own docs.
 ## What's on the diagram
 
 - **Components:** `pf-payroll` and `pf-rates` (FastAPI services), `pf-db` (Alembic
-  migrations), the shared `PostgreSQL` instance, and `pf-common` (shared Make targets).
+  migrations), the shared `PostgreSQL` instance, `pf-common` (shared Make targets), and
+  `pf-sheets` (Apps Script macro) with its external dependency `Google Sheets/Drive`.
 - **Connections:** `pf-payroll` → `pf-rates` over HTTP (exchange rates, tax brackets);
   both services → `PostgreSQL` over SQL; `pf-db` → `PostgreSQL` via `alembic upgrade
-  head`; `pf-common` → `pf-payroll`/`pf-rates` via shared Make targets (dashed).
-- **Cards:** runtime notes, schema ownership (who owns which tables), and shared tooling.
+  head`; `pf-common` → `pf-payroll`/`pf-rates` via shared Make targets (dashed);
+  `pf-sheets` → `pf-rates` over HTTP (triggers the export) and `pf-sheets` →
+  `Google Sheets/Drive` (reads the CSV, upserts rows — dashed).
+- **Cards:** runtime notes, schema ownership (who owns which tables), shared tooling,
+  and the Sheets integration.
 
 This mirrors the actual topology described in each subproject's `AGENTS.md` — if that
 topology changes (new service, new dependency, table ownership moves), update

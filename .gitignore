@@ -6,6 +6,7 @@
 /pf-rates/
 /pf-payroll/
 /pf-common/
+/pf-sheets/
 
 # OS cruft
 .DS_Store
