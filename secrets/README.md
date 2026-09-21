@@ -25,7 +25,9 @@ One subfolder per subproject that needs local secrets:
 ```
 secrets/
   pf-rates/
-    gdrive-oauth-token.json   # Google Drive export (see pf-rates docs)
+    gdrive-oauth-client-secret.json   # ONLY for the rare manual recovery
+                                       # procedure -- routine operation
+                                       # needs nothing here (see below)
   pf-sheets/
     client_secret_<id>.apps.googleusercontent.com.json   # OAuth Desktop app Client ID (from GCP Console)
     clasprc.json                                          # clasp 3.x credentials (mirrors the CLASP_CREDENTIALS GitHub secret)
@@ -35,8 +37,8 @@ secrets/
 
 | Path | Used by | Docs |
 | --- | --- | --- |
-| `pf-rates/gdrive-oauth-token.json` | `POST /exchange-rates/export` (Google Drive upload) | [`pf-rates/docs/api.md`](../pf-rates/docs/api.md) |
-| `pf-sheets/client_secret_*.json` | One-time `clasp login --creds` (reuses the same GCP project as `pf-rates/gdrive-oauth-token.json`, different OAuth scopes) | [`pf-sheets/docs/ci.md`](../pf-sheets/docs/ci.md) |
+| `pf-rates/gdrive-oauth-client-secret.json` | Only the one-off manual recovery procedure (recreating the export file if it's ever deleted from Drive), via `scripts/gdrive_oauth_setup.py`. Routine `POST /exports/financial-data` runs authenticate via Application Default Credentials (`gcloud auth application-default login` locally, the attached service account in Cloud Run) -- **no file needed here for normal operation** since the 2026-09-20 migration off OAuth. | [`pf-rates/docs/google-drive-credentials-setup.md`](../pf-rates/docs/google-drive-credentials-setup.md) |
+| `pf-sheets/client_secret_*.json` | One-time `clasp login --creds` (reuses the same GCP project as pf-rates, different OAuth scopes) | [`pf-sheets/docs/ci.md`](../pf-sheets/docs/ci.md) |
 | `pf-sheets/clasprc.json` | Local mirror of the `CLASP_CREDENTIALS` GitHub secret, for running `clasp push`/`pull` by hand | [`pf-sheets/docs/ci.md`](../pf-sheets/docs/ci.md) |
 
 ## Rules
