@@ -80,7 +80,7 @@ service-level tooling instead).
 
 | Script | Purpose |
 | --- | --- |
-| [`scripts/find-docs.sh`](scripts/find-docs.sh) | Recursively lists `*.md` and `*.txt` files, skipping noise dirs (`.venv`, `.git`, `node_modules`, etc.). Supports `-d DIR` to scope the search and `-i FILE1,FILE2` to exclude filenames. Run `./scripts/find-docs.sh --help` for details. |
+| [`scripts/find-docs.sh`](scripts/find-docs.sh) | Recursively lists `*.md`, `*.txt`, and `*.sh` files, skipping noise dirs (`.venv`, `.git`, `node_modules`, etc.). Supports `-d DIR` to scope the search and `-i FILE1,FILE2` to exclude filenames. Run `./scripts/find-docs.sh --help` for details. |
 
 ## Global conventions
 

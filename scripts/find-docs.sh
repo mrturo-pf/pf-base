@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# find-docs.sh — list all *.md and *.txt files recursively, skipping noise dirs by default.
+# find-docs.sh — list all *.md, *.txt, and *.sh files recursively, skipping noise dirs by default.
 #
 # Usage:
 #   ./scripts/find-docs.sh [-d DIR] [-i FILE1,FILE2,...] [-h]
@@ -47,6 +47,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Noise directories skipped unconditionally — nobody wants venv/git internals in the list.
+# The script also skips itself: now that *.sh is in scope, it would otherwise
+# always list its own path.
 EXCLUDE_ARGS=(
   -not -path "*/.venv/*"
   -not -path "*/venv/*"
@@ -54,6 +56,7 @@ EXCLUDE_ARGS=(
   -not -path "*/.pytest_cache/*"
   -not -path "*/node_modules/*"
   -not -path "*.egg-info/*"
+  -not -name "$(basename "$0")"
 )
 
 # Turn "AGENTS.md,README.md" into -not -name AGENTS.md -not -name README.md
@@ -64,4 +67,4 @@ if [[ -n "$IGNORE" ]]; then
   done
 fi
 
-find "$DIR" \( -name "*.md" -o -name "*.txt" \) "${EXCLUDE_ARGS[@]}" | sort
+find "$DIR" \( -name "*.md" -o -name "*.txt" -o -name "*.sh" \) "${EXCLUDE_ARGS[@]}" | sort
