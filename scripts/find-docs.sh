@@ -11,9 +11,9 @@
 #
 # Examples:
 #   ./scripts/find-docs.sh
-#   ./scripts/find-docs.sh -d pf-rates
+#   ./scripts/find-docs.sh -d modules/pf-rates
 #   ./scripts/find-docs.sh -i AGENTS.md,README.md
-#   ./scripts/find-docs.sh -d pf-payroll -i README.md
+#   ./scripts/find-docs.sh -d modules/pf-payroll -i README.md
 
 set -euo pipefail
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Generate pf-architecture/diagram.html from pf-architecture/diagram.json using Archify.
+# Generate architecture/diagram.html from architecture/diagram.json using Archify.
 #
 # Usage:
 #   ./generate.sh            # validate + deliver diagram.html

@@ -12,21 +12,22 @@ income tax brackets).
 
 | Folder | What it is | Docs |
 | --- | --- | --- |
-| [`pf-db`](pf-db/README.md) | Single source of truth for the PostgreSQL schema (DDL + Alembic migrations + seeds). No application code. | [README](pf-db/README.md) · [AGENTS](pf-db/AGENTS.md) |
-| [`pf-rates`](pf-rates/README.md) | FastAPI microservice for financial reference data: exchange rates (USD/EUR), indices (UF/UTM/CPI), income tax brackets. | [README](pf-rates/README.md) · [AGENTS](pf-rates/AGENTS.md) |
-| [`pf-payroll`](pf-payroll/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, dashboard and CLI. | [README](pf-payroll/README.md) · [AGENTS](pf-payroll/AGENTS.md) |
-| [`pf-common`](pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-rates` and `pf-payroll`. **Not** used by `pf-db`. | [README](pf-common/README.md) |
-| [`pf-sheets`](pf-sheets/README.md) | Google Apps Script (bound to a Sheet) that syncs `pf-rates` exchange rates into a spreadsheet. Versioned in Git, deployed via `clasp`. | [README](pf-sheets/README.md) · [AGENTS](pf-sheets/AGENTS.md) |
+| [`pf-db`](modules/pf-db/README.md) | Single source of truth for the PostgreSQL schema (DDL + Alembic migrations + seeds). No application code. | [README](modules/pf-db/README.md) · [AGENTS](modules/pf-db/AGENTS.md) |
+| [`pf-rates`](modules/pf-rates/README.md) | FastAPI microservice for financial reference data: exchange rates (USD/EUR), indices (UF/UTM/CPI), income tax brackets. | [README](modules/pf-rates/README.md) · [AGENTS](modules/pf-rates/AGENTS.md) |
+| [`pf-payroll`](modules/pf-payroll/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, dashboard and CLI. | [README](modules/pf-payroll/README.md) · [AGENTS](modules/pf-payroll/AGENTS.md) |
+| [`pf-common`](modules/pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-rates` and `pf-payroll`. **Not** used by `pf-db`. | [README](modules/pf-common/README.md) |
+| [`pf-sheets`](modules/pf-sheets/README.md) | Google Apps Script (bound to a Sheet) that syncs `pf-rates` exchange rates into a spreadsheet. Versioned in Git, deployed via `clasp`. | [README](modules/pf-sheets/README.md) · [AGENTS](modules/pf-sheets/AGENTS.md) |
 
 ## Repository structure
 
 This root directory is itself a git repo (`pf-base`) that tracks only ecosystem-level
-files — this `README.md`, `AGENTS.md`, and `pf-architecture/`. Each subproject folder
-(`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`, `pf-sheets`) is a **separate,
-independent git repo**
-with its own remote and commit history; root's `.gitignore` excludes them on purpose so
-they never show up as untracked files here. Clone, pull, and push each subproject from
-inside its own folder — there is no submodule wiring between them.
+files — this `README.md`, `AGENTS.md`, and `architecture/`. Each subproject folder
+(`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`, `pf-sheets`) lives under `modules/` and
+is a **separate, independent git repo**
+with its own remote and commit history; root's `.gitignore` excludes the whole
+`modules/` folder on purpose so they never show up as untracked files here. Clone,
+pull, and push each subproject from inside its own folder (e.g. `modules/pf-rates`) —
+there is no submodule wiring between them.
 
 ## How they relate
 
@@ -49,28 +50,28 @@ pf-sheets ──> HTTP: triggers pf-rates export ──> Google Sheets/Drive (Ap
 
 ## Architecture diagram
 
-[`pf-architecture/diagram.html`](pf-architecture/diagram.html) is a self-contained, interactive diagram
+[`architecture/diagram.html`](architecture/diagram.html) is a self-contained, interactive diagram
 (generated with [Archify](https://github.com/tt-a1i/archify)) of how the five subprojects
 fit together at runtime: the two FastAPI services, the shared PostgreSQL instance, the
 schema owner, the shared build tooling, and the Apps Script integration. Open it in a browser for pan/zoom, theme
 toggle, and relationship tracing — it's the visual companion to the "How they relate"
 section above, not a replacement for the per-subproject docs.
 
-The diagram source (`pf-architecture/diagram.json`) and the regeneration script
-(`pf-architecture/generate.sh`) live next to the output, so it can be rebuilt after any
+The diagram source (`architecture/diagram.json`) and the regeneration script
+(`architecture/generate.sh`) live next to the output, so it can be rebuilt after any
 topology change instead of hand-edited:
 
 ```bash
-cd pf-architecture
+cd architecture
 ./generate.sh --open
 ```
 
 ## Where to start
 
-1. Bring up the database: follow the quick start in [`pf-db`](pf-db/docs/getting-started.md).
-2. Bring up `pf-rates`: [`pf-rates/docs/getting-started.md`](pf-rates/docs/getting-started.md).
-3. Bring up `pf-payroll`: [`pf-payroll/docs/getting-started.md`](pf-payroll/docs/getting-started.md).
-4. Set up `pf-sheets`: [`pf-sheets/docs/getting-started.md`](pf-sheets/docs/getting-started.md).
+1. Bring up the database: follow the quick start in [`pf-db`](modules/pf-db/docs/getting-started.md).
+2. Bring up `pf-rates`: [`pf-rates/docs/getting-started.md`](modules/pf-rates/docs/getting-started.md).
+3. Bring up `pf-payroll`: [`pf-payroll/docs/getting-started.md`](modules/pf-payroll/docs/getting-started.md).
+4. Set up `pf-sheets`: [`pf-sheets/docs/getting-started.md`](modules/pf-sheets/docs/getting-started.md).
 
 ## Scripts
 

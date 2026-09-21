@@ -1,4 +1,4 @@
-# pf-architecture
+# architecture
 
 Interactive architecture diagram of the PF ecosystem, generated with
 [Archify](https://github.com/tt-a1i/archify). It's the visual companion to the
@@ -43,7 +43,7 @@ Archify itself isn't vendored here (third-party tool). The script expects it as 
 sibling checkout at `../../archify/archify/bin/archify.mjs` by default:
 
 ```bash
-cd pf-architecture
+cd architecture
 ./generate.sh          # validate diagram.json + rebuild diagram.html
 ./generate.sh --open   # same, then open the result in the default browser
 ```
