@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "pf-payroll — Internal Architecture",
+    "subtitle": "Hexagonal (Ports & Adapters): interfaces -> application -> domain, infrastructure -> application",
+    "output": "pf-payroll.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/mrturo-pf/pf-payroll",
+      "provider": "github",
+      "link_mode": "local-only",
+      "revision": "021aac7aaaa1ae619c850506297fffbef5141962"
+    }
+  },
+  "components": [
+    { "id": "api", "type": "frontend", "label": "FastAPI", "sublabel": "interfaces/api", "pos": [40, 280], "size": [180, 64], "sources": [
+      { "path": "src/payroll/interfaces/api/main.py", "label": "App wiring" },
+      { "path": "src/payroll/interfaces/api/routes/payroll.py", "label": "Routes" },
+      { "path": "src/payroll/interfaces/api/dependencies.py", "label": "DI composition root" }
+    ] },
+    { "id": "cli", "type": "frontend", "label": "Typer CLI", "sublabel": "interfaces/cli", "pos": [40, 540], "size": [180, 64], "sources": [
+      { "path": "src/payroll/interfaces/cli/main.py", "label": "CLI commands" }
+    ] },
+    { "id": "dashboard", "type": "frontend", "label": "HTML Dashboard", "sublabel": "interfaces/dashboard", "pos": [40, 800], "size": [180, 64], "sources": [
+      { "path": "src/payroll/interfaces/dashboard/app.py", "label": "Dashboard entrypoint" }
+    ] },
+
+    { "id": "domain", "type": "backend", "label": "Domain", "sublabel": "pure logic, zero I/O", "pos": [340, 40], "size": [190, 64], "tag": "no dependencies", "sources": [
+      { "path": "src/payroll/domain/tax_calculator.py", "label": "Tax rules" },
+      { "path": "src/payroll/domain/contribution_calculator.py", "label": "Contribution rules" },
+      { "path": "src/payroll/domain/quantizers.py", "label": "Decimal quantizers" }
+    ] },
+    { "id": "use_cases", "type": "backend", "label": "Use Cases & Services", "sublabel": "application/use_cases, services", "pos": [340, 280], "size": [190, 64], "sources": [
+      { "path": "src/payroll/application/use_cases/process_imported_payroll_periods.py", "label": "Orchestration" },
+      { "path": "src/payroll/application/services/contribution_computation.py", "label": "Domain service" },
+      { "path": "src/payroll/application/use_cases/compute_income_tax.py", "label": "Use case" }
+    ] },
+    { "id": "ports", "type": "backend", "label": "Ports (Protocols)", "sublabel": "application/ports", "pos": [340, 800], "size": [190, 64], "sources": [
+      { "path": "src/payroll/application/ports/repositories.py", "label": "Repository ports" },
+      { "path": "src/payroll/application/ports/income_tax_bracket.py", "label": "Rate-provider port" },
+      { "path": "src/payroll/application/ports/report_renderer.py", "label": "Report-renderer port" }
+    ] },
+
+    { "id": "infra_db", "type": "backend", "label": "SQLAlchemy Repositories", "sublabel": "infrastructure/db", "pos": [650, 280], "size": [190, 64], "sources": [
+      { "path": "src/payroll/infrastructure/db/repositories/payroll_repository_commands.py", "label": "Payroll writes" },
+      { "path": "src/payroll/infrastructure/db/repositories/reference_data_repository.py", "label": "Reference data" },
+      { "path": "src/payroll/infrastructure/db/models/payroll.py", "label": "ORM models" }
+    ] },
+    { "id": "infra_http", "type": "backend", "label": "HTTP Clients", "sublabel": "infrastructure/http", "pos": [650, 540], "size": [190, 64], "sources": [
+      { "path": "src/payroll/infrastructure/http/pf_rates_client.py", "label": "pf-rates adapter" },
+      { "path": "src/payroll/infrastructure/http/income_tax_bracket_client.py", "label": "Tax bracket adapter" }
+    ] },
+    { "id": "infra_io", "type": "backend", "label": "Importers & Reporting", "sublabel": "infrastructure/importers, reporting", "pos": [650, 800], "size": [190, 64], "sources": [
+      { "path": "src/payroll/infrastructure/importers/xlsx_importer.py", "label": "XLSX importer" },
+      { "path": "src/payroll/infrastructure/reporting/weasyprint_payroll_report_renderer.py", "label": "PDF renderer" }
+    ] },
+
+    { "id": "postgres", "type": "database", "label": "PostgreSQL", "sublabel": "shared instance (pf-db owns DDL)", "pos": [960, 280], "size": [170, 64] },
+    { "id": "pf_rates", "type": "external", "label": "pf-rates", "sublabel": "FastAPI microservice", "pos": [960, 540], "size": [170, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Interfaces (adapters in)", "wraps": ["api", "cli", "dashboard"] },
+    { "kind": "region", "label": "Domain", "wraps": ["domain"] },
+    { "kind": "region", "label": "Application", "wraps": ["use_cases", "ports"] },
+    { "kind": "region", "label": "Infrastructure (adapters out)", "wraps": ["infra_db", "infra_http", "infra_io"] }
+  ],
+  "connections": [
+    { "id": "api-to-usecases", "from": "api", "to": "use_cases", "label": "HTTP request handling" },
+    { "id": "cli-to-usecases", "from": "cli", "to": "use_cases", "label": "Typer commands", "labelAt": [150, 430] },
+    { "id": "dashboard-to-usecases", "from": "dashboard", "to": "use_cases", "label": "read-only queries", "labelAt": [150, 620] },
+    { "id": "usecases-to-domain", "from": "use_cases", "to": "domain", "label": "pure calculations", "fromSide": "top", "toSide": "bottom" },
+    { "id": "usecases-to-ports", "from": "use_cases", "to": "ports", "label": "depends on Protocol contracts", "fromSide": "bottom", "toSide": "top", "labelAt": [435, 358] },
+    { "id": "infradb-implements-ports", "from": "infra_db", "to": "ports", "label": "implements: *Repository", "variant": "dashed" },
+    { "id": "infrahttp-implements-ports", "from": "infra_http", "to": "ports", "label": "implements: Market/TaxBracket ports", "variant": "dashed", "labelAt": [760, 700] },
+    { "id": "infraio-implements-ports", "from": "infra_io", "to": "ports", "label": "implements: Importer/ReportRenderer", "variant": "dashed", "labelAt": [590, 878] },
+    { "id": "infradb-to-postgres", "from": "infra_db", "to": "postgres", "label": "SQL (asyncpg)" },
+    { "id": "infrahttp-to-pfrates", "from": "infra_http", "to": "pf_rates", "label": "HTTP: rates, tax brackets", "labelAt": [900, 618] }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Dependency rule", "items": ["Interfaces -> Application -> Domain", "Infrastructure -> Application (never Domain)", "Domain has zero external dependencies -- pure Python only"] },
+    { "dot": "emerald", "title": "Ports & DI", "items": ["Ports (application/ports) are typing.Protocol classes", "Application never imports concrete infrastructure types", "Wired at the composition root: interfaces/api/dependencies.py"] },
+    { "dot": "violet", "title": "Financial precision", "items": ["Decimal everywhere, never float", "PostgreSQL columns use NUMERIC, never FLOAT", "quantize_clp() / quantize_utm() in domain/quantizers.py"] },
+    { "dot": "amber", "title": "Quality gate", "items": ["make check: lint, dead-code, typecheck, dup-check, test, test-cov", "CI enforces --cov-fail-under=100 on every push (pf-common/make/common.mk)"] }
+  ]
+}

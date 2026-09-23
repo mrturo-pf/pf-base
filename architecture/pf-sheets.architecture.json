@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "pf-sheets — Internal Architecture",
+    "subtitle": "Apps Script: domain (pure) / infrastructure (adapters) / interfaces (macro, Web App, Library)",
+    "output": "pf-sheets.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/mrturo-pf/pf-sheets",
+      "provider": "github",
+      "link_mode": "local-only",
+      "revision": "fb073f3b786ba4e17de43165c5ef99ec56079192"
+    }
+  },
+  "components": [
+    { "id": "consumer_scripts", "type": "external", "label": "Payroll / MedicalRefund", "sublabel": "other Apps Script projects", "pos": [40, 40], "size": [180, 64] },
+
+    { "id": "library", "type": "frontend", "label": "Library", "sublabel": "interfaces/library.js", "pos": [340, 40], "size": [190, 64], "sources": [
+      { "path": "src/interfaces/library.js", "label": "GET_CLP / GET_CLP_RANGE" }
+    ] },
+    { "id": "webapp", "type": "frontend", "label": "Web App", "sublabel": "interfaces/webapp.js", "pos": [340, 300], "size": [190, 64], "sources": [
+      { "path": "src/interfaces/webapp.js", "label": "doGet / doPost" }
+    ] },
+    { "id": "macro", "type": "frontend", "label": "Bound Macro", "sublabel": "interfaces/index.js", "pos": [340, 560], "size": [190, 64], "sources": [
+      { "path": "src/interfaces/index.js", "label": "onOpen / updateExchangeRates" }
+    ] },
+
+    { "id": "domain", "type": "backend", "label": "Domain", "sublabel": "pure functions, no globals", "pos": [650, 40], "size": [190, 64], "tag": "no dependencies", "sources": [
+      { "path": "src/domain/index.js", "label": "findRateValue, computeUpsertPlan, isDateValue_" }
+    ] },
+    { "id": "infrastructure", "type": "backend", "label": "Infrastructure Adapters", "sublabel": "Apps Script global adapters", "pos": [650, 300], "size": [190, 64], "sources": [
+      { "path": "src/infrastructure/index.js", "label": "Adapters over Apps Script globals" }
+    ] },
+
+    { "id": "pf_rates", "type": "external", "label": "pf-rates", "sublabel": "FastAPI microservice", "pos": [960, 140], "size": [170, 64] },
+    { "id": "google_drive", "type": "external", "label": "Google Drive", "sublabel": "exported combined CSV", "pos": [960, 360], "size": [170, 64] },
+    { "id": "google_sheet", "type": "external", "label": "Google Sheet", "sublabel": "VALUES tab (bound spreadsheet)", "pos": [960, 580], "size": [170, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Interfaces (macro, Web App, Library)", "wraps": ["library", "webapp", "macro"] },
+    { "kind": "region", "label": "Domain", "wraps": ["domain"] },
+    { "kind": "region", "label": "Infrastructure (adapters)", "wraps": ["infrastructure"] }
+  ],
+  "connections": [
+    { "id": "consumers-to-library", "from": "consumer_scripts", "to": "library", "label": "calls GET_CLP / GET_CLP_RANGE", "labelAt": [280, 118] },
+    { "id": "library-to-webapp", "from": "library", "to": "webapp", "label": "HTTP (UrlFetchApp) -- cross-project call", "fromSide": "bottom", "toSide": "top", "labelAt": [560, 202] },
+    { "id": "webapp-to-infra", "from": "webapp", "to": "infrastructure", "label": "delegates Sheet/cache access", "labelAt": [545, 296] },
+    { "id": "macro-to-infra", "from": "macro", "to": "infrastructure", "label": "orchestrates sync" },
+    { "id": "infra-to-domain", "from": "infrastructure", "to": "domain", "label": "pure computation", "fromSide": "top", "toSide": "bottom", "labelAt": [745, 130] },
+    { "id": "infra-to-pfrates", "from": "infrastructure", "to": "pf_rates", "label": "HTTP POST /exports/financial-data", "labelAt": [910, 246] },
+    { "id": "infra-to-drive", "from": "infrastructure", "to": "google_drive", "label": "reads exported CSV", "labelAt": [1000, 300] },
+    { "id": "infra-to-sheet", "from": "infrastructure", "to": "google_sheet", "label": "reads/writes VALUES tab", "labelAt": [850, 560] }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Two independent entry-point flows", "items": ["Bound Macro: human-triggered from the Sheet's custom menu", "Web App + Library: machine-triggered HTTP, called by other spreadsheets", "Both funnel through the same Infrastructure + Domain core"] },
+    { "dot": "emerald", "title": "No real module system", "items": ["Apps Script flattens every file into one global scope", "domain/infrastructure/interfaces is a convention, not enforced by the runtime", "No ports/Protocol layer like pf-payroll/pf-rates -- infra functions take globals as explicit params instead"] },
+    { "dot": "violet", "title": "Cross-realm instanceof gotcha", "items": ["Each Apps Script project runs in its own V8 realm", "A Date built in Payroll fails instanceof Date inside this Library", "isDateValue_() uses Object.prototype.toString.call(...) instead -- see docs/design-notes.md"] },
+    { "dot": "amber", "title": "Secrets", "items": ["API keys and file IDs come from PropertiesService.getScriptProperties()", "Never hardcoded in source, set once manually per Apps Script project"] }
+  ]
+}

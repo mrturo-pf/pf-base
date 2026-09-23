@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "pf-rates — Internal Architecture",
+    "subtitle": "Hexagonal (Ports & Adapters): interfaces -> application -> domain, infrastructure -> application",
+    "output": "pf-rates.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/mrturo-pf/pf-rates",
+      "provider": "github",
+      "link_mode": "local-only",
+      "revision": "784b5ec74a531eaab31593b75bb57a829e995d66"
+    }
+  },
+  "components": [
+    { "id": "api", "type": "frontend", "label": "FastAPI", "sublabel": "interfaces/api", "pos": [40, 280], "size": [180, 64], "sources": [
+      { "path": "src/rates/interfaces/api/main.py", "label": "App wiring" },
+      { "path": "src/rates/interfaces/api/routes/exports.py", "label": "Export trigger route" },
+      { "path": "src/rates/interfaces/api/dependencies.py", "label": "DI composition root" }
+    ] },
+
+    { "id": "domain", "type": "backend", "label": "Domain", "sublabel": "pure logic, zero I/O", "pos": [340, 40], "size": [190, 64], "tag": "no dependencies", "sources": [
+      { "path": "src/rates/domain/exchange_rate.py", "label": "Exchange rate VO" },
+      { "path": "src/rates/domain/income_tax_bracket.py", "label": "Tax bracket VO" },
+      { "path": "src/rates/domain/quantizers.py", "label": "Decimal quantizers" }
+    ] },
+    { "id": "use_cases", "type": "backend", "label": "Use Cases", "sublabel": "application/use_cases", "pos": [340, 280], "size": [190, 64], "sources": [
+      { "path": "src/rates/application/use_cases/sync_recent_market_data.py", "label": "Scheduled sync" },
+      { "path": "src/rates/application/use_cases/refresh_rates.py", "label": "Manual refresh" },
+      { "path": "src/rates/application/use_cases/export_combined_financial_data_csv.py", "label": "CSV export" }
+    ] },
+    { "id": "ports", "type": "backend", "label": "Ports (Protocols)", "sublabel": "application/ports", "pos": [340, 800], "size": [190, 64], "sources": [
+      { "path": "src/rates/application/ports/market_data_repository.py", "label": "Repository port" },
+      { "path": "src/rates/application/ports/rate_provider.py", "label": "Rate-provider port" },
+      { "path": "src/rates/application/ports/file_export_port.py", "label": "File-export port" }
+    ] },
+
+    { "id": "infra_db", "type": "backend", "label": "SQLAlchemy Repositories", "sublabel": "infrastructure/db", "pos": [650, 280], "size": [190, 64], "sources": [
+      { "path": "src/rates/infrastructure/db/repositories/market_data_repository.py", "label": "Market data writes" },
+      { "path": "src/rates/infrastructure/db/repositories/reference_data_repository.py", "label": "Reference data" },
+      { "path": "src/rates/infrastructure/db/models/financial_data.py", "label": "ORM models" }
+    ] },
+    { "id": "infra_rates", "type": "backend", "label": "Rate Providers", "sublabel": "infrastructure/rate_providers", "pos": [650, 540], "size": [190, 64], "sources": [
+      { "path": "src/rates/infrastructure/rate_providers/official_providers.py", "label": "Mindicador/SII/BCCh adapters" },
+      { "path": "src/rates/infrastructure/rate_providers/chained_provider.py", "label": "Fallback chain" }
+    ] },
+    { "id": "infra_gdrive", "type": "backend", "label": "Google Drive Export", "sublabel": "infrastructure/gdrive", "pos": [650, 800], "size": [190, 64], "sources": [
+      { "path": "src/rates/infrastructure/gdrive/drive_file_export.py", "label": "Drive upload adapter" }
+    ] },
+
+    { "id": "postgres", "type": "database", "label": "PostgreSQL", "sublabel": "shared instance (pf-db owns DDL)", "pos": [960, 280], "size": [170, 64] },
+    { "id": "official_sources", "type": "external", "label": "Official Rate Sources", "sublabel": "mindicador.cl \u00b7 SII \u00b7 Banco Central", "pos": [960, 540], "size": [170, 64] },
+    { "id": "google_drive", "type": "external", "label": "Google Drive", "sublabel": "consumed later by pf-sheets", "pos": [960, 800], "size": [170, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Interfaces (adapters in)", "wraps": ["api"] },
+    { "kind": "region", "label": "Domain", "wraps": ["domain"] },
+    { "kind": "region", "label": "Application", "wraps": ["use_cases", "ports"] },
+    { "kind": "region", "label": "Infrastructure (adapters out)", "wraps": ["infra_db", "infra_rates", "infra_gdrive"] }
+  ],
+  "connections": [
+    { "id": "api-to-usecases", "from": "api", "to": "use_cases", "label": "HTTP request handling" },
+    { "id": "usecases-to-domain", "from": "use_cases", "to": "domain", "label": "pure calculations", "fromSide": "top", "toSide": "bottom" },
+    { "id": "usecases-to-ports", "from": "use_cases", "to": "ports", "label": "depends on Protocol contracts", "fromSide": "bottom", "toSide": "top", "labelAt": [435, 358] },
+    { "id": "infradb-implements-ports", "from": "infra_db", "to": "ports", "label": "implements: *Repository", "variant": "dashed" },
+    { "id": "infrarates-implements-ports", "from": "infra_rates", "to": "ports", "label": "implements: RateProvider", "variant": "dashed", "labelAt": [760, 700] },
+    { "id": "infragdrive-implements-ports", "from": "infra_gdrive", "to": "ports", "label": "implements: FileExportPort", "variant": "dashed", "labelAt": [590, 878] },
+    { "id": "infradb-to-postgres", "from": "infra_db", "to": "postgres", "label": "SQL (asyncpg)" },
+    { "id": "infrarates-to-officialsources", "from": "infra_rates", "to": "official_sources", "label": "HTTP: fetch official series", "labelAt": [900, 618] },
+    { "id": "infragdrive-to-googledrive", "from": "infra_gdrive", "to": "google_drive", "label": "upload CSV export" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Dependency rule", "items": ["Interfaces -> Application -> Domain", "Infrastructure -> Application (never Domain)", "Domain has zero external dependencies -- pure Python only"] },
+    { "dot": "emerald", "title": "Ports & DI", "items": ["Ports (application/ports) are typing.Protocol classes", "Application never imports concrete infrastructure types", "Wired at the composition root: interfaces/api/dependencies.py"] },
+    { "dot": "violet", "title": "Rate providers", "items": ["Chained fallback: Banco Central -> SII -> mindicador.cl", "Google service account uses update()-only Drive access -- see docs/google-drive-credentials-setup.md"] },
+    { "dot": "amber", "title": "Financial precision", "items": ["Decimal everywhere, never float", "PostgreSQL columns use NUMERIC, never FLOAT", "quantize_clp() / quantize_utm() in domain/quantizers.py"] }
+  ]
+}
