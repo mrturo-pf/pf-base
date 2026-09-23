@@ -1,0 +1,17 @@
+{
+  // The root .gitignore deliberately excludes modules/pf-* (each is its
+  // own independent git repo -- see AGENTS.md, "Structure"), so VS Code's
+  // automatic nested-repository detection never looks inside them (it
+  // skips folders matched by .gitignore while scanning). This setting
+  // tells the Git extension to check these paths explicitly, regardless
+  // of that root-level ignore rule, so each subproject shows up as its
+  // own provider in the Source Control panel with its own pending
+  // changes/branch/history.
+  "git.scanRepositories": [
+    "modules/pf-sheets",
+    "modules/pf-rates",
+    "modules/pf-payroll",
+    "modules/pf-db",
+    "modules/pf-common"
+  ]
+}

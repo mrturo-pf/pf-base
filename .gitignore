@@ -2,7 +2,12 @@
 # This root repo (pf-base) only tracks ecosystem-level docs/config
 # (AGENTS.md, README.md, architecture/) — ignore the subrepo folders
 # so `git status` here stays clean instead of showing them as untracked.
-/modules/
+# /modules/
+/modules/pf-common
+/modules/pf-sheets
+/modules/pf-rates
+/modules/pf-payroll
+/modules/pf-db
 
 # OS cruft
 .DS_Store
