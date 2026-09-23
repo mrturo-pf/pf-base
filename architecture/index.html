@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PF Architecture — Diagrams Index</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #0b1220;
+    --card-bg: #131c2e;
+    --border: #26334a;
+    --text: #e6ebf5;
+    --muted: #93a1bd;
+    --accent: #5ec8f2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 2.5rem 1.5rem 4rem;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+  p.lede { color: var(--muted); margin-top: 0; margin-bottom: 2rem; max-width: 60ch; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  a.card {
+    display: block;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  a.card:hover, a.card:focus-visible {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  a.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .card .kind {
+    display: inline-block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .card h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+  .card p { margin: 0; color: var(--muted); font-size: 0.85rem; line-height: 1.4; }
+  .ecosystem { grid-column: 1 / -1; }
+  footer { margin-top: 2.5rem; color: var(--muted); font-size: 0.8rem; }
+  footer code {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>PF Architecture Diagrams</h1>
+    <p class="lede">
+      Generated with <a href="https://github.com/tt-a1i/archify" style="color: var(--accent)">Archify</a>.
+      The ecosystem diagram is the shallow system-context view; each per-app diagram zooms
+      into that subproject's real internal layers, with repository evidence pinned to a
+      real commit. Hand-written index &mdash; not generated, safe to edit.
+    </p>
+
+    <div class="grid">
+      <a class="card ecosystem" href="base.html">
+        <span class="kind">Ecosystem</span>
+        <h2>PF Ecosystem Architecture</h2>
+        <p>How all 5 subprojects relate: pf-payroll, pf-rates, pf-db, pf-common, pf-sheets, and the shared PostgreSQL instance.</p>
+      </a>
+
+      <a class="card" href="pf-payroll.html">
+        <span class="kind">Per-app &middot; hexagonal</span>
+        <h2>pf-payroll</h2>
+        <p>Interfaces &rarr; Application &rarr; Domain, Infrastructure implementing Protocol ports. 21 source refs verified.</p>
+      </a>
+
+      <a class="card" href="pf-rates.html">
+        <span class="kind">Per-app &middot; hexagonal</span>
+        <h2>pf-rates</h2>
+        <p>Same 4 layers, single FastAPI interface, chained rate providers + Google Drive export. 18 source refs verified.</p>
+      </a>
+
+      <a class="card" href="pf-sheets.html">
+        <span class="kind">Per-app &middot; 3-layer</span>
+        <h2>pf-sheets</h2>
+        <p>Apps Script: no ports layer. Domain, Infrastructure, and 3 separate Interfaces entry points (macro, Web App, Library).</p>
+      </a>
+
+      <a class="card" href="pf-db.html">
+        <span class="kind">Table ownership</span>
+        <h2>pf-db</h2>
+        <p>Not a layered diagram &mdash; who writes to which of the 18 tables, and the HTTP-only cross-service read rule.</p>
+      </a>
+    </div>
+
+    <footer>
+      Open any card directly, or via a browser: no server needed. See <code>README.md</code>
+      in this folder for regeneration commands (<code>./generate.sh</code> /
+      <code>./generate.sh &lt;name&gt;</code>).
+    </footer>
+  </div>
+</body>
+</html>

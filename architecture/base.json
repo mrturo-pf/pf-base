@@ -4,7 +4,7 @@
   "meta": {
     "title": "PF Ecosystem Architecture",
     "subtitle": "Chilean payroll and financial reference data microservices",
-    "output": "diagram.html",
+    "output": "base.html",
     "quality_profile": "showcase"
   },
   "components": [
@@ -33,6 +33,7 @@
     { "dot": "cyan", "title": "Runtime", "items": ["pf-payroll and pf-rates are independent FastAPI microservices", "Both connect to the same PostgreSQL instance"] },
     { "dot": "emerald", "title": "Schema ownership", "items": ["pf-db is the single source of truth for DDL and migrations", "pf-rates owns currencies, exchange_rates, economic_indices, income_tax_brackets", "pf-payroll owns all other payroll tables"] },
     { "dot": "violet", "title": "Shared tooling", "items": ["pf-common provides reusable Make targets used by pf-payroll and pf-rates", "Not used by pf-db"] },
-    { "dot": "amber", "title": "Sheets integration", "items": ["pf-sheets is a Google Apps Script macro, deployed via clasp", "Triggers a pf-rates export over HTTP, then reads the CSV from Drive and upserts it into a Sheet", "Does not touch PostgreSQL directly"] }
+    { "dot": "amber", "title": "Sheets integration", "items": ["pf-sheets is a Google Apps Script macro, deployed via clasp", "Triggers a pf-rates export over HTTP, then reads the CSV from Drive and upserts it into a Sheet", "Does not touch PostgreSQL directly"] },
+    { "dot": "slate", "title": "Want more detail?", "items": ["This is the shallow, system-context view -- each box hides real internal layers", "Open architecture/index.html for a linked list of all diagrams", "Or directly: pf-payroll.html, pf-rates.html, pf-sheets.html (hexagonal/internal layers), pf-db.html (table ownership)"] }
   ]
 }

@@ -50,14 +50,18 @@ pf-sheets ──> HTTP: triggers pf-rates export ──> Google Sheets/Drive (Ap
 
 ## Architecture diagram
 
-[`architecture/diagram.html`](architecture/diagram.html) is a self-contained, interactive diagram
-(generated with [Archify](https://github.com/tt-a1i/archify)) of how the five subprojects
-fit together at runtime: the two FastAPI services, the shared PostgreSQL instance, the
-schema owner, the shared build tooling, and the Apps Script integration. Open it in a browser for pan/zoom, theme
-toggle, and relationship tracing — it's the visual companion to the "How they relate"
-section above, not a replacement for the per-subproject docs.
+[`architecture/index.html`](architecture/index.html) links to all of them; start there.
+[`architecture/base.html`](architecture/base.html) is the self-contained, interactive
+ecosystem diagram (generated with [Archify](https://github.com/tt-a1i/archify)) of how the
+five subprojects fit together at runtime: the two FastAPI services, the shared PostgreSQL
+instance, the schema owner, the shared build tooling, and the Apps Script integration. Open
+it in a browser for pan/zoom, theme toggle, and relationship tracing — it's the visual
+companion to the "How they relate" section above, not a replacement for the per-subproject
+docs. Each subproject also has its own detailed diagram (internal layers for
+`pf-payroll`/`pf-rates`/`pf-sheets`, table ownership for `pf-db`) — see
+[`architecture/README.md`](architecture/README.md) for the full breakdown.
 
-The diagram source (`architecture/diagram.json`) and the regeneration script
+The diagram source (`architecture/base.json`) and the regeneration script
 (`architecture/generate.sh`) live next to the output, so it can be rebuilt after any
 topology change instead of hand-edited:
 
