@@ -84,8 +84,8 @@ topology changes (new service, new dependency, table ownership moves), update
 
 ## What's on each per-app diagram
 
-- **`pf-payroll`:** the four hexagonal layers — `Interfaces` (FastAPI, Typer CLI, HTML
-  dashboard), `Application` (use cases/services + `Protocol` ports), `Domain` (pure logic,
+- **`pf-payroll`:** the four hexagonal layers — `Interfaces` (FastAPI, Typer CLI),
+  `Application` (use cases/services + `Protocol` ports), `Domain` (pure logic,
   zero I/O), `Infrastructure` (SQLAlchemy repositories, HTTP clients, importers/reporting)
   — plus its two externals, `PostgreSQL` and `pf-rates`.
 - **`pf-rates`:** the same four layers with a single `Interfaces` component (API only),

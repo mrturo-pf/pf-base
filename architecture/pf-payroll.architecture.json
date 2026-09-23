@@ -22,9 +22,6 @@
     { "id": "cli", "type": "frontend", "label": "Typer CLI", "sublabel": "interfaces/cli", "pos": [40, 540], "size": [180, 64], "sources": [
       { "path": "src/payroll/interfaces/cli/main.py", "label": "CLI commands" }
     ] },
-    { "id": "dashboard", "type": "frontend", "label": "HTML Dashboard", "sublabel": "interfaces/dashboard", "pos": [40, 800], "size": [180, 64], "sources": [
-      { "path": "src/payroll/interfaces/dashboard/app.py", "label": "Dashboard entrypoint" }
-    ] },
 
     { "id": "domain", "type": "backend", "label": "Domain", "sublabel": "pure logic, zero I/O", "pos": [340, 40], "size": [190, 64], "tag": "no dependencies", "sources": [
       { "path": "src/payroll/domain/tax_calculator.py", "label": "Tax rules" },
@@ -60,7 +57,7 @@
     { "id": "pf_rates", "type": "external", "label": "pf-rates", "sublabel": "FastAPI microservice", "pos": [960, 540], "size": [170, 64] }
   ],
   "boundaries": [
-    { "kind": "region", "label": "Interfaces (adapters in)", "wraps": ["api", "cli", "dashboard"] },
+    { "kind": "region", "label": "Interfaces (adapters in)", "wraps": ["api", "cli"] },
     { "kind": "region", "label": "Domain", "wraps": ["domain"] },
     { "kind": "region", "label": "Application", "wraps": ["use_cases", "ports"] },
     { "kind": "region", "label": "Infrastructure (adapters out)", "wraps": ["infra_db", "infra_http", "infra_io"] }
@@ -68,7 +65,6 @@
   "connections": [
     { "id": "api-to-usecases", "from": "api", "to": "use_cases", "label": "HTTP request handling" },
     { "id": "cli-to-usecases", "from": "cli", "to": "use_cases", "label": "Typer commands", "labelAt": [150, 430] },
-    { "id": "dashboard-to-usecases", "from": "dashboard", "to": "use_cases", "label": "read-only queries", "labelAt": [150, 620] },
     { "id": "usecases-to-domain", "from": "use_cases", "to": "domain", "label": "pure calculations", "fromSide": "top", "toSide": "bottom" },
     { "id": "usecases-to-ports", "from": "use_cases", "to": "ports", "label": "depends on Protocol contracts", "fromSide": "bottom", "toSide": "top", "labelAt": [435, 358] },
     { "id": "infradb-implements-ports", "from": "infra_db", "to": "ports", "label": "implements: *Repository", "variant": "dashed" },
