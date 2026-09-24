@@ -15,18 +15,18 @@ matches -- keeping them separate means a bug here can never accidentally
 make the read-only search tool destructive, and vice versa.
 
 Casing strategy (deliberately simple, NOT a smart guesser):
-  For each {"from": "walmart", "to": "corporative"} pair, exactly 3 casing
+  For each {"from": "current", "to": "corporative"} pair, exactly 3 casing
   variants are generated and are the ONLY ones ever replaced:
-    lower       walmart   -> corporative
-    UPPER       WALMART   -> CORPORATIVE
-    Capitalized Walmart   -> Corporative   (str.capitalize(): first char
+    lower       current   -> corporative
+    UPPER       CURRENT   -> CORPORATIVE
+    Capitalized Current   -> Corporative   (str.capitalize(): first char
                                              upper, rest lower -- so a
                                              hyphenated base like
                                              "wal-mart" becomes "Wal-mart",
                                              NOT "Wal-Mart". Documented
                                              limitation, not a bug.)
-  Anything that doesn't exactly match one of those 3 forms (e.g. "WalMart",
-  "wALmart") is left UNTOUCHED and reported separately as "ambiguous casing
+  Anything that doesn't exactly match one of those 3 forms (e.g. "CuRrent",
+  "cURrent") is left UNTOUCHED and reported separately as "ambiguous casing
   -- review manually". This script never guesses.
 
 Safety:
@@ -51,10 +51,10 @@ Usage:
 Config (search-words.json, next to this script, gitignored -- see
 search-words-example.jsonc for the committed template):
     {
-      "replacements": [{"from": "walmart", "to": "corporative"}],
+      "replacements": [{"from": "current", "to": "corporative"}],
       "exclude_files": [".env"],
       "exclude_dirs": [],
-      "ignore_matches": ["walmart-chile"]
+      "ignore_matches": ["current-chile"]
     }
 
 Exit codes:
