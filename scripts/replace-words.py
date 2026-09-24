@@ -29,6 +29,23 @@ Casing strategy (deliberately simple, NOT a smart guesser):
   "cURrent") is left UNTOUCHED and reported separately as "ambiguous casing
   -- review manually". This script never guesses.
 
+Comments vs code (protect_lines):
+  ignore_matches (inherited from search-words.sh) filters by LINE CONTENT --
+  "skip any line containing X" -- which is too blunt for a real gotcha: a
+  functional value (e.g. a registry URL an actual config file resolves
+  against) and a comment DESCRIBING that same value in prose can contain
+  the exact same text. Using ignore_matches for the URL would also skip it
+  the next time it legitimately shows up in a comment somewhere else,
+  which is never what you want -- comments should still get cleaned up.
+
+  protect_lines fixes this by matching LINE STRUCTURE instead of content:
+  a list of regexes checked against the line as-is (leading whitespace
+  included). Any line matching ANY of them is left completely untouched --
+  not replaced, not counted as ambiguous, reported separately as
+  "protected". E.g. "^\\s*registry\\s*=" protects .npmrc's actual
+  `registry=...` directive while leaving every comment line (which starts
+  with `#`, so never matches that pattern) eligible for replacement.
+
 Safety:
   - Dry-run by default: only prints a preview, never writes anything.
   - --apply is required to actually write changes to disk.
@@ -54,7 +71,8 @@ search-words-example.jsonc for the committed template):
       "replacements": [{"from": "current", "to": "corporative"}],
       "exclude_files": [".env"],
       "exclude_dirs": [],
-      "ignore_matches": ["current-chile"]
+      "ignore_matches": ["current-chile"],
+      "protect_lines": ["^\\s*registry\\s*="]
     }
 
 Exit codes:
@@ -176,12 +194,15 @@ def build_variants(pairs: list[tuple[str, str]]):
     return variants, re.compile(pattern, re.IGNORECASE)
 
 
-def process_line(line: str, regex, variants: dict, ignore_matches: list[str]):
+def process_line(line: str, regex, variants: dict, ignore_matches: list[str],
+                  protect_patterns: list[re.Pattern]):
+    if any(pat.search(line) for pat in protect_patterns):
+        return line, [], [], True
     lower_line = line.lower()
     if any(pat.lower() in lower_line for pat in ignore_matches):
-        return line, [], []
+        return line, [], [], False
     if regex is None:
-        return line, [], []
+        return line, [], [], False
     replaced, ambiguous = [], []
 
     def _sub(match: re.Match) -> str:
@@ -193,20 +214,25 @@ def process_line(line: str, regex, variants: dict, ignore_matches: list[str]):
         return text
 
     new_line = regex.sub(_sub, line)
-    return new_line, replaced, ambiguous
+    return new_line, replaced, ambiguous, False
 
 
-def process_file(path: Path, regex, variants: dict, ignore_matches: list[str]):
+def process_file(path: Path, regex, variants: dict, ignore_matches: list[str],
+                  protect_patterns: list[re.Pattern]):
     try:
         text = path.read_text(encoding="utf-8")
     except (UnicodeDecodeError, OSError):
         return None
     lines = text.splitlines(keepends=True)
-    changes = []       # (line_no, old_line, new_line)
-    ambiguous = []      # (line_no, matched_text)
+    changes = []        # (line_no, old_line, new_line)
+    ambiguous = []       # (line_no, matched_text)
+    protected = []       # (line_no, line_content)
     new_lines = []
     for i, line in enumerate(lines, start=1):
-        new_line, _replaced, amb = process_line(line, regex, variants, ignore_matches)
+        new_line, _replaced, amb, was_protected = process_line(
+            line, regex, variants, ignore_matches, protect_patterns)
+        if was_protected and regex is not None and regex.search(line):
+            protected.append((i, line.rstrip("\n")))
         ambiguous.extend((i, m) for m in amb)
         if new_line != line:
             changes.append((i, line.rstrip("\n"), new_line.rstrip("\n")))
@@ -214,6 +240,7 @@ def process_file(path: Path, regex, variants: dict, ignore_matches: list[str]):
     return {
         "changes": changes,
         "ambiguous": ambiguous,
+        "protected": protected,
         "new_text": "".join(new_lines) if changes else None,
     }
 
@@ -273,6 +300,7 @@ def main() -> int:
     exclude_dirs = set(STRUCTURAL_EXCLUDE_DIRS) | set(config.get("exclude_dirs", [])) | set(args.exclude_dir)
     exclude_files = set(STRUCTURAL_EXCLUDE_FILES) | set(config.get("exclude_files", [])) | set(args.exclude_file)
     ignore_matches = list(config.get("ignore_matches", [])) + list(args.ignore_match)
+    protect_patterns = [re.compile(p) for p in config.get("protect_lines", [])]
 
     module_dirs, module_files = discover_module_ignores()
     exclude_dirs |= module_dirs
@@ -282,12 +310,13 @@ def main() -> int:
 
     file_results = {}  # Path -> result dict
     for path in iter_target_files(exclude_dirs, exclude_files):
-        result = process_file(path, regex, variants, ignore_matches)
-        if result and (result["changes"] or result["ambiguous"]):
+        result = process_file(path, regex, variants, ignore_matches, protect_patterns)
+        if result and (result["changes"] or result["ambiguous"] or result["protected"]):
             file_results[path] = result
 
     total_changes = sum(len(r["changes"]) for r in file_results.values())
     total_ambiguous = sum(len(r["ambiguous"]) for r in file_results.values())
+    total_protected = sum(len(r["protected"]) for r in file_results.values())
 
     for path, result in sorted(file_results.items()):
         if result["changes"]:
@@ -299,11 +328,17 @@ def main() -> int:
             print(f"\n== {path} (AMBIGUOUS CASING -- left untouched) ==")
             for line_no, text in result["ambiguous"]:
                 print(f"  {line_no}: {text!r} doesn't match lower/UPPER/Capitalized exactly")
+        if result["protected"]:
+            print(f"\n== {path} (PROTECTED LINE -- left untouched) ==")
+            for line_no, text in result["protected"]:
+                print(f"  {line_no}: {text.strip()}")
 
     print("\n== Summary ==")
     print(f"  {total_changes} replacement(s) across {len(file_results)} file(s)")
     if total_ambiguous:
         print(f"  {total_ambiguous} ambiguous match(es) need manual review (see above)")
+    if total_protected:
+        print(f"  {total_protected} match(es) skipped by protect_lines (functional code, not prose)")
 
     if not args.apply:
         if total_changes or total_ambiguous:

@@ -10,5 +10,6 @@
   ],
   "exclude_files": [".env"],
   "exclude_dirs": [],
-  "ignore_matches": ["corporative-chile"]
+  "ignore_matches": ["corporative-chile"],
+  "protect_lines": ["^\\s*registry\\s*="]
 }
