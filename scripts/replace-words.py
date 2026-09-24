@@ -22,8 +22,8 @@ Casing strategy (deliberately simple, NOT a smart guesser):
     Capitalized Current   -> Corporative   (str.capitalize(): first char
                                              upper, rest lower -- so a
                                              hyphenated base like
-                                             "wal-mart" becomes "Wal-mart",
-                                             NOT "Wal-Mart". Documented
+                                             "cu-rrent" becomes "Cu-rrent",
+                                             NOT "Cu-Rent". Documented
                                              limitation, not a bug.)
   Anything that doesn't exactly match one of those 3 forms (e.g. "CuRrent",
   "cURrent") is left UNTOUCHED and reported separately as "ambiguous casing
