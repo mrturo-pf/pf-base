@@ -15,6 +15,10 @@
 # Local runtime logs from scripts/pf-services.sh
 /scripts/logs/
 
+# Personal search-words.sh config -- copy scripts/search-words-example.jsonc
+# to scripts/search-words.json and edit locally, never committed.
+/scripts/search-words.json
+
 # Common local-only stuff, in case anything ever lands directly at root
 node_modules/
 .env

@@ -1,0 +1,11 @@
+// Copy this file to search-words.json (same directory) and edit the values
+// below to fit what YOU need to search for. search-words.json is gitignored
+// on purpose -- it's personal/local config, never committed, so everyone's
+// list of words/excludes can differ without stepping on each other. This
+// example file is the only one that gets committed, as a template.
+{
+  "words": ["corporative", "corpo-rative"],
+  "exclude_files": [".env"],
+  "exclude_dirs": [],
+  "ignore_matches": ["corporative-chile"]
+}
