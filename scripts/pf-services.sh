@@ -80,6 +80,39 @@ wait_for_tcp() {
   return 1
 }
 
+wait_for_port_closed() {
+  # Inverse of wait_for_tcp: confirms a port stopped accepting connections.
+  # $1 = host, $2 = port, $3 = label, $4 = max attempts (default 10, ~5s)
+  local host="$1" port="$2" label="$3" attempts="${4:-10}"
+  for ((i = 1; i <= attempts; i++)); do
+    if (exec 3<>"/dev/tcp/$host/$port") 2>/dev/null; then
+      exec 3>&- 3<&- 2>/dev/null || true
+      sleep 0.5
+      continue
+    fi
+    log "$label port closed -> $host:$port"
+    return 0
+  done
+  log "WARNING: $label port $host:$port still accepting connections"
+  return 1
+}
+
+wait_for_process_gone() {
+  # Inverse of is_uvicorn_running: confirms the process actually exited
+  # instead of assuming pkill worked.
+  # $1 = module pattern, $2 = label, $3 = max attempts (default 10, ~5s)
+  local module="$1" label="$2" attempts="${3:-10}"
+  for ((i = 1; i <= attempts; i++)); do
+    if ! is_uvicorn_running "$module"; then
+      log "$label process gone"
+      return 0
+    fi
+    sleep 0.5
+  done
+  log "WARNING: $label still running after stop attempt (try: pkill -9 -f \"uvicorn $module\")"
+  return 1
+}
+
 verify_db_seed() {
   # Functional check beyond "port is open": confirms schema+seed actually
   # landed data, using the currencies seeded by db/02_seed_base.sql.
@@ -125,8 +158,15 @@ start_db() {
 }
 
 stop_db() {
+  # $1 = status var name to set
+  local status_var="$1"
   section "pf-db (PostgreSQL local)"
-  (cd "$PF_DB_DIR" && make db-down) || log "already stopped"
+  (cd "$PF_DB_DIR" && make db-down) || true
+  if wait_for_port_closed "$DB_HOST" "$DB_PORT" "pf-db"; then
+    printf -v "$status_var" 'OK'
+  else
+    printf -v "$status_var" 'FAIL'
+  fi
 }
 
 start_uvicorn() {
@@ -150,15 +190,19 @@ start_uvicorn() {
 }
 
 stop_uvicorn() {
-  # $1 = label, $2 = module
-  local label="$1" module="$2"
+  # $1 = label, $2 = module, $3 = status var name to set
+  local label="$1" module="$2" status_var="$3"
   section "$label"
-  if is_uvicorn_running "$module"; then
-    pkill -f "uvicorn $module" || true
-    sleep 1
-    log "stopped"
-  else
+  if ! is_uvicorn_running "$module"; then
     log "was not running"
+    printf -v "$status_var" 'OK'
+    return 0
+  fi
+  pkill -f "uvicorn $module" || true
+  if wait_for_process_gone "$module" "$label"; then
+    printf -v "$status_var" 'OK'
+  else
+    printf -v "$status_var" 'FAIL'
   fi
 }
 
@@ -185,9 +229,11 @@ cmd_start() {
 }
 
 cmd_stop() {
-  stop_uvicorn "pf-payroll" "$PAYROLL_MODULE"
-  stop_uvicorn "pf-rates" "$RATES_MODULE"
-  stop_db
+  stop_uvicorn "pf-payroll" "$PAYROLL_MODULE" STATUS_PAYROLL
+  stop_uvicorn "pf-rates" "$RATES_MODULE" STATUS_RATES
+  stop_db STATUS_DB
+  echo ""
+  print_summary
 }
 
 cmd_restart() {
