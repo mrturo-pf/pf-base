@@ -5,6 +5,9 @@
 // example file is the only one that gets committed, as a template.
 {
   "words": ["corporative", "corpo-rative"],
+  "replacements": [
+    {"from": "corporative", "to": "something-else"}
+  ],
   "exclude_files": [".env"],
   "exclude_dirs": [],
   "ignore_matches": ["corporative-chile"]
