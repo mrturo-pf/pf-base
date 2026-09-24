@@ -12,6 +12,9 @@
 # OS cruft
 .DS_Store
 
+# Local runtime logs from scripts/pf-services.sh
+/scripts/logs/
+
 # Common local-only stuff, in case anything ever lands directly at root
 node_modules/
 .env
