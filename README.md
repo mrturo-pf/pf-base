@@ -94,7 +94,7 @@ Fully detailed in each subproject's `AGENTS.md`, in short:
 - Code/docs language: English (except official Chilean regulatory terms).
 - `Decimal`/`NUMERIC`, never `float`/`FLOAT` for amounts and rates.
 - Hexagonal architecture (ports and adapters) in `pf-rates` and `pf-payroll`.
-- SemVer + Conventional Commits; no agent commits/pushes/opens a PR without explicit instruction.
+- SemVer + Conventional Commits.
 - **Cloud cost is always the priority for cloud decisions**: cheapest viable option first
   (scale-to-zero, free/cheaper equivalents, on-demand over always-on). See
   [`AGENTS.md`](AGENTS.md#rules-common-to-the-3-servicesschema-repo) and each subproject's

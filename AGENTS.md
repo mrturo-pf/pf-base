@@ -20,10 +20,17 @@ and `.gitignore`. The five subprojects (`pf-db`, `pf-rates`, `pf-payroll`, `pf-c
 `pf-sheets`) live under `modules/` and remain **independent git repos** with their own
 `.git`, remote, and history — root's
 `.gitignore` deliberately excludes the whole `modules/` folder so `git status` here
-stays clean and never shows them as untracked. To commit/push inside a subproject, `cd` into it first;
-committing from root only ever touches ecosystem-level docs. As always: no agent
-commits, pushes, or opens a PR without explicit user instruction — in the root repo or
-any subproject repo.
+stays clean and never shows them as untracked. To commit/push inside a subproject, `cd`
+into it first; committing from root only ever touches ecosystem-level docs.
+
+**Never autonomously commit, push branches, create issues, or open PRs — requires
+explicit user command.** This applies everywhere: the root repo and every subproject
+repo, no exceptions.
+
+**Post-push monitoring:** after pushing, monitor the pipeline in GitHub Actions. It will
+eventually reach a manual approval stage — never autonomously approve; requires explicit
+user command. If other runs for that same service are already pending approval, cancel
+the older ones so only the current run remains.
 
 ## Rules common to the 3 services/schema repo
 
@@ -44,8 +51,8 @@ conventions documented in `pf-sheets/AGENTS.md` instead.)
   production validation — raise from `application/errors.py` instead. No silent fallbacks.
 - **pf-db specific:** idempotent migrations (`IF NOT EXISTS`, `ON CONFLICT`), always a real
   `downgrade()`, hand-written SQL (no autogenerate).
-- **Git/versioning:** SemVer + Conventional Commits in English. No agent autonomously
-  commits, pushes, creates issues, or opens PRs — requires explicit user instruction.
+- **Git/versioning:** SemVer + Conventional Commits in English (commit/push policy above
+  applies here too).
 - **Cross-repo coordination:** schema changes are coordinated in `pf-db`; `pf-rates` and
   `pf-payroll` never edit their ORM models without a corresponding migration in `pf-db`.
 - **Cloud cost optimization — always the priority:** any decision touching cloud
