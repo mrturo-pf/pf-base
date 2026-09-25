@@ -688,7 +688,7 @@
                 "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null. Resend with mode=commit once resolved.",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"mode\": \"validate\",\n  \"employer\": \"ACME\",\n  \"period_year\": 2026,\n  \"period_month\": 1,\n  \"payment_date\": \"2026-01-31\",\n  \"status\": \"actual\",\n  \"employment_contract_kind\": \"indefinite\",\n  \"rows\": [\n    {\n      \"concept_code\": \"SALARY_BASE\",\n      \"amount_clp\": \"1000000\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"mode\": \"validate\",\n  \"employer\": \"ACME\",\n  \"period_year\": 2026,\n  \"period_month\": 1,\n  \"payment_date\": \"2026-01-31\",\n  \"employment_contract_kind\": \"indefinite\",\n  \"rows\": [\n    {\n      \"concept_code\": \"SALARY_BASE\",\n      \"amount_clp\": \"1000000\"\n    }\n  ]\n}",
                   "options": {
                     "raw": {
                       "language": "json"
