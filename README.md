@@ -70,6 +70,15 @@ cd architecture
 ./generate.sh --open
 ```
 
+## Postman collection
+
+[`postman/pf-ecosystem.postman_collection.json`](postman/pf-ecosystem.postman_collection.json)
+is a single Postman collection covering every HTTP surface in the ecosystem
+(`pf-rates`, `pf-payroll`, `pf-sheets`'s Web App — `pf-db` has no HTTP API). It's plain
+JSON, edited directly like any other file here, and pushed to a real Postman workspace
+automatically on every push to `main` via `.github/workflows/sync-postman.yml`. See
+[`postman/README.md`](postman/README.md) for one-time setup and how the sync works.
+
 ## Where to start
 
 1. Bring up the database: follow the quick start in [`pf-db`](modules/pf-db/docs/getting-started.md).

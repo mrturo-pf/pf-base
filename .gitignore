@@ -22,3 +22,9 @@ venv/
 .venv/
 __pycache__/
 *.pyc
+
+# Postman: real environments hold live API keys -- only the .example.json
+# template (placeholder values) is meant to be committed. Copy it locally
+# and fill in real keys, never rename/commit the copy.
+/postman/*.postman_environment.json
+!/postman/*.postman_environment.example.json

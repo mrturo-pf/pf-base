@@ -1,0 +1,1171 @@
+{
+  "info": {
+    "_postman_id": "1b67e88d-11f3-475f-982d-404d16227e85",
+    "name": "pf ecosystem",
+    "description": "All pf-* services in one collection: pf-rates, pf-payroll, pf-sheets. pf-db is DDL/migrations only and exposes no HTTP API. Managed as JSON in pf-base/postman/ -- see postman/README.md for how edits here sync to your real Postman workspace.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "pf-rates",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{pf_rates_base_url}}/health",
+              "host": [
+                "{{pf_rates_base_url}}/health"
+              ]
+            },
+            "description": "No auth required."
+          },
+          "response": []
+        },
+        {
+          "name": "List currencies",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{pf_rates_api_key}}"
+              }
+            ],
+            "url": {
+              "raw": "{{pf_rates_base_url}}/currencies",
+              "host": [
+                "{{pf_rates_base_url}}/currencies"
+              ]
+            },
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Exchange rates",
+          "item": [
+            {
+              "name": "List exchange rates",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exchange-rates?currency_code=USD",
+                  "host": [
+                    "{{pf_rates_base_url}}/exchange-rates"
+                  ],
+                  "query": [
+                    {
+                      "key": "currency_code",
+                      "value": "USD"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Get exchange rate value",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exchange-rates/value?currency_code=USD&rate_date=2026-01-15",
+                  "host": [
+                    "{{pf_rates_base_url}}/exchange-rates/value"
+                  ],
+                  "query": [
+                    {
+                      "key": "currency_code",
+                      "value": "USD"
+                    },
+                    {
+                      "key": "rate_date",
+                      "value": "2026-01-15"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh exchange rates (manual)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exchange-rates/refresh",
+                  "host": [
+                    "{{pf_rates_base_url}}/exchange-rates/refresh"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"exchange_rates\": [\n    {\n      \"currency_code\": \"USD\",\n      \"rate_date\": \"2026-01-15\",\n      \"value_clp\": \"897.50\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh exchange rates (provider fetch)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exchange-rates/refresh",
+                  "host": [
+                    "{{pf_rates_base_url}}/exchange-rates/refresh"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fetch_exchange_rates\": [\n    {\n      \"currency_code\": \"USD\",\n      \"rate_date\": \"2026-01-16\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            }
+          ],
+          "description": ""
+        },
+        {
+          "name": "Economic indices",
+          "item": [
+            {
+              "name": "List economic indices",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/economic-indices?code=UF",
+                  "host": [
+                    "{{pf_rates_base_url}}/economic-indices"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "UF"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Get economic index value",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/economic-indices/value?code=UF&year=2026&month=1",
+                  "host": [
+                    "{{pf_rates_base_url}}/economic-indices/value"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "UF"
+                    },
+                    {
+                      "key": "year",
+                      "value": "2026"
+                    },
+                    {
+                      "key": "month",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh economic indices (manual)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/economic-indices/refresh",
+                  "host": [
+                    "{{pf_rates_base_url}}/economic-indices/refresh"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"economic_indices\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 1,\n      \"index_value\": \"125.50\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh economic indices (provider fetch)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/economic-indices/refresh",
+                  "host": [
+                    "{{pf_rates_base_url}}/economic-indices/refresh"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fetch_economic_indices\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2013,\n      \"period_month\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            }
+          ],
+          "description": ""
+        },
+        {
+          "name": "Income tax brackets",
+          "item": [
+            {
+              "name": "Get matching bracket",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/income-tax-brackets?reference_date=2026-01-15&taxable_base_utm=10.5",
+                  "host": [
+                    "{{pf_rates_base_url}}/income-tax-brackets"
+                  ],
+                  "query": [
+                    {
+                      "key": "reference_date",
+                      "value": "2026-01-15"
+                    },
+                    {
+                      "key": "taxable_base_utm",
+                      "value": "10.5"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "List brackets for a year",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/income-tax-brackets/list?year=2026",
+                  "host": [
+                    "{{pf_rates_base_url}}/income-tax-brackets/list"
+                  ],
+                  "query": [
+                    {
+                      "key": "year",
+                      "value": "2026"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh income tax brackets",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/income-tax-brackets/refresh",
+                  "host": [
+                    "{{pf_rates_base_url}}/income-tax-brackets/refresh"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"year\": 2026\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            }
+          ],
+          "description": ""
+        },
+        {
+          "name": "Sync recent market data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{pf_rates_api_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{pf_rates_base_url}}/sync",
+              "host": [
+                "{{pf_rates_base_url}}/sync"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lookback_days\": 365,\n  \"forward_days\": 35\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Exports",
+          "item": [
+            {
+              "name": "Trigger financial-data export (sync)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exports/financial-data",
+                  "host": [
+                    "{{pf_rates_base_url}}/exports/financial-data"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Trigger financial-data export (async)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exports/financial-data",
+                  "host": [
+                    "{{pf_rates_base_url}}/exports/financial-data"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lookback_days\": 6100,\n  \"forward_days\": 30,\n  \"async\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List export jobs",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exports/jobs?status=failed&limit=20",
+                  "host": [
+                    "{{pf_rates_base_url}}/exports/jobs"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "failed"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Get export job status",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exports/jobs/{{export_job_id}}",
+                  "host": [
+                    "{{pf_rates_base_url}}/exports/jobs/{{export_job_id}}"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Stop one export job",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exports/jobs/{{export_job_id}}/stop",
+                  "host": [
+                    "{{pf_rates_base_url}}/exports/jobs/{{export_job_id}}/stop"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Stop all export jobs",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_rates_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_rates_base_url}}/exports/jobs/stop",
+                  "host": [
+                    "{{pf_rates_base_url}}/exports/jobs/stop"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            }
+          ],
+          "description": ""
+        }
+      ],
+      "description": "See modules/pf-rates/docs/api.md for the full reference."
+    },
+    {
+      "name": "pf-payroll",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{pf_payroll_base_url}}/health",
+              "host": [
+                "{{pf_payroll_base_url}}/health"
+              ]
+            },
+            "description": "No auth required."
+          },
+          "response": []
+        },
+        {
+          "name": "Import",
+          "item": [
+            {
+              "name": "Import CSV/XLSX",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/import",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/import"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Preview a PDF payslip",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/import/pdf-preview",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/import/pdf-preview"
+                  ]
+                },
+                "description": "Read-only, never persists. See docs/payroll-workflow.md.",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Confirm rows (mode=validate)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/import/rows",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/import/rows"
+                  ]
+                },
+                "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null. Resend with mode=commit once resolved.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"validate\",\n  \"rows\": [\n    {\n      \"employer\": \"ACME\",\n      \"period_year\": 2026,\n      \"period_month\": 1,\n      \"payment_date\": \"2026-01-31\",\n      \"status\": \"actual\",\n      \"employment_contract_kind\": \"indefinite\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"amount_clp\": \"1000000\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            }
+          ],
+          "description": ""
+        },
+        {
+          "name": "Payroll periods",
+          "item": [
+            {
+              "name": "Period range (current + 12 prev/next)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/period-range",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/period-range"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Period summaries",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/summary",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/summary"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Get one period",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/{{period_id}}"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Assign plans",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/assign-plans",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/assign-plans"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pension_plan_id\": 1,\n  \"health_plan_id\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Compute contributions",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/compute-contributions",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/compute-contributions"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pension_plan_id\": 1,\n  \"health_plan_id\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Compute income tax",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/compute-tax",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/compute-tax"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Review period",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/review",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/review"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Generate PDF report",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/report.pdf",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/report.pdf"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Deflate to real CLP",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/deflate",
+                  "host": [
+                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/deflate"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target_year\": 2026,\n  \"target_month\": 3,\n  \"index_code\": \"IPC_CL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            }
+          ],
+          "description": ""
+        },
+        {
+          "name": "Reference data",
+          "item": [
+            {
+              "name": "Pension institutions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/reference-data/pension-institutions",
+                  "host": [
+                    "{{pf_payroll_base_url}}/reference-data/pension-institutions"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Health institutions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/reference-data/health-institutions",
+                  "host": [
+                    "{{pf_payroll_base_url}}/reference-data/health-institutions"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Pension plans",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/reference-data/pension-plans",
+                  "host": [
+                    "{{pf_payroll_base_url}}/reference-data/pension-plans"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Health plans",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/reference-data/health-plans",
+                  "host": [
+                    "{{pf_payroll_base_url}}/reference-data/health-plans"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Contribution caps",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/reference-data/contribution-caps",
+                  "host": [
+                    "{{pf_payroll_base_url}}/reference-data/contribution-caps"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Payroll concepts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf_payroll_api_key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf_payroll_base_url}}/reference-data/payroll-concepts",
+                  "host": [
+                    "{{pf_payroll_base_url}}/reference-data/payroll-concepts"
+                  ]
+                },
+                "description": ""
+              },
+              "response": []
+            }
+          ],
+          "description": ""
+        }
+      ],
+      "description": "See modules/pf-payroll/docs/api.md for the full reference."
+    },
+    {
+      "name": "pf-sheets",
+      "item": [
+        {
+          "name": "GET_CLP (single lookup)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{pf_sheets_webapp_url}}?date=2026-09-15&code=USD&key={{pf_sheets_api_key}}",
+              "host": [
+                "{{pf_sheets_webapp_url}}"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2026-09-15"
+                },
+                {
+                  "key": "code",
+                  "value": "USD"
+                },
+                {
+                  "key": "key",
+                  "value": "{{pf_sheets_api_key}}"
+                }
+              ]
+            },
+            "description": "Plain-text response: a bare number, 'Unauthorized', 'Missing parameters', or 'Not found'."
+          },
+          "response": []
+        },
+        {
+          "name": "GET_CLP_RANGE (batch lookup)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{pf_sheets_webapp_url}}?key={{pf_sheets_api_key}}",
+              "host": [
+                "{{pf_sheets_webapp_url}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{pf_sheets_api_key}}"
+                }
+              ]
+            },
+            "description": "JSON array response, same order/length as 'pairs'. Max 500 real pairs per request.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pairs\": [\n    {\n      \"date\": \"2026-09-15\",\n      \"code\": \"USD\"\n    },\n    {\n      \"date\": \"2026-09-16\",\n      \"code\": \"USD\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Apps Script Web App -- see modules/pf-sheets/docs/api.md. pf-db has no HTTP API (DDL/migrations only), so it has no folder here."
+    }
+  ],
+  "variable": [
+    {
+      "key": "pf_rates_base_url",
+      "value": "http://localhost:8001",
+      "type": "string"
+    },
+    {
+      "key": "pf_rates_api_key",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pf_payroll_base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "pf_payroll_api_key",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pf_sheets_webapp_url",
+      "value": "https://script.google.com/macros/s/REPLACE_WITH_DEPLOYMENT_ID/exec",
+      "type": "string"
+    },
+    {
+      "key": "pf_sheets_api_key",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "period_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "export_job_id",
+      "value": "1",
+      "type": "string"
+    }
+  ]
+}

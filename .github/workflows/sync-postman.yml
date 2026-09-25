@@ -1,0 +1,66 @@
+# ============================================================
+# pf-base — Postman collection sync
+# ============================================================
+#
+# Pushes postman/pf-ecosystem.postman_collection.json to a real Postman
+# workspace whenever it changes on main, via the Postman API. This is a
+# one-way sync (repo → Postman); see postman/README.md for the full
+# rationale and one-time setup steps.
+#
+# Required GitHub Secrets (Settings → Secrets and variables → Actions):
+#   POSTMAN_API_KEY          — generated in Postman → Settings → API keys
+#   POSTMAN_COLLECTION_UID   — target collection's UID (see postman/README.md
+#                              for how to find it, or create it once via
+#                              Import in the Postman app)
+#
+# ============================================================
+
+name: CI / Sync Postman Collection
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "postman/pf-ecosystem.postman_collection.json"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate collection is well-formed JSON
+        run: jq empty postman/pf-ecosystem.postman_collection.json
+
+      - name: Push collection to Postman
+        env:
+          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+          POSTMAN_COLLECTION_UID: ${{ secrets.POSTMAN_COLLECTION_UID }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${POSTMAN_API_KEY}" ] || [ -z "${POSTMAN_COLLECTION_UID}" ]; then
+            echo "::error::POSTMAN_API_KEY and/or POSTMAN_COLLECTION_UID secrets are not set." \
+                 "See postman/README.md for one-time setup steps." >&2
+            exit 1
+          fi
+
+          jq -n --slurpfile collection postman/pf-ecosystem.postman_collection.json \
+            '{collection: $collection[0]}' > /tmp/payload.json
+
+          http_status=$(curl --silent --show-error --output /tmp/response.json --write-out "%{http_code}" \
+            -X PUT "https://api.getpostman.com/collections/${POSTMAN_COLLECTION_UID}" \
+            -H "X-Api-Key: ${POSTMAN_API_KEY}" \
+            -H "Content-Type: application/json" \
+            --data @/tmp/payload.json)
+
+          cat /tmp/response.json
+          if [ "${http_status}" -ge 300 ]; then
+            echo "::error::Postman API returned HTTP ${http_status}" >&2
+            exit 1
+          fi
+          echo "Synced OK (HTTP ${http_status})."
