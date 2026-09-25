@@ -88,6 +88,7 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
    | `PF_PAYROLL_API_KEY_LOCAL` | pf-payroll dev API key (from `modules/pf-payroll/.env`) |
    | `PF_RATES_API_KEY_GCP` | pf-rates production API key (GCP Secret Manager, secret `PF_RATES_API_KEY`) |
    | `PF_PAYROLL_API_KEY_GCP` | pf-payroll production API key (GCP Secret Manager, secret `PF_PAYROLL_API_KEY`) |
+   | `PF_SHEETS_API_KEY` | pf-sheets `GET_CLP_API_KEY` Script Property -- Apps Script editor → Project Settings → Script Properties (no CLI/file access, it's cloud-only) |
 
    Prefer piping values into `gh secret set` over pasting them anywhere they'd be
    echoed/logged, e.g.:
@@ -110,6 +111,12 @@ GitHub Secret's value on sync) -- to rotate a key, update the GitHub Secret inst
 - `pf-ecosystem.postman_environment.local.json` / `.gcp.json` — the two environments.
   Edit `*-url` values freely; `*-api-key` values are always overwritten at sync time
   (see above).
+
+pf-sheets has no local/gcp split (one Apps Script deployment, one Web App URL) so its
+two values (`pf_sheets_webapp_url`, `pf_sheets_api_key`) live as plain collection
+variables instead of a third environment. `pf_sheets_webapp_url` is committed with its
+real value (an Apps Script deployment URL isn't a secret by itself); `pf_sheets_api_key`
+follows the same empty-in-git / injected-at-sync-time pattern as every other api-key.
 
 ## Adding a request
 

@@ -16,10 +16,13 @@
 #   PF_PAYROLL_API_KEY_LOCAL — pf-payroll dev API key (injected into LOCAL env)
 #   PF_RATES_API_KEY_GCP     — pf-rates production API key (injected into GCP env)
 #   PF_PAYROLL_API_KEY_GCP   — pf-payroll production API key (injected into GCP env)
+#   PF_SHEETS_API_KEY        — pf-sheets GET_CLP_API_KEY Script Property
+#                              (injected into the collection's own variable --
+#                              pf-sheets has no local/gcp split, single deployment)
 #
-# The two environment JSON files committed to this repo always carry EMPTY
-# values for the api-key entries -- the real values live only as GitHub
-# Secrets and are injected into a throwaway /tmp copy at sync time, by
+# The environment JSON files and the collection's own "variable" block always
+# carry EMPTY values for every api-key entry -- the real values live only as
+# GitHub Secrets and are injected into a throwaway /tmp copy at sync time, by
 # variable key name (never blind text substitution), then that copy is
 # deleted. They never touch the repo or git history.
 #
@@ -52,6 +55,7 @@ jobs:
         env:
           POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
           POSTMAN_COLLECTION_UID: ${{ secrets.POSTMAN_COLLECTION_UID }}
+          PF_SHEETS_API_KEY: ${{ secrets.PF_SHEETS_API_KEY }}
         run: |
           set -euo pipefail
 
@@ -61,14 +65,32 @@ jobs:
             exit 1
           fi
 
-          jq -n --slurpfile collection postman/pf-ecosystem.postman_collection.json \
+          # Refuse to sync with a blank api-key -- a missing secret must
+          # fail loudly, never silently overwrite a real key already set in
+          # Postman with an empty string (this happened once, see git log).
+          if [ -z "${PF_SHEETS_API_KEY}" ]; then
+            echo "::error::PF_SHEETS_API_KEY secret is not set or empty." \
+                 "Refusing to push -- this would overwrite the real key already in Postman with a blank." >&2
+            exit 1
+          fi
+
+          # Inject by variable key name, never by blind text substitution --
+          # the committed collection's pf_sheets_api_key value is just an
+          # empty string, no placeholder marker syntax to keep in sync.
+          jq --arg sheets_key "${PF_SHEETS_API_KEY}" '
+            (.variable[] | select(.key == "pf_sheets_api_key") | .value) = $sheets_key
+          ' postman/pf-ecosystem.postman_collection.json > /tmp/materialized-collection.json
+
+          jq -n --slurpfile collection /tmp/materialized-collection.json \
             '{collection: $collection[0]}' > /tmp/payload.json
+          rm -f /tmp/materialized-collection.json
 
           http_status=$(curl --silent --show-error --output /tmp/response.json --write-out "%{http_code}" \
             -X PUT "https://api.getpostman.com/collections/${POSTMAN_COLLECTION_UID}" \
             -H "X-Api-Key: ${POSTMAN_API_KEY}" \
             -H "Content-Type: application/json" \
             --data @/tmp/payload.json)
+          rm -f /tmp/payload.json
 
           cat /tmp/response.json
           if [ "${http_status}" -ge 300 ]; then
