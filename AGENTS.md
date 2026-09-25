@@ -45,6 +45,37 @@ indefinitely, and never assume a push/cancel/approval-check succeeded just becau
 earlier command in the same sequence did. Report the blocker to the user explicitly and
 wait for them to fix connectivity or ask for a retry.
 
+## Documentation and the Postman collection must track reality
+
+Two classes of file exist purely to describe the ecosystem's real HTTP surface to
+humans and tools outside the codebase. Both rot silently if not updated in the same
+change that changes behavior — treat letting them drift as an incomplete change, not
+a follow-up:
+
+- **`modules/{pf-rates,pf-payroll,pf-sheets}/docs/api.md`** — each service's own
+  complete endpoint reference (pf-db has no HTTP API, so it has no `api.md`). Adding,
+  removing, or changing an endpoint (path, request/response shape, auth, error codes)
+  requires updating that module's `api.md` in the same change, not "later". This isn't
+  hypothetical: a 2026-09-25 documentation audit of `pf-payroll` found three endpoints
+  (`POST /payroll/import/pdf-preview`, `POST /payroll/import/rows`, and the
+  `template-test` CLI command) that had already shipped, been tested, and been used in
+  production for multiple sessions before ever being documented.
+- **`postman/pf-ecosystem.postman_collection.json`** and
+  **`postman/pf-ecosystem.postman_environment.{local,gcp}.json`** (this root repo,
+  `pf-base`) — a single Postman collection covering every HTTP surface in the
+  ecosystem (`pf-rates`, `pf-payroll`, `pf-sheets`'s Web App), kept in sync with a real
+  Postman workspace via `.github/workflows/sync-postman.yml`. Whenever a module's
+  `api.md` changes, mirror that change here too in the same session when reasonably
+  possible — a Postman request that doesn't match the real endpoint, or a stale base
+  URL/variable name, is worse than no request at all. See
+  [`postman/README.md`](postman/README.md) for the full sync mechanics, including why
+  every `*-api-key` value in those committed JSON files is always an empty string (real
+  values live only in GitHub Secrets, injected at sync time — never assume a non-empty
+  value belongs in git).
+- If ever unsure whether either is stale, check against the actual route
+  definitions/`GET /openapi.json` (services) or `src/interfaces/webapp.js` (pf-sheets)
+  before assuming either is correct.
+
 ## Rules common to the 3 services/schema repo
 
 (Full detail in each one's `AGENTS.md` — this is just the summary so you don't waste
