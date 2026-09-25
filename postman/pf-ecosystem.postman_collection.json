@@ -15,9 +15,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{pf_rates_base_url}}/health",
+              "raw": "{{pf-rates-url}}/health",
               "host": [
-                "{{pf_rates_base_url}}/health"
+                "{{pf-rates-url}}/health"
               ]
             },
             "description": "No auth required."
@@ -31,13 +31,13 @@
             "header": [
               {
                 "key": "X-Api-Key",
-                "value": "{{pf_rates_api_key}}"
+                "value": "{{pf-rates-api-key}}"
               }
             ],
             "url": {
-              "raw": "{{pf_rates_base_url}}/currencies",
+              "raw": "{{pf-rates-url}}/currencies",
               "host": [
-                "{{pf_rates_base_url}}/currencies"
+                "{{pf-rates-url}}/currencies"
               ]
             },
             "description": ""
@@ -54,13 +54,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exchange-rates?currency_code=USD",
+                  "raw": "{{pf-rates-url}}/exchange-rates?currency_code=USD",
                   "host": [
-                    "{{pf_rates_base_url}}/exchange-rates"
+                    "{{pf-rates-url}}/exchange-rates"
                   ],
                   "query": [
                     {
@@ -80,13 +80,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exchange-rates/value?currency_code=USD&rate_date=2026-01-15",
+                  "raw": "{{pf-rates-url}}/exchange-rates/value?currency_code=USD&rate_date=2026-01-15",
                   "host": [
-                    "{{pf_rates_base_url}}/exchange-rates/value"
+                    "{{pf-rates-url}}/exchange-rates/value"
                   ],
                   "query": [
                     {
@@ -110,7 +110,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -118,9 +118,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exchange-rates/refresh",
+                  "raw": "{{pf-rates-url}}/exchange-rates/refresh",
                   "host": [
-                    "{{pf_rates_base_url}}/exchange-rates/refresh"
+                    "{{pf-rates-url}}/exchange-rates/refresh"
                   ]
                 },
                 "description": "",
@@ -143,7 +143,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -151,9 +151,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exchange-rates/refresh",
+                  "raw": "{{pf-rates-url}}/exchange-rates/refresh",
                   "host": [
-                    "{{pf_rates_base_url}}/exchange-rates/refresh"
+                    "{{pf-rates-url}}/exchange-rates/refresh"
                   ]
                 },
                 "description": "",
@@ -182,13 +182,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/economic-indices?code=UF",
+                  "raw": "{{pf-rates-url}}/economic-indices?code=UF",
                   "host": [
-                    "{{pf_rates_base_url}}/economic-indices"
+                    "{{pf-rates-url}}/economic-indices"
                   ],
                   "query": [
                     {
@@ -208,13 +208,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/economic-indices/value?code=UF&year=2026&month=1",
+                  "raw": "{{pf-rates-url}}/economic-indices/value?code=UF&year=2026&month=1",
                   "host": [
-                    "{{pf_rates_base_url}}/economic-indices/value"
+                    "{{pf-rates-url}}/economic-indices/value"
                   ],
                   "query": [
                     {
@@ -242,7 +242,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -250,9 +250,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/economic-indices/refresh",
+                  "raw": "{{pf-rates-url}}/economic-indices/refresh",
                   "host": [
-                    "{{pf_rates_base_url}}/economic-indices/refresh"
+                    "{{pf-rates-url}}/economic-indices/refresh"
                   ]
                 },
                 "description": "",
@@ -275,7 +275,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -283,9 +283,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/economic-indices/refresh",
+                  "raw": "{{pf-rates-url}}/economic-indices/refresh",
                   "host": [
-                    "{{pf_rates_base_url}}/economic-indices/refresh"
+                    "{{pf-rates-url}}/economic-indices/refresh"
                   ]
                 },
                 "description": "",
@@ -314,13 +314,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/income-tax-brackets?reference_date=2026-01-15&taxable_base_utm=10.5",
+                  "raw": "{{pf-rates-url}}/income-tax-brackets?reference_date=2026-01-15&taxable_base_utm=10.5",
                   "host": [
-                    "{{pf_rates_base_url}}/income-tax-brackets"
+                    "{{pf-rates-url}}/income-tax-brackets"
                   ],
                   "query": [
                     {
@@ -344,13 +344,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/income-tax-brackets/list?year=2026",
+                  "raw": "{{pf-rates-url}}/income-tax-brackets/list?year=2026",
                   "host": [
-                    "{{pf_rates_base_url}}/income-tax-brackets/list"
+                    "{{pf-rates-url}}/income-tax-brackets/list"
                   ],
                   "query": [
                     {
@@ -370,7 +370,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -378,9 +378,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/income-tax-brackets/refresh",
+                  "raw": "{{pf-rates-url}}/income-tax-brackets/refresh",
                   "host": [
-                    "{{pf_rates_base_url}}/income-tax-brackets/refresh"
+                    "{{pf-rates-url}}/income-tax-brackets/refresh"
                   ]
                 },
                 "description": "",
@@ -406,7 +406,7 @@
             "header": [
               {
                 "key": "X-Api-Key",
-                "value": "{{pf_rates_api_key}}"
+                "value": "{{pf-rates-api-key}}"
               },
               {
                 "key": "Content-Type",
@@ -414,9 +414,9 @@
               }
             ],
             "url": {
-              "raw": "{{pf_rates_base_url}}/sync",
+              "raw": "{{pf-rates-url}}/sync",
               "host": [
-                "{{pf_rates_base_url}}/sync"
+                "{{pf-rates-url}}/sync"
               ]
             },
             "description": "",
@@ -442,13 +442,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exports/financial-data",
+                  "raw": "{{pf-rates-url}}/exports/financial-data",
                   "host": [
-                    "{{pf_rates_base_url}}/exports/financial-data"
+                    "{{pf-rates-url}}/exports/financial-data"
                   ]
                 },
                 "description": ""
@@ -462,7 +462,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -470,9 +470,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exports/financial-data",
+                  "raw": "{{pf-rates-url}}/exports/financial-data",
                   "host": [
-                    "{{pf_rates_base_url}}/exports/financial-data"
+                    "{{pf-rates-url}}/exports/financial-data"
                   ]
                 },
                 "description": "",
@@ -495,13 +495,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exports/jobs?status=failed&limit=20",
+                  "raw": "{{pf-rates-url}}/exports/jobs?status=failed&limit=20",
                   "host": [
-                    "{{pf_rates_base_url}}/exports/jobs"
+                    "{{pf-rates-url}}/exports/jobs"
                   ],
                   "query": [
                     {
@@ -525,13 +525,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exports/jobs/{{export_job_id}}",
+                  "raw": "{{pf-rates-url}}/exports/jobs/{{export_job_id}}",
                   "host": [
-                    "{{pf_rates_base_url}}/exports/jobs/{{export_job_id}}"
+                    "{{pf-rates-url}}/exports/jobs/{{export_job_id}}"
                   ]
                 },
                 "description": ""
@@ -545,13 +545,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exports/jobs/{{export_job_id}}/stop",
+                  "raw": "{{pf-rates-url}}/exports/jobs/{{export_job_id}}/stop",
                   "host": [
-                    "{{pf_rates_base_url}}/exports/jobs/{{export_job_id}}/stop"
+                    "{{pf-rates-url}}/exports/jobs/{{export_job_id}}/stop"
                   ]
                 },
                 "description": ""
@@ -565,13 +565,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_rates_api_key}}"
+                    "value": "{{pf-rates-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_rates_base_url}}/exports/jobs/stop",
+                  "raw": "{{pf-rates-url}}/exports/jobs/stop",
                   "host": [
-                    "{{pf_rates_base_url}}/exports/jobs/stop"
+                    "{{pf-rates-url}}/exports/jobs/stop"
                   ]
                 },
                 "description": ""
@@ -593,9 +593,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{pf_payroll_base_url}}/health",
+              "raw": "{{pf-payroll-url}}/health",
               "host": [
-                "{{pf_payroll_base_url}}/health"
+                "{{pf-payroll-url}}/health"
               ]
             },
             "description": "No auth required."
@@ -612,13 +612,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/import",
+                  "raw": "{{pf-payroll-url}}/payroll/import",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/import"
+                    "{{pf-payroll-url}}/payroll/import"
                   ]
                 },
                 "description": "",
@@ -642,13 +642,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/import/pdf-preview",
+                  "raw": "{{pf-payroll-url}}/payroll/import/pdf-preview",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/import/pdf-preview"
+                    "{{pf-payroll-url}}/payroll/import/pdf-preview"
                   ]
                 },
                 "description": "Read-only, never persists. See docs/payroll-workflow.md.",
@@ -672,7 +672,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -680,9 +680,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/import/rows",
+                  "raw": "{{pf-payroll-url}}/payroll/import/rows",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/import/rows"
+                    "{{pf-payroll-url}}/payroll/import/rows"
                   ]
                 },
                 "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null. Resend with mode=commit once resolved.",
@@ -711,13 +711,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/period-range",
+                  "raw": "{{pf-payroll-url}}/payroll/period-range",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/period-range"
+                    "{{pf-payroll-url}}/payroll/period-range"
                   ]
                 },
                 "description": ""
@@ -731,13 +731,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/summary",
+                  "raw": "{{pf-payroll-url}}/payroll/summary",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/summary"
+                    "{{pf-payroll-url}}/payroll/summary"
                   ]
                 },
                 "description": ""
@@ -751,13 +751,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}",
+                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/{{period_id}}"
+                    "{{pf-payroll-url}}/payroll/{{period_id}}"
                   ]
                 },
                 "description": ""
@@ -771,7 +771,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -779,9 +779,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/assign-plans",
+                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/assign-plans",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/assign-plans"
+                    "{{pf-payroll-url}}/payroll/{{period_id}}/assign-plans"
                   ]
                 },
                 "description": "",
@@ -804,7 +804,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -812,9 +812,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/compute-contributions",
+                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/compute-contributions",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/compute-contributions"
+                    "{{pf-payroll-url}}/payroll/{{period_id}}/compute-contributions"
                   ]
                 },
                 "description": "",
@@ -837,13 +837,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/compute-tax",
+                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/compute-tax",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/compute-tax"
+                    "{{pf-payroll-url}}/payroll/{{period_id}}/compute-tax"
                   ]
                 },
                 "description": ""
@@ -857,13 +857,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/review",
+                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/review",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/review"
+                    "{{pf-payroll-url}}/payroll/{{period_id}}/review"
                   ]
                 },
                 "description": ""
@@ -877,13 +877,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/report.pdf",
+                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/report.pdf",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/report.pdf"
+                    "{{pf-payroll-url}}/payroll/{{period_id}}/report.pdf"
                   ]
                 },
                 "description": ""
@@ -897,7 +897,7 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   },
                   {
                     "key": "Content-Type",
@@ -905,9 +905,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/payroll/{{period_id}}/deflate",
+                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/deflate",
                   "host": [
-                    "{{pf_payroll_base_url}}/payroll/{{period_id}}/deflate"
+                    "{{pf-payroll-url}}/payroll/{{period_id}}/deflate"
                   ]
                 },
                 "description": "",
@@ -936,13 +936,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/reference-data/pension-institutions",
+                  "raw": "{{pf-payroll-url}}/reference-data/pension-institutions",
                   "host": [
-                    "{{pf_payroll_base_url}}/reference-data/pension-institutions"
+                    "{{pf-payroll-url}}/reference-data/pension-institutions"
                   ]
                 },
                 "description": ""
@@ -956,13 +956,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/reference-data/health-institutions",
+                  "raw": "{{pf-payroll-url}}/reference-data/health-institutions",
                   "host": [
-                    "{{pf_payroll_base_url}}/reference-data/health-institutions"
+                    "{{pf-payroll-url}}/reference-data/health-institutions"
                   ]
                 },
                 "description": ""
@@ -976,13 +976,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/reference-data/pension-plans",
+                  "raw": "{{pf-payroll-url}}/reference-data/pension-plans",
                   "host": [
-                    "{{pf_payroll_base_url}}/reference-data/pension-plans"
+                    "{{pf-payroll-url}}/reference-data/pension-plans"
                   ]
                 },
                 "description": ""
@@ -996,13 +996,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/reference-data/health-plans",
+                  "raw": "{{pf-payroll-url}}/reference-data/health-plans",
                   "host": [
-                    "{{pf_payroll_base_url}}/reference-data/health-plans"
+                    "{{pf-payroll-url}}/reference-data/health-plans"
                   ]
                 },
                 "description": ""
@@ -1016,13 +1016,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/reference-data/contribution-caps",
+                  "raw": "{{pf-payroll-url}}/reference-data/contribution-caps",
                   "host": [
-                    "{{pf_payroll_base_url}}/reference-data/contribution-caps"
+                    "{{pf-payroll-url}}/reference-data/contribution-caps"
                   ]
                 },
                 "description": ""
@@ -1036,13 +1036,13 @@
                 "header": [
                   {
                     "key": "X-Api-Key",
-                    "value": "{{pf_payroll_api_key}}"
+                    "value": "{{pf-payroll-api-key}}"
                   }
                 ],
                 "url": {
-                  "raw": "{{pf_payroll_base_url}}/reference-data/payroll-concepts",
+                  "raw": "{{pf-payroll-url}}/reference-data/payroll-concepts",
                   "host": [
-                    "{{pf_payroll_base_url}}/reference-data/payroll-concepts"
+                    "{{pf-payroll-url}}/reference-data/payroll-concepts"
                   ]
                 },
                 "description": ""
@@ -1128,22 +1128,22 @@
   ],
   "variable": [
     {
-      "key": "pf_rates_base_url",
+      "key": "pf-rates-url",
       "value": "http://localhost:8001",
       "type": "string"
     },
     {
-      "key": "pf_rates_api_key",
+      "key": "pf-rates-api-key",
       "value": "",
       "type": "string"
     },
     {
-      "key": "pf_payroll_base_url",
+      "key": "pf-payroll-url",
       "value": "http://localhost:8000",
       "type": "string"
     },
     {
-      "key": "pf_payroll_api_key",
+      "key": "pf-payroll-api-key",
       "value": "",
       "type": "string"
     },

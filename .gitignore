@@ -23,8 +23,8 @@ venv/
 __pycache__/
 *.pyc
 
-# Postman: real environments hold live API keys -- only the .example.json
-# template (placeholder values) is meant to be committed. Copy it locally
-# and fill in real keys, never rename/commit the copy.
-/postman/*.postman_environment.json
-!/postman/*.postman_environment.example.json
+# Postman: pf-ecosystem.postman_environment.*.json files ARE committed, but
+# their api-key values are always empty placeholders -- real values only
+# ever exist in GitHub Secrets, injected at sync time by
+# .github/workflows/sync-postman.yml. Never hand-edit a real key into one
+# of those files and commit it.
