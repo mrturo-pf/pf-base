@@ -114,6 +114,15 @@ jobs:
             exit 1
           fi
 
+          # Refuse to sync with a blank api-key -- a missing secret must
+          # fail loudly, never silently overwrite a real key already set in
+          # Postman with an empty string (this happened once, see git log).
+          if [ -z "${RATES_API_KEY}" ] || [ -z "${PAYROLL_API_KEY}" ]; then
+            echo "::error::${{ matrix.rates_key_secret }} and/or ${{ matrix.payroll_key_secret }} secrets are not set or empty." \
+                 "Refusing to push -- this would overwrite the real keys already in Postman with blanks." >&2
+            exit 1
+          fi
+
           # Inject by variable key name, never by blind text substitution --
           # the committed template's api-key values are just empty strings,
           # no placeholder marker syntax to keep in sync.
