@@ -27,10 +27,13 @@ into it first; committing from root only ever touches ecosystem-level docs.
 explicit user command.** This applies everywhere: the root repo and every subproject
 repo, no exceptions.
 
-**Post-push monitoring:** after pushing, monitor the pipeline in GitHub Actions. It will
-eventually reach a manual approval stage — never autonomously approve; requires explicit
-user command. If other runs for that same service are already pending approval, cancel
-the older ones so only the current run remains.
+**Post-push monitoring:** after pushing, monitor the pipeline in GitHub Actions
+(`gh run watch` or the Actions tab). It will eventually reach a manual approval stage —
+never autonomously approve; requires explicit user command. Deploy pipelines queue
+rather than auto-cancel superseded runs (`cancel-in-progress: false`, deliberate — see
+`pf-common/.github/workflows/deploy-reusable.yml`), so check `gh run list` for older
+runs of the same workflow already stuck at that stage and cancel them with
+`gh run cancel <run-id>` so only the current run remains pending.
 
 ## Rules common to the 3 services/schema repo
 
