@@ -33,10 +33,17 @@ never autonomously approve; requires explicit user command. Deploy pipelines que
 rather than auto-cancel superseded runs (`cancel-in-progress: false`, deliberate — see
 `pf-common/.github/workflows/deploy-reusable.yml`), so check for older runs of the same
 workflow already stuck at that stage and cancel them with `gh run cancel <run-id>` so
-only the current run remains pending. Always filter explicitly by status with a wide
-limit (`gh run list --repo <org>/<repo> --limit 20 | grep waiting`) instead of trusting
-a shallow default-limit list — a stale `waiting` run can be buried under newer
-completed/cancelled ones and get missed.
+only the current run remains pending. Filter by the actual status field, not free-text
+matching — a commit message containing the word "waiting" causes false positives with
+plain `grep`: use
+`gh run list --repo <org>/<repo> --limit 20 --json databaseId,status,displayTitle --jq
+'.[] | select(.status=="waiting")'` instead.
+
+**Network resilience:** if `gh`/GitHub is unreachable while monitoring (VPN/proxy
+hiccups happen), retry a couple of times with a short wait, then stop — never loop
+indefinitely, and never assume a push/cancel/approval-check succeeded just because an
+earlier command in the same sequence did. Report the blocker to the user explicitly and
+wait for them to fix connectivity or ask for a retry.
 
 ## Rules common to the 3 services/schema repo
 
