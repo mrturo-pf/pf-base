@@ -45,6 +45,23 @@ indefinitely, and never assume a push/cancel/approval-check succeeded just becau
 earlier command in the same sequence did. Report the blocker to the user explicitly and
 wait for them to fix connectivity or ask for a retry.
 
+One specific, confirmed-working fix for this class of hiccup: `gh` failing with
+`tls: failed to verify certificate: x509: certificate signed by unknown authority`
+while `git push`/`git fetch`/`curl` over HTTPS work fine at the same moment is **not**
+a corporate proxy issue — confirmed via `openssl s_client -connect api.github.com:443`
+that GitHub's certificate itself (Sectigo) is genuine and valid; no interception is
+happening. The real cause (confirmed 2026-09-26, in a Code Puppy session): the
+Corporative-specific Code Puppy plugin sets `SSL_CERT_FILE` (and `_SSL_CERT_FILE`) to a
+custom `corporative-bundle.pem`, and `gh` (a Go binary) honors that override, replacing
+— not appending to — its trust store with a bundle that doesn't include GitHub's
+current Sectigo root/intermediate. `curl` on macOS ignores that env var (it uses
+Secure Transport/the Keychain instead), which is why `curl`/`git` kept working while
+`gh` alone failed. Fix: `unset SSL_CERT_FILE _SSL_CERT_FILE` before running `gh`
+commands (does not affect `curl`/`git`, which don't read that var on macOS). Neither
+the user's own proxy-unset script nor `brew upgrade gh` fixes this — don't waste time
+on those first; check `env | grep -i ssl_cert` before anything else next time this
+error shows up.
+
 ## Documentation and the Postman collection must track reality
 
 Two classes of file exist purely to describe the ecosystem's real HTTP surface to
