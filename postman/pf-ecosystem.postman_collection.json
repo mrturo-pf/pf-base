@@ -621,7 +621,7 @@
                     "{{pf-payroll-url}}/payroll/import"
                   ]
                 },
-                "description": "",
+                "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-payroll/docs/api.md).",
                 "body": {
                   "mode": "formdata",
                   "formdata": [
@@ -629,6 +629,12 @@
                       "key": "file",
                       "type": "file",
                       "src": []
+                    },
+                    {
+                      "key": "mode",
+                      "type": "text",
+                      "value": "commit",
+                      "description": "\"commit\" (default) or \"validate\"."
                     }
                   ]
                 }
