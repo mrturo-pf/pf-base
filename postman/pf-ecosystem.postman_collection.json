@@ -673,12 +673,79 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "Import JSON (from last Preview)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "// Chains off 'Preview a PDF payslip': wraps whatever that request's",
+                      "// Tests script stashed into last_pdf_preview_response into a valid",
+                      "// { mode, periods } body -- run the preview request at least once first.",
+                      "const rawPreview = pm.collectionVariables.get('last_pdf_preview_response');",
+                      "if (!rawPreview) {",
+                      "    throw new Error(\"No stashed preview found -- run 'Preview a PDF payslip' first (its Tests script saves the response into 'last_pdf_preview_response').\");",
+                      "}",
+                      "const periods = JSON.parse(rawPreview);",
+                      "pm.request.body.raw = JSON.stringify({ mode: 'validate', periods: periods }, null, 2);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/import/json",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/import/json"
+                  ]
+                },
+                "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted periods without retyping anything. Always sends mode=validate; edit the Pre-request Script's literal 'validate' to 'commit' if you actually want to persist.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": []\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
             }
           ],
           "description": ""
         },
         {
           "name": "Preview a PDF payslip",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Stash the raw preview array so 'Import JSON (from last Preview)' can",
+                  "// wrap it into a { mode, periods } body without any copy/pasting.",
+                  "if (pm.response.code === 200) {",
+                  "    pm.collectionVariables.set('last_pdf_preview_response', pm.response.text());",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -1152,6 +1219,12 @@
       "key": "pf-payroll-api-key",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "last_pdf_preview_response",
+      "value": "",
+      "type": "string",
+      "description": "Auto-populated by 'Preview a PDF payslip's Tests script; consumed by 'Import JSON (from last Preview)'s Pre-request Script. Never edit by hand."
     },
     {
       "key": "pf_sheets_webapp_url",

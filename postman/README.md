@@ -125,3 +125,30 @@ Just edit the JSON by hand, or ask code-puppy to add it (e.g. "add a POST to
 grouped in a top-level folder per service (`pf-rates`, `pf-payroll`, `pf-sheets`),
 matching each service's `docs/api.md`, so this collection never drifts further from
 reality than those docs do.
+
+## Chained requests (pf-payroll: preview → import)
+
+`pf-payroll`'s `Preview a PDF payslip` and `Import/Import JSON (from last Preview)`
+requests are wired together with Postman scripts so you never have to copy/paste a
+preview response by hand:
+
+1. Run **Preview a PDF payslip** with one or more PDFs attached under the `files`
+   form-data key. Its **Tests** script stashes the raw response array into the
+   collection variable `last_pdf_preview_response`.
+2. Run **Import JSON (from last Preview)**. Its **Pre-request Script** reads that
+   variable, wraps it as `{ "mode": "validate", "periods": [...] }`, and overwrites the
+   request's raw JSON body with it before sending -- no manual editing needed.
+
+`last_pdf_preview_response` is declared (empty) as a top-level collection variable
+purely so it shows up in the Postman UI's variable list; never edit it by hand, and
+never commit a real value into it (it's request/response scratch space, not config).
+The always-`mode: "validate"` in the Pre-request Script is deliberate -- edit that
+literal to `"commit"` directly in the script if you actually want to persist the
+chained import.
+
+If you add more chained pairs like this in the future, follow the same shape: a
+`Tests` script on the producer request writing one collection variable, a
+`Pre-request Script` on the consumer request reading it and mutating
+`pm.request.body.raw` -- keep the two requests next to each other in the JSON and name
+the consumer `"<Thing> (from last <Producer>)"` so the relationship is obvious just
+from the sidebar.
