@@ -121,7 +121,7 @@ follows the same empty-in-git / injected-at-sync-time pattern as every other api
 ## Adding a request
 
 Just edit the JSON by hand, or ask code-puppy to add it (e.g. "add a POST to
-/payroll/import/rows under the pf-payroll folder, with this example body"). Keep requests
+/payroll/import/json under the pf-payroll folder, with this example body"). Keep requests
 grouped in a top-level folder per service (`pf-rates`, `pf-payroll`, `pf-sheets`),
 matching each service's `docs/api.md`, so this collection never drifts further from
 reality than those docs do.

@@ -616,9 +616,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/import",
+                  "raw": "{{pf-payroll-url}}/payroll/import/spreadsheet",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/import"
+                    "{{pf-payroll-url}}/payroll/import/spreadsheet"
                   ]
                 },
                 "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-payroll/docs/api.md).",
@@ -642,36 +642,6 @@
               "response": []
             },
             {
-              "name": "Preview a PDF payslip",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/import/pdf-preview",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/import/pdf-preview"
-                  ]
-                },
-                "description": "Read-only, never persists. See docs/payroll-workflow.md.",
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "src": []
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
               "name": "Confirm rows (mode=validate)",
               "request": {
                 "method": "POST",
@@ -686,9 +656,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/import/rows",
+                  "raw": "{{pf-payroll-url}}/payroll/import/json",
                   "host": [
-                    "{{pf-payroll-url}}/payroll/import/rows"
+                    "{{pf-payroll-url}}/payroll/import/json"
                   ]
                 },
                 "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null. Resend with mode=commit once resolved.",
@@ -706,6 +676,36 @@
             }
           ],
           "description": ""
+        },
+        {
+          "name": "Preview a PDF payslip",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{pf-payroll-api-key}}"
+              }
+            ],
+            "url": {
+              "raw": "{{pf-payroll-url}}/payroll/pdf-preview",
+              "host": [
+                "{{pf-payroll-url}}/payroll/pdf-preview"
+              ]
+            },
+            "description": "Read-only, never persists -- deliberately not under /payroll/import/*, since (unlike the two requests in the Import folder) this one never imports anything, it just converts a PDF payslip into a JSON preview. See docs/payroll-workflow.md.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Payroll periods",
