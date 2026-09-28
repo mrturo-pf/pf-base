@@ -46,7 +46,7 @@ jobs:
   sync-collection:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Validate collection is well-formed JSON
         run: jq empty postman/pf-ecosystem.postman_collection.json
@@ -116,7 +116,7 @@ jobs:
             rates_key_secret: PF_RATES_API_KEY_GCP
             payroll_key_secret: PF_PAYROLL_API_KEY_GCP
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Validate ${{ matrix.name }} environment is well-formed JSON
         run: jq empty "${{ matrix.file }}"
