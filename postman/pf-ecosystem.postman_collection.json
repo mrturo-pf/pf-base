@@ -603,138 +603,6 @@
           "response": []
         },
         {
-          "name": "Import",
-          "item": [
-            {
-              "name": "Import Spreadsheet (mode=validate)",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/import/spreadsheet",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/import/spreadsheet"
-                  ]
-                },
-                "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-payroll/docs/api.md).",
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "src": []
-                    },
-                    {
-                      "key": "mode",
-                      "type": "text",
-                      "value": "validate",
-                      "description": "\"commit\" (default) or \"validate\"."
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Import JSON (mode=validate)",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/import/json",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/import/json"
-                  ]
-                },
-                "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null (identified by period_index + row_index). periods must have at least one element, and no two elements may share the same (employer, period_year, period_month). Resend with mode=commit once resolved.",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": [\n    {\n      \"employer\": \"ACME\",\n      \"period_year\": 2026,\n      \"period_month\": 1,\n      \"payment_date\": \"2026-01-31\",\n      \"employment_contract_kind\": \"indefinite\",\n      \"rows\": [\n        {\n          \"concept_code\": \"SALARY_BASE\",\n          \"amount_clp\": \"1000000\"\n        }\n      ]\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Import JSON (from last Preview)",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "// Chains off 'Preview a PDF payslip': wraps whatever that request's",
-                      "// Tests script stashed into last_pdf_preview_response into a valid",
-                      "// { mode, periods } body -- run the preview request at least once first.",
-                      "const rawPreview = pm.collectionVariables.get('last_pdf_preview_response');",
-                      "if (!rawPreview) {",
-                      "    throw new Error(\"No stashed preview found -- run 'Preview a PDF payslip' first (its Tests script saves the response into 'last_pdf_preview_response').\");",
-                      "}",
-                      "const periods = JSON.parse(rawPreview);",
-                      "// mode comes from the 'import_json_mode' collection variable so you can",
-                      "// flip commit/validate from the Postman variable list -- no script",
-                      "// editing needed. Defaults to 'validate' if unset/blank, on purpose: a",
-                      "// chained import must never silently persist real payroll data.",
-                      "const mode = pm.collectionVariables.get('import_json_mode') || 'validate';",
-                      "pm.request.body.raw = JSON.stringify({ mode: mode, periods: periods }, null, 2);"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/import/json",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/import/json"
-                  ]
-                },
-                "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted periods without retyping anything. Sends whatever mode is set in the 'import_json_mode' collection variable, defaulting to 'validate' when that variable is empty/unset -- set 'import_json_mode' to 'commit' in the collection's variable list when you actually want to persist; no script editing needed.",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": []\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "response": []
-            }
-          ],
-          "description": ""
-        },
-        {
           "name": "Preview a PDF payslip",
           "event": [
             {
@@ -782,6 +650,138 @@
         {
           "name": "Payroll periods",
           "item": [
+            {
+              "name": "Import",
+              "item": [
+                {
+                  "name": "Import Spreadsheet (mode=validate)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/import/spreadsheet",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/import/spreadsheet"
+                      ]
+                    },
+                    "description": "mode form field defaults to \"commit\" when omitted -- send mode=validate to preview reconciliation conflicts for the whole file without persisting anything (see pf-payroll/docs/api.md).",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "file",
+                          "type": "file",
+                          "src": []
+                        },
+                        {
+                          "key": "mode",
+                          "type": "text",
+                          "value": "validate",
+                          "description": "\"commit\" (default) or \"validate\"."
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Import JSON (mode=validate)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/import/json",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/import/json"
+                      ]
+                    },
+                    "description": "validate runs the real pipeline then rolls back; unresolved_rows in the response lists rows with concept_code=null (identified by period_index + row_index). periods must have at least one element, and no two elements may share the same (employer, period_year, period_month). Resend with mode=commit once resolved.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": [\n    {\n      \"employer\": \"ACME\",\n      \"period_year\": 2026,\n      \"period_month\": 1,\n      \"payment_date\": \"2026-01-31\",\n      \"employment_contract_kind\": \"indefinite\",\n      \"rows\": [\n        {\n          \"concept_code\": \"SALARY_BASE\",\n          \"amount_clp\": \"1000000\"\n        }\n      ]\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Import JSON (from last Preview)",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// Chains off 'Preview a PDF payslip': wraps whatever that request's",
+                          "// Tests script stashed into last_pdf_preview_response into a valid",
+                          "// { mode, periods } body -- run the preview request at least once first.",
+                          "const rawPreview = pm.collectionVariables.get('last_pdf_preview_response');",
+                          "if (!rawPreview) {",
+                          "    throw new Error(\"No stashed preview found -- run 'Preview a PDF payslip' first (its Tests script saves the response into 'last_pdf_preview_response').\");",
+                          "}",
+                          "const periods = JSON.parse(rawPreview);",
+                          "// mode comes from the 'import_json_mode' collection variable so you can",
+                          "// flip commit/validate from the Postman variable list -- no script",
+                          "// editing needed. Defaults to 'validate' if unset/blank, on purpose: a",
+                          "// chained import must never silently persist real payroll data.",
+                          "const mode = pm.collectionVariables.get('import_json_mode') || 'validate';",
+                          "pm.request.body.raw = JSON.stringify({ mode: mode, periods: periods }, null, 2);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/import/json",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/import/json"
+                      ]
+                    },
+                    "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted periods without retyping anything. Sends whatever mode is set in the 'import_json_mode' collection variable, defaulting to 'validate' when that variable is empty/unset -- set 'import_json_mode' to 'commit' in the collection's variable list when you actually want to persist; no script editing needed.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": []\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "description": ""
+            },
             {
               "name": "Period range (current + 12 prev/next)",
               "request": {
@@ -843,110 +843,148 @@
               "response": []
             },
             {
-              "name": "Assign plans",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/assign-plans",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/{{period_id}}/assign-plans"
-                  ]
-                },
-                "description": "",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"pension_plan_id\": 1,\n  \"health_plan_id\": 1\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+              "name": "Period operations",
+              "item": [
+                {
+                  "name": "Assign plans",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/assign-plans",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/{{period_id}}/assign-plans"
+                      ]
+                    },
+                    "description": "",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"pension_plan_id\": 1,\n  \"health_plan_id\": 1\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
                     }
-                  }
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Compute contributions",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
                   },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/compute-contributions",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/{{period_id}}/compute-contributions"
-                  ]
+                  "response": []
                 },
-                "description": "",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"pension_plan_id\": 1,\n  \"health_plan_id\": 1\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+                {
+                  "name": "Compute contributions",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/compute-contributions",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/{{period_id}}/compute-contributions"
+                      ]
+                    },
+                    "description": "",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"pension_plan_id\": 1,\n  \"health_plan_id\": 1\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
                     }
-                  }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Compute income tax",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/compute-tax",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/{{period_id}}/compute-tax"
+                      ]
+                    },
+                    "description": ""
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Review period",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/review",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/{{period_id}}/review"
+                      ]
+                    },
+                    "description": ""
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Deflate to real CLP",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/deflate",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/{{period_id}}/deflate"
+                      ]
+                    },
+                    "description": "",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"target_year\": 2026,\n  \"target_month\": 3,\n  \"index_code\": \"IPC_CL\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": []
                 }
-              },
-              "response": []
-            },
-            {
-              "name": "Compute income tax",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/compute-tax",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/{{period_id}}/compute-tax"
-                  ]
-                },
-                "description": ""
-              },
-              "response": []
-            },
-            {
-              "name": "Review period",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/review",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/{{period_id}}/review"
-                  ]
-                },
-                "description": ""
-              },
-              "response": []
+              ]
             },
             {
               "name": "Generate PDF report",
@@ -965,39 +1003,6 @@
                   ]
                 },
                 "description": ""
-              },
-              "response": []
-            },
-            {
-              "name": "Deflate to real CLP",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  },
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/deflate",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/{{period_id}}/deflate"
-                  ]
-                },
-                "description": "",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"target_year\": 2026,\n  \"target_month\": 3,\n  \"index_code\": \"IPC_CL\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
               },
               "response": []
             }

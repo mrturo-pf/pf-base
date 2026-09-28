@@ -128,9 +128,9 @@ reality than those docs do.
 
 ## Chained requests (pf-payroll: preview → import)
 
-`pf-payroll`'s `Preview a PDF payslip` and `Import/Import JSON (from last Preview)`
-requests are wired together with Postman scripts so you never have to copy/paste a
-preview response by hand:
+`pf-payroll`'s `Preview a PDF payslip` and `Payroll periods/Import/Import JSON (from
+last Preview)` requests are wired together with Postman scripts so you never have to
+copy/paste a preview response by hand:
 
 1. Run **Preview a PDF payslip** with one or more PDFs attached under the `files`
    form-data key. Its **Tests** script stashes the raw response array into the
