@@ -690,7 +690,12 @@
                       "    throw new Error(\"No stashed preview found -- run 'Preview a PDF payslip' first (its Tests script saves the response into 'last_pdf_preview_response').\");",
                       "}",
                       "const periods = JSON.parse(rawPreview);",
-                      "pm.request.body.raw = JSON.stringify({ mode: 'validate', periods: periods }, null, 2);"
+                      "// mode comes from the 'import_json_mode' collection variable so you can",
+                      "// flip commit/validate from the Postman variable list -- no script",
+                      "// editing needed. Defaults to 'validate' if unset/blank, on purpose: a",
+                      "// chained import must never silently persist real payroll data.",
+                      "const mode = pm.collectionVariables.get('import_json_mode') || 'validate';",
+                      "pm.request.body.raw = JSON.stringify({ mode: mode, periods: periods }, null, 2);"
                     ]
                   }
                 }
@@ -713,7 +718,7 @@
                     "{{pf-payroll-url}}/payroll/import/json"
                   ]
                 },
-                "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted periods without retyping anything. Always sends mode=validate; edit the Pre-request Script's literal 'validate' to 'commit' if you actually want to persist.",
+                "description": "Same endpoint as 'Import JSON (mode=validate)', but the body is built entirely from the last 'Preview a PDF payslip' response by this request's Pre-request Script -- run that request first (with one or more PDFs attached), then run this one to validate the extracted periods without retyping anything. Sends whatever mode is set in the 'import_json_mode' collection variable, defaulting to 'validate' when that variable is empty/unset -- set 'import_json_mode' to 'commit' in the collection's variable list when you actually want to persist; no script editing needed.",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"mode\": \"validate\",\n  \"periods\": []\n}",
@@ -1225,6 +1230,12 @@
       "value": "",
       "type": "string",
       "description": "Auto-populated by 'Preview a PDF payslip's Tests script; consumed by 'Import JSON (from last Preview)'s Pre-request Script. Never edit by hand."
+    },
+    {
+      "key": "import_json_mode",
+      "value": "validate",
+      "type": "string",
+      "description": "Consumed by 'Import JSON (from last Preview)'s Pre-request Script to pick the request's mode -- set to 'commit' here (in the variable list, not the script) when you actually want the chained import to persist. Defaults to 'validate' for safety; leave it that way unless you mean it."
     },
     {
       "key": "pf_sheets_webapp_url",

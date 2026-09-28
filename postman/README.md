@@ -136,15 +136,19 @@ preview response by hand:
    form-data key. Its **Tests** script stashes the raw response array into the
    collection variable `last_pdf_preview_response`.
 2. Run **Import JSON (from last Preview)**. Its **Pre-request Script** reads that
-   variable, wraps it as `{ "mode": "validate", "periods": [...] }`, and overwrites the
+   variable, wraps it as `{ "mode": <import_json_mode>, "periods": [...] }`, and overwrites the
    request's raw JSON body with it before sending -- no manual editing needed.
 
 `last_pdf_preview_response` is declared (empty) as a top-level collection variable
 purely so it shows up in the Postman UI's variable list; never edit it by hand, and
 never commit a real value into it (it's request/response scratch space, not config).
-The always-`mode: "validate"` in the Pre-request Script is deliberate -- edit that
-literal to `"commit"` directly in the script if you actually want to persist the
-chained import.
+
+The request's `mode` comes from a second collection variable, `import_json_mode`,
+committed with the value `"validate"`. To persist a chained import, set
+`import_json_mode` to `"commit"` in the collection's variable list (Postman UI, or the
+request-level/environment override) -- no script editing required. The default stays
+`"validate"` on purpose: a chained import must never silently persist real payroll data
+just because someone forgot to flip a variable back after testing a commit.
 
 If you add more chained pairs like this in the future, follow the same shape: a
 `Tests` script on the producer request writing one collection variable, a
