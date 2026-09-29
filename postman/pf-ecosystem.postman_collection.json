@@ -603,53 +603,59 @@
           "response": []
         },
         {
-          "name": "Preview a PDF payslip",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "// Stash the raw preview array so 'Import JSON (from last Preview)' can",
-                  "// wrap it into a { mode, periods } body without any copy/pasting.",
-                  "if (pm.response.code === 200) {",
-                  "    pm.collectionVariables.set('last_pdf_preview_response', pm.response.text());",
-                  "}"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Api-Key",
-                "value": "{{pf-payroll-api-key}}"
-              }
-            ],
-            "url": {
-              "raw": "{{pf-payroll-url}}/payroll/pdf-preview",
-              "host": [
-                "{{pf-payroll-url}}/payroll/pdf-preview"
-              ]
-            },
-            "description": "Read-only, never persists -- deliberately not under /payroll/import/*, since (unlike the two requests in the Import folder) this one never imports anything, it just converts one or more PDF payslips into a JSON array of previews (one per file, in upload order). Add more 'files' form-data rows with the same key to preview a batch of distinct liquidaciones in one request. See docs/payroll-workflow.md.",
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "files",
-                  "type": "file",
-                  "src": []
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Payroll periods",
           "item": [
+            {
+              "name": "PDF preview",
+              "item": [
+                {
+                  "name": "Preview a PDF payslip",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "// Stash the raw preview array so 'Import JSON (from last Preview)' can",
+                          "// wrap it into a { mode, periods } body without any copy/pasting.",
+                          "if (pm.response.code === 200) {",
+                          "    pm.collectionVariables.set('last_pdf_preview_response', pm.response.text());",
+                          "}"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/pdf-preview",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/pdf-preview"
+                      ]
+                    },
+                    "description": "Read-only, never persists -- deliberately not under /payroll/import/*, since (unlike the two requests in the Import folder) this one never imports anything, it just converts one or more PDF payslips into a JSON array of previews (one per file, in upload order). Add more 'files' form-data rows with the same key to preview a batch of distinct liquidaciones in one request. See docs/payroll-workflow.md.",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "files",
+                          "type": "file",
+                          "src": []
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "description": ""
+            },
             {
               "name": "Import",
               "item": [
