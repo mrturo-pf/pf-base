@@ -985,26 +985,6 @@
                   "response": []
                 }
               ]
-            },
-            {
-              "name": "Generate PDF report",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}/report.pdf",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/{{period_id}}/report.pdf"
-                  ]
-                },
-                "description": ""
-              },
-              "response": []
             }
           ],
           "description": ""
