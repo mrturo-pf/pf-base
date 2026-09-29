@@ -783,64 +783,70 @@
               "description": ""
             },
             {
-              "name": "Period range (current + 12 prev/next)",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/period-range",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/period-range"
-                  ]
+              "name": "Queries",
+              "item": [
+                {
+                  "name": "Period range (current + 12 prev/next)",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/period-range",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/period-range"
+                      ]
+                    },
+                    "description": ""
+                  },
+                  "response": []
                 },
-                "description": ""
-              },
-              "response": []
-            },
-            {
-              "name": "Period summaries",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/summary",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/summary"
-                  ]
+                {
+                  "name": "Period summaries",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/summary",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/summary"
+                      ]
+                    },
+                    "description": ""
+                  },
+                  "response": []
                 },
-                "description": ""
-              },
-              "response": []
-            },
-            {
-              "name": "Get one period",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "X-Api-Key",
-                    "value": "{{pf-payroll-api-key}}"
-                  }
-                ],
-                "url": {
-                  "raw": "{{pf-payroll-url}}/payroll/{{period_id}}",
-                  "host": [
-                    "{{pf-payroll-url}}/payroll/{{period_id}}"
-                  ]
-                },
-                "description": ""
-              },
-              "response": []
+                {
+                  "name": "Get one period",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/{{period_id}}",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/{{period_id}}"
+                      ]
+                    },
+                    "description": ""
+                  },
+                  "response": []
+                }
+              ],
+              "description": ""
             },
             {
               "name": "Period operations",
