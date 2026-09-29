@@ -795,6 +795,81 @@
               "description": ""
             },
             {
+              "name": "Export",
+              "item": [
+                {
+                  "name": "Download blank template (format=csv)",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/spreadsheet/template?format=csv",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/spreadsheet/template"
+                      ],
+                      "query": [
+                        {
+                          "key": "format",
+                          "value": "csv",
+                          "description": "\"csv\" (default) or \"xlsx\"."
+                        }
+                      ]
+                    },
+                    "description": "Blank, header-only spreadsheet shell (zero data rows) with the exact wide-format column headers POST /payroll/import/spreadsheet expects -- never reads the database. Fill it in by hand, then send it to Import Spreadsheet above."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Export spreadsheet (format=csv)",
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/spreadsheet?format=csv",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/spreadsheet"
+                      ],
+                      "query": [
+                        {
+                          "key": "format",
+                          "value": "csv",
+                          "description": "\"csv\" (default) or \"xlsx\"."
+                        },
+                        {
+                          "key": "employer",
+                          "value": "",
+                          "disabled": true
+                        },
+                        {
+                          "key": "period_year",
+                          "value": "",
+                          "disabled": true
+                        },
+                        {
+                          "key": "period_month",
+                          "value": "",
+                          "disabled": true
+                        }
+                      ]
+                    },
+                    "description": "Bulk-exports every persisted period matching the (optional, disabled by default) employer/period_year/period_month filters -- omitting all three exports every persisted period. Includes two extra computed-only columns (income_tax, unemployment_insurance) that Import Spreadsheet silently ignores on re-import, so exporting and re-importing this exact file back through 'Import Spreadsheet (mode=validate)' is safe and idempotent for every other column."
+                  },
+                  "response": []
+                }
+              ],
+              "description": ""
+            },
+            {
               "name": "Queries",
               "item": [
                 {
