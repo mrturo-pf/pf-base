@@ -400,37 +400,43 @@
           "description": ""
         },
         {
-          "name": "Sync recent market data",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "X-Api-Key",
-                "value": "{{pf-rates-api-key}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{pf-rates-url}}/sync",
-              "host": [
-                "{{pf-rates-url}}/sync"
-              ]
-            },
-            "description": "",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"lookback_days\": 365,\n  \"forward_days\": 35\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
+          "name": "Sync",
+          "item": [
+            {
+              "name": "Sync recent market data",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-rates-url}}/sync",
+                  "host": [
+                    "{{pf-rates-url}}/sync"
+                  ]
+                },
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lookback_days\": 365,\n  \"forward_days\": 35\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 }
-              }
+              },
+              "response": []
             }
-          },
-          "response": []
+          ],
+          "description": ""
         },
         {
           "name": "Exports",
