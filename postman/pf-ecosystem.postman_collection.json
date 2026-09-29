@@ -603,10 +603,10 @@
           "response": []
         },
         {
-          "name": "Payroll periods",
+          "name": "Periods",
           "item": [
             {
-              "name": "PDF preview",
+              "name": "Preview",
               "item": [
                 {
                   "name": "Preview a PDF payslip",

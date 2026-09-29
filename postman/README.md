@@ -128,7 +128,7 @@ reality than those docs do.
 
 ## Chained requests (pf-payroll: preview → import)
 
-`Payroll periods/PDF preview/Preview a PDF payslip` and `Payroll periods/Import/Import
+`Periods/Preview/Preview a PDF payslip` and `Periods/Import/Import
 JSON (from last Preview)` requests are wired together with Postman scripts so you
 never have to copy/paste a preview response by hand:
 
