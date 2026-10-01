@@ -1083,6 +1083,145 @@
           "description": ""
         },
         {
+          "name": "Templates",
+          "item": [
+            {
+              "name": "Create a template",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/templates",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/templates"
+                  ]
+                },
+                "description": "employer_id is an optional, admin-only FK into PAY_EMPLOYER -- matching against a real PDF only ever uses employer_match_pattern. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Returns 201. A duplicate template_id, or a field referencing an unknown concept_code, is a 400 (see pf-payroll/docs/api.md).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"template_id\": \"acme-chile-v1\",\n  \"employer_name\": \"ACME-CHILE\",\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 1,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"kind\": \"income\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List templates",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/templates?include_inactive=false",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/templates"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_inactive",
+                      "value": "false",
+                      "description": "Set true to also list logically-deleted (is_active=false) templates."
+                    }
+                  ]
+                },
+                "description": "Active-only by default."
+              },
+              "response": []
+            },
+            {
+              "name": "Get one template",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/templates/walmart-chile-v1",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/templates/walmart-chile-v1"
+                  ]
+                },
+                "description": "Found regardless of is_active status -- a direct lookup by template_id always finds it. 404 if it never existed."
+              },
+              "response": []
+            },
+            {
+              "name": "Update a template",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/templates/acme-chile-v1",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/templates/acme-chile-v1"
+                  ]
+                },
+                "description": "Mutates the existing row in place -- does not create a new template_id/version (bump version in the body yourself if desired). Same body shape/validation as Create, minus template_id (taken from the path). 404 if it doesn't exist; 400 on the same constraint violations as Create.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employer_name\": \"ACME-CHILE\",\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 2,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO\\\\s*BASE$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"kind\": \"income\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Deactivate a template",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/templates/acme-chile-v1",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/templates/acme-chile-v1"
+                  ]
+                },
+                "description": "Logical delete only -- sets is_active=false, never a row DELETE. A subsequent POST /payroll/pdf-preview no longer matches it, but Get one template still finds it. 404 if it doesn't exist."
+              },
+              "response": []
+            }
+          ],
+          "description": "Manages the versioned templates POST /payroll/pdf-preview matches PDFs against. Persisted in pf-db's PAY_PDF_TEMPLATE/PAY_PDF_TEMPLATE_FIELD tables, not a git-tracked file -- see pf-payroll/docs/proposals/pdf-template-management-design-recommendation.md."
+        },
+        {
           "name": "Reference data",
           "item": [
             {
