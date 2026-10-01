@@ -1105,10 +1105,10 @@
                     "{{pf-payroll-url}}/payroll/templates"
                   ]
                 },
-                "description": "employer_id is an optional, admin-only FK into PAY_EMPLOYER -- matching against a real PDF only ever uses employer_match_pattern. Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Returns 201. A duplicate template_id, or a field referencing an unknown concept_code, is a 400 (see pf-payroll/docs/api.md).",
+                "description": "employer_id is an optional, admin-only FK into PAY_EMPLOYER -- matching against a real PDF only ever uses employer_match_pattern. employer_name is optional too, but at least one of employer_name/employer_id is required (a 422 otherwise) -- omit employer_name when employer_id is given and PAY_EMPLOYER.name should be used as the display name (resolved fresh on every read, never duplicated into the row). Every regex (employer_match_pattern and each field's pdf_label_pattern) is compile-checked before reaching the database -- an invalid one is a 422. Fields have no kind -- the server always resolves it from PAY_CONCEPT via concept_code (an unknown concept_code is a 400, not a silent guess). Returns 201. A duplicate template_id is also a 400 (see pf-payroll/docs/api.md).",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"template_id\": \"acme-chile-v1\",\n  \"employer_name\": \"ACME-CHILE\",\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 1,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"kind\": \"income\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
+                  "raw": "{\n  \"template_id\": \"acme-chile-v1\",\n  \"employer_name\": \"ACME-CHILE\",\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 1,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1188,7 +1188,7 @@
                 "description": "Mutates the existing row in place -- does not create a new template_id/version (bump version in the body yourself if desired). Same body shape/validation as Create, minus template_id (taken from the path). 404 if it doesn't exist; 400 on the same constraint violations as Create.",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"employer_name\": \"ACME-CHILE\",\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 2,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO\\\\s*BASE$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"kind\": \"income\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
+                  "raw": "{\n  \"employer_name\": \"ACME-CHILE\",\n  \"employer_match_pattern\": \"(?i)acme-chile\",\n  \"version\": 2,\n  \"fields\": [\n    {\n      \"pdf_label_pattern\": \"(?i)^SUELDO\\\\s*BASE$\",\n      \"concept_code\": \"SALARY_BASE\",\n      \"confidence\": 0.9\n    }\n  ]\n}",
                   "options": {
                     "raw": {
                       "language": "json"
