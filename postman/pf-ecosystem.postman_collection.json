@@ -886,6 +886,20 @@
                       "raw": "{{pf-payroll-url}}/payroll/period-range",
                       "host": [
                         "{{pf-payroll-url}}/payroll/period-range"
+                      ],
+                      "query": [
+                        {
+                          "key": "previous_months",
+                          "value": "",
+                          "disabled": true,
+                          "description": "Any non-negative integer. Defaults to 12 (padded with inferred placeholders if history is shorter). Passing this explicitly -- even as 12 -- disables that padding; only periods genuinely in the database are returned."
+                        },
+                        {
+                          "key": "future_months",
+                          "value": "",
+                          "disabled": true,
+                          "description": "Non-negative, capped at 12 (422 above that). Defaults to 12."
+                        }
                       ]
                     },
                     "description": ""
