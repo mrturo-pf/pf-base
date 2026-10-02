@@ -902,7 +902,7 @@
                         }
                       ]
                     },
-                    "description": "Unifies the former separate Period range / Period summaries endpoints -- each item now also carries period_id, employer_id, gross_income_clp, taxable_income_clp, and total_discounts_clp (all null for synthetic/inferred/future entries with no real backing row)."
+                    "description": "Unifies the former separate Period range / Period summaries endpoints -- each item now also carries period_id, a nested employer object ({id, name}, null as a whole for synthetic entries), gross_income_clp, taxable_income_clp, and total_discounts_clp (all null for synthetic/inferred/future entries with no real backing row)."
                   },
                   "response": []
                 },
