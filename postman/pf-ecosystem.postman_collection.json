@@ -873,7 +873,7 @@
               "name": "Queries",
               "item": [
                 {
-                  "name": "Period range (current + 12 prev/next)",
+                  "name": "List payroll periods (current + 12 prev/next)",
                   "request": {
                     "method": "GET",
                     "header": [
@@ -883,9 +883,9 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/period-range",
+                      "raw": "{{pf-payroll-url}}/payroll",
                       "host": [
-                        "{{pf-payroll-url}}/payroll/period-range"
+                        "{{pf-payroll-url}}/payroll"
                       ],
                       "query": [
                         {
@@ -902,27 +902,7 @@
                         }
                       ]
                     },
-                    "description": ""
-                  },
-                  "response": []
-                },
-                {
-                  "name": "Period summaries",
-                  "request": {
-                    "method": "GET",
-                    "header": [
-                      {
-                        "key": "X-Api-Key",
-                        "value": "{{pf-payroll-api-key}}"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{pf-payroll-url}}/payroll/summary",
-                      "host": [
-                        "{{pf-payroll-url}}/payroll/summary"
-                      ]
-                    },
-                    "description": ""
+                    "description": "Unifies the former separate Period range / Period summaries endpoints -- each item now also carries period_id, employer_id, gross_income_clp, taxable_income_clp, and total_discounts_clp (all null for synthetic/inferred/future entries with no real backing row)."
                   },
                   "response": []
                 },
@@ -942,7 +922,7 @@
                         "{{pf-payroll-url}}/payroll/{{period_id}}"
                       ]
                     },
-                    "description": ""
+                    "description": "Same unified shape as one item of 'List payroll periods' above, filtered to this period_id. Unlike that endpoint, not bound by any previous_months/future_months window -- works for any historical period_id. 404 if not found."
                   },
                   "response": []
                 }
