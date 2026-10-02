@@ -902,7 +902,7 @@
                         }
                       ]
                     },
-                    "description": "Unifies the former separate Period range / Period summaries endpoints -- each item now also carries period_id, a nested employer object ({id, name}, null as a whole for synthetic entries), gross_income_clp, taxable_income_clp, and total_discounts_clp (all null for synthetic/inferred/future entries with no real backing row)."
+                    "description": "Unifies the former separate Period range / Period summaries endpoints -- each item nests its temporal identity under 'period' ({year, month, date_range: {start, end}, timeframe: previous|current|future}) and its financial figures under 'amount' (gross_income_clp, taxable_income_clp, total_discounts_clp, net_pay_clp, net_pay_uf, net_pay_usd, net_pay_eur, increase, net_pay_clp_today); only a top-level 'id' and a nested employer object ({id, name}, null as a whole for synthetic entries) live outside those two buckets."
                   },
                   "response": []
                 },
@@ -922,7 +922,7 @@
                         "{{pf-payroll-url}}/payroll/{{period_id}}"
                       ]
                     },
-                    "description": "Same unified shape as one item of 'List payroll periods' above, filtered to this period_id. Unlike that endpoint, not bound by any previous_months/future_months window -- works for any historical period_id. 404 if not found."
+                    "description": "Same unified nested shape (id/employer/period/amount) as one item of 'List payroll periods' above, filtered to this period_id. Unlike that endpoint, not bound by any previous_months/future_months window -- works for any historical period_id. 404 if not found."
                   },
                   "response": []
                 }
