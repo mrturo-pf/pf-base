@@ -939,7 +939,7 @@
               "name": "Queries",
               "item": [
                 {
-                  "name": "List payroll periods (current + 12 prev/next)",
+                  "name": "List multiple payroll periods",
                   "request": {
                     "method": "GET",
                     "header": [
@@ -973,7 +973,7 @@
                   "response": []
                 },
                 {
-                  "name": "Get one period",
+                  "name": "Get one payroll period",
                   "request": {
                     "method": "GET",
                     "header": [
