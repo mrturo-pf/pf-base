@@ -74,6 +74,39 @@
               "response": []
             },
             {
+              "name": "Batch exchange rate values",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pairs\": [\n    {\n      \"currency_code\": \"USD\",\n      \"rate_date\": \"2026-01-15\"\n    },\n    {\n      \"currency_code\": \"EUR\",\n      \"rate_date\": \"2026-01-15\"\n    },\n    {\n      \"currency_code\": \"UF\",\n      \"rate_date\": \"2026-02-15\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{pf-rates-url}}/exchange-rates/values",
+                  "host": [
+                    "{{pf-rates-url}}/exchange-rates/values"
+                  ]
+                },
+                "description": "Batch lookup; each result preserves its input pair and may return null when the value is unavailable. Maximum 500 pairs."
+              },
+              "response": []
+            },
+            {
               "name": "Get exchange rate value",
               "request": {
                 "method": "GET",
@@ -232,6 +265,39 @@
                   ]
                 },
                 "description": ""
+              },
+              "response": []
+            },
+            {
+              "name": "Batch economic index values",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-rates-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pairs\": [\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 1\n    },\n    {\n      \"code\": \"IPC_CL\",\n      \"period_year\": 2026,\n      \"period_month\": 2\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{pf-rates-url}}/economic-indices/values",
+                  "host": [
+                    "{{pf-rates-url}}/economic-indices/values"
+                  ]
+                },
+                "description": "Batch lookup; each result preserves its input pair and may return null when the value is unavailable. Maximum 500 pairs."
               },
               "response": []
             },
