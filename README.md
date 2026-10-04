@@ -14,7 +14,7 @@ income tax brackets).
 | --- | --- | --- |
 | [`pf-db`](modules/pf-db/README.md) | Single source of truth for the PostgreSQL schema (DDL + Alembic migrations + seeds). No application code. | [README](modules/pf-db/README.md) · [AGENTS](modules/pf-db/AGENTS.md) |
 | [`pf-rates`](modules/pf-rates/README.md) | FastAPI microservice for financial reference data: exchange rates (USD/EUR), indices (UF/UTM/CPI), income tax brackets. | [README](modules/pf-rates/README.md) · [AGENTS](modules/pf-rates/AGENTS.md) |
-| [`pf-payroll`](modules/pf-payroll/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, dashboard and CLI. | [README](modules/pf-payroll/README.md) · [AGENTS](modules/pf-payroll/AGENTS.md) |
+| [`pf-payroll`](modules/pf-payroll/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, and dashboard. | [README](modules/pf-payroll/README.md) · [AGENTS](modules/pf-payroll/AGENTS.md) |
 | [`pf-common`](modules/pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-rates` and `pf-payroll`. **Not** used by `pf-db`. | [README](modules/pf-common/README.md) |
 | [`pf-sheets`](modules/pf-sheets/README.md) | Google Apps Script (bound to a Sheet) that syncs `pf-rates` exchange rates into a spreadsheet. Versioned in Git, deployed via `clasp`. | [README](modules/pf-sheets/README.md) · [AGENTS](modules/pf-sheets/AGENTS.md) |
 
