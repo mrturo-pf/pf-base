@@ -118,7 +118,43 @@ variables instead of a third environment. `pf_sheets_webapp_url` is committed wi
 real value (an Apps Script deployment URL isn't a secret by itself); `pf_sheets_api_key`
 follows the same empty-in-git / injected-at-sync-time pattern as every other api-key.
 
-## Adding a request
+## Request selection policy
+
+The committed Postman collection is an **operational contract catalog**, not a
+negative-test or regression-test suite. Every request should represent a real
+operation that a user or integration may intentionally perform.
+
+Include:
+
+- supported happy-path operations;
+- supported modes that are useful in normal workflows, such as
+  `mode="validate"` when validation-before-commit is an actual product
+  capability;
+- chained operational workflows, such as PDF preview followed by JSON import;
+- CRUD operations for real resources;
+- documented request/response examples using variables or clearly synthetic
+  values where the operation is still intended to be executed.
+
+Do not add requests whose primary purpose is to demonstrate failure or prove a
+regression, including:
+
+- natural-key conflicts;
+- `404`, `409`, or `422` demonstrations;
+- rollback-only scenarios;
+- invalid or unresolved payloads;
+- duplicate requests that differ only by a validation/error expectation;
+- fake IDs or incomplete bodies that cannot represent an intentional operation.
+
+Those cases belong in automated unit/integration tests and in the service's
+API documentation when they define the public error contract. A request may
+mention expected error statuses in its description when that information helps
+explain the real operation, but the collection should not contain a standalone
+request solely to trigger that error.
+
+Before adding a request, ask: **would a real consumer intentionally send this
+request to perform a supported operation, or is it only a test fixture?** If it
+is only a fixture, keep it in tests instead.
+
 
 Just edit the JSON by hand, or ask code-puppy to add it (e.g. "add a POST to
 /payroll/import/json under the pf-payroll folder, with this example body"). Keep requests

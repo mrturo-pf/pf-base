@@ -27,7 +27,9 @@ The workflow applies to changes touching one or more of `pf-base`, `pf-db`,
    separate JavaScript/Apps Script system, not as a Python service.
 6. **The public contract is synchronized in the same change.** HTTP changes
    require route/OpenAPI verification, service `docs/api.md` updates, and the
-   root Postman collection update when applicable.
+   root Postman collection update when applicable. For Postman request selection,
+   operational examples, and negative-test boundaries, follow
+   [`postman/README.md`](../postman/README.md).
 7. **Synthetic data only.** Investigations and tests must not introduce real
    payslips, RUTs, salaries, health information, or credentials into git.
 8. **No autonomous release authority.** Commit, push, deployment approval, and
