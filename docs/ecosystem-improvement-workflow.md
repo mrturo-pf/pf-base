@@ -275,9 +275,6 @@ During implementation:
 - record discoveries and corrections with dates;
 - update the recommendation only if a design decision changes, and link to the
   plan entry explaining why;
-- follow the owning repository's `AGENTS.md`/`README.md` for architecture,
-  language, file-size, CLI, financial-precision, duplication, and security
-  rules; do not copy those rules into this workflow;
 - reuse existing pipelines rather than duplicating domain calculations;
 - add tests before declaring a new branch complete;
 - use synthetic fixtures and stub external services.
@@ -301,6 +298,10 @@ Record in the plan:
 - any tests intentionally not run and why;
 - generated OpenAPI/API/Postman comparison results;
 - deployment run IDs and final conclusions.
+
+Follow the owning repository's `AGENTS.md` for the mandatory pre-push active-run
+cleanup, explicit push authorization, manual approval rules, and post-push
+monitoring sequence.
 
 Only after explicit user authorization:
 

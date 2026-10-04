@@ -52,16 +52,28 @@ source "$HOME/Documents/scripts/unset_proxies.sh"
 Only then execute the `gh` command. This prerequisite applies to every repository in
 this ecosystem.
 
-(`gh run watch` or the Actions tab). It will eventually reach a manual approval stage —
-never autonomously approve; requires explicit user command. Deploy pipelines queue
-rather than auto-cancel superseded runs (`cancel-in-progress: false`, deliberate — see
-`pf-common/.github/workflows/deploy-reusable.yml`), so check for older runs of the same
-workflow already stuck at that stage and cancel them with `gh run cancel <run-id>` so
-only the current run remains pending. Filter by the actual status field, not free-text
-matching — a commit message containing the word "waiting" causes false positives with
-plain `grep`: use
-`gh run list --repo <org>/<repo> --limit 20 --json databaseId,status,displayTitle --jq
-'.[] | select(.status=="waiting")'` instead.
+Before pushing, inspect the target repository's active workflows and cancel older
+superseded runs for the same workflow, branch, and repository. This prevents a new
+push from waiting behind an obsolete pipeline. Use the actual status field and
+cancel only active runs (`queued`, `pending`, `in_progress`, or `waiting`) that are
+older than the push being prepared; never cancel completed runs or runs from another
+branch/workflow. For each cancellation, verify that GitHub accepted it before
+pushing. The canonical sequence is:
+
+```bash
+source "$HOME/Documents/scripts/unset_proxies.sh"
+unset SSL_CERT_FILE _SSL_CERT_FILE
+gh workflow list --repo <org>/<repo>
+gh run list --repo <org>/<repo> --workflow <workflow> --branch <branch> --limit 20 \
+  --json databaseId,status,headSha,createdAt \
+  --jq '.[] | select(.status=="queued" or .status=="pending" or .status=="in_progress" or .status=="waiting")'
+gh run cancel <run-id> --repo <org>/<repo>
+```
+
+After the push, monitor the new run by its exact SHA/run ID with `gh run watch`.
+Manual deployment approval still requires explicit user authorization. Filter by
+the actual status field, not free-text matching — a commit message containing the
+word "waiting" causes false positives.
 
 **Network resilience:** if `gh`/GitHub is unreachable while monitoring (VPN/proxy
 hiccups happen), retry a couple of times with a short wait, then stop — never loop
