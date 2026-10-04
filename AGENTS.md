@@ -27,7 +27,10 @@ into it first; committing from root only ever touches ecosystem-level docs.
 explicit user command.** This applies everywhere: the root repo and every subproject
 repo, no exceptions.
 
-**GitHub CLI prerequisite:** before any interaction with GitHub using `gh`, including
+**CLI policy:** do not implement, add, restore, or expand any command-line interface
+or CLI command in this ecosystem. Use the supported HTTP APIs and existing automation
+instead. Any exception requires explicit user approval first.
+
 read-only commands, execute the proxy-unset script first:
 
 ```bash
