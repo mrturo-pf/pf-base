@@ -994,6 +994,86 @@
                 }
               ],
               "description": ""
+            },
+            {
+              "name": "Validate update (synthetic ID)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/import/json",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/import/json"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"mode\": \"validate\", \"periods\": [{\"period_id\": 481, \"employer\": \"Synthetic Employer\", \"period_year\": 2026, \"period_month\": 8, \"payment_date\": \"2026-08-31\", \"worked_days\": 30, \"declared_net_pay_clp\": \"1000000\", \"rows\": []}]}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Delete one period",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/481",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/481"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Delete periods (atomic batch)",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"period_ids\": [481, 482]}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
             }
           ],
           "description": ""
