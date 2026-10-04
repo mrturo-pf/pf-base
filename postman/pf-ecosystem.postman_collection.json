@@ -856,6 +856,38 @@
                     }
                   },
                   "response": []
+                },
+                {
+                  "name": "Import JSON (natural-key conflict)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Api-Key",
+                        "value": "{{pf-payroll-api-key}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\"mode\": \"commit\", \"periods\": [{\"employer\": \"Synthetic Employer\", \"period_year\": 2026, \"period_month\": 8, \"payment_date\": \"2026-08-31\", \"worked_days\": 30, \"declared_net_pay_clp\": \"1000000\", \"rows\": [{\"concept_code\": \"SALARY_BASE\", \"amount_clp\": \"1300000\"}]}]}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{pf-payroll-url}}/payroll/import/json",
+                      "host": [
+                        "{{pf-payroll-url}}/payroll/import/json"
+                      ]
+                    },
+                    "description": "Expected response: 409 when the natural key already exists. The response detail includes natural_key_conflicts with the persisted period_id. Omitting period_id is insert-only; use the explicit period_id update request to modify an existing period."
+                  }
                 }
               ],
               "description": ""
