@@ -27,7 +27,28 @@ into it first; committing from root only ever touches ecosystem-level docs.
 explicit user command.** This applies everywhere: the root repo and every subproject
 repo, no exceptions.
 
-**Post-push monitoring:** after pushing, monitor the pipeline in GitHub Actions
+**GitHub CLI prerequisite:** before any interaction with GitHub using `gh`, including
+read-only commands, execute the proxy-unset script first:
+
+```bash
+unset-proxies
+```
+
+`unset-proxies` is the alias defined in `~/.zshrc`:
+
+```bash
+alias unset-proxies="source $HOME/Documents/scripts/unset_proxies.sh"
+```
+
+If the current shell does not expand aliases, run the underlying command directly:
+
+```bash
+source "$HOME/Documents/scripts/unset_proxies.sh"
+```
+
+Only then execute the `gh` command. This prerequisite applies to every repository in
+this ecosystem.
+
 (`gh run watch` or the Actions tab). It will eventually reach a manual approval stage —
 never autonomously approve; requires explicit user command. Deploy pipelines queue
 rather than auto-cancel superseded runs (`cancel-in-progress: false`, deliberate — see
