@@ -15,7 +15,7 @@ touching code there.
 | [`pf-sheets`](modules/pf-sheets/AGENTS.md) | Google Apps Script bound to a Sheet (JavaScript, not Python — see its own `AGENTS.md`, it does not follow the Python rules below). Deployed via `clasp`. | Sheets/Drive integration |
 
 This root directory (`pf/`) **is its own git repo** (`pf-base`, remote on GitHub) — it
-tracks only ecosystem-level files: this `AGENTS.md`, `README.md`, `architecture/`,
+tracks only ecosystem-level files: this `AGENTS.md`, `README.md`, `docs/`, `architecture/`,
 and `.gitignore`. The five subprojects (`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`,
 `pf-sheets`) live under `modules/` and remain **independent git repos** with their own
 `.git`, remote, and history — root's
@@ -86,7 +86,10 @@ the user's own proxy-unset script nor `brew upgrade gh` fixes this — don't was
 on those first; check `env | grep -i ssl_cert` before anything else next time this
 error shows up.
 
-## Documentation and the Postman collection must track reality
+**Improvement workflow:** for any Level M or L change, follow
+[`docs/ecosystem-improvement-workflow.md`](docs/ecosystem-improvement-workflow.md)
+and register the work in [`docs/proposals/INDEX.md`](docs/proposals/INDEX.md).
+
 
 Two classes of file exist purely to describe the ecosystem's real HTTP surface to
 humans and tools outside the codebase. Both rot silently if not updated in the same

@@ -21,7 +21,7 @@ income tax brackets).
 ## Repository structure
 
 This root directory is itself a git repo (`pf-base`) that tracks only ecosystem-level
-files — this `README.md`, `AGENTS.md`, and `architecture/`. Each subproject folder
+files — this `README.md`, `AGENTS.md`, `docs/`, and `architecture/`. Each subproject folder
 (`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`, `pf-sheets`) lives under `modules/` and
 is a **separate, independent git repo**
 with its own remote and commit history; root's `.gitignore` excludes the whole
@@ -69,6 +69,13 @@ topology change instead of hand-edited:
 cd architecture
 ./generate.sh --open
 ```
+
+## Improvement workflow
+
+The formal process for ecosystem improvements, including investigations, briefs,
+recommendations, living plans, lifecycle statuses, and the central proposal index,
+is documented in [`docs/ecosystem-improvement-workflow.md`](docs/ecosystem-improvement-workflow.md).
+The active artifact index is [`docs/proposals/INDEX.md`](docs/proposals/INDEX.md).
 
 ## Postman collection
 
