@@ -1316,6 +1316,177 @@
             }
           ],
           "description": ""
+        },
+        {
+          "name": "Employer",
+          "item": [
+            {
+              "name": "List employers",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/employers",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/employers"
+                  ]
+                },
+                "description": "Lists employers by stable ID. Employer names are display/search attributes, not relationship keys."
+              }
+            },
+            {
+              "name": "Create or update employers",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/employers",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/employers"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employers\": [\n    {\n      \"name\": \"Synthetic Employer\",\n      \"tax_id\": \"synthetic-tax-id\",\n      \"country_code\": \"CL\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Atomic batch: omit id to create; include an existing id to update. Do not use this request as a negative-test fixture."
+              }
+            },
+            {
+              "name": "List contracts",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/contracts",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/contracts"
+                  ]
+                },
+                "description": "Lists employment contracts. Relationships use employer_id."
+              }
+            },
+            {
+              "name": "Create or update contracts",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/contracts",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/contracts"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contracts\": [\n    {\n      \"employer_id\": 1,\n      \"started_at\": \"2026-01-01\",\n      \"ended_at\": null,\n      \"is_indefinite\": true,\n      \"position\": \"Synthetic position\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Atomic batch: contracts require a persisted employer_id and started_at."
+              }
+            },
+            {
+              "name": "Delete employers",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ids\": [1]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/employers",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/employers"
+                  ]
+                },
+                "description": "Operational deletion by stable IDs. Use only with IDs whose dependency guards permit deletion."
+              }
+            },
+            {
+              "name": "Delete contracts",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Api-Key",
+                    "value": "{{pf-payroll-api-key}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ids\": [1]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{pf-payroll-url}}/payroll/contracts",
+                  "host": [
+                    "{{pf-payroll-url}}/payroll/contracts"
+                  ]
+                },
+                "description": "Operational deletion by stable IDs. Use only with IDs whose dependency guards permit deletion."
+              }
+            }
+          ]
         }
       ],
       "description": "See modules/pf-payroll/docs/api.md for the full reference."
