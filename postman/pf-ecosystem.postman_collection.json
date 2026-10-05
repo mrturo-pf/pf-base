@@ -1336,7 +1336,7 @@
                     "{{pf-payroll-url}}/payroll/employers"
                   ]
                 },
-                "description": "Lists employers by stable ID. Employer names are display/search attributes, not relationship keys."
+                "description": "Lists employers with nested contracts. Each nested contract contains id, started_at, ended_at, is_indefinite, position, and is_in_effect; the employer is not repeated."
               }
             },
             {
@@ -1387,7 +1387,7 @@
                     "{{pf-payroll-url}}/payroll/contracts"
                   ]
                 },
-                "description": "Lists employment contracts. Relationships use employer_id."
+                "description": "Lists contracts as { id, employer: { id, name }, started_at, ended_at, is_indefinite, position, is_in_effect }. is_in_effect reflects today's date within the contract interval."
               }
             },
             {
