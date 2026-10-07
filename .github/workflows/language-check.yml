@@ -27,4 +27,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Validate Markdown language
-        run: python3 scripts/check-language.py --all
+        run: |
+          python3 scripts/check-language.py --all --mode comments
+          python3 scripts/check-language.py --all --mode user-facing --report

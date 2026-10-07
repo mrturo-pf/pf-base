@@ -5,7 +5,8 @@
 # quotations are allowed by policy; do not use this file to exempt whole repos.
 
 [paths]
-# path = relative repository path, one exact path per line
+# path = relative repository path or shell-style wildcard pattern, one per line
+architecture/*.html
 
 [terms]
 # term = official term or domain vocabulary, one lowercase term per line
