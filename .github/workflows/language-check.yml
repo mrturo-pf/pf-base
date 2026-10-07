@@ -1,0 +1,30 @@
+name: CI / Documentation language
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.md"
+      - "**/*.mdx"
+      - "scripts/check-language.py"
+      - "scripts/language-policy.txt"
+      - ".github/workflows/language-check.yml"
+  pull_request:
+    paths:
+      - "**/*.md"
+      - "**/*.mdx"
+      - "scripts/check-language.py"
+      - "scripts/language-policy.txt"
+      - ".github/workflows/language-check.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  language:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate Markdown language
+        run: python3 scripts/check-language.py --all

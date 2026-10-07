@@ -99,6 +99,13 @@ Utility scripts that operate across the whole ecosystem live in [`scripts/`](scr
 separate from each subproject's own `scripts/` (e.g. `pf-common/scripts/`, which holds
 service-level tooling instead).
 
+Documentation language is validated by [`scripts/check-language.py`](scripts/check-language.py).
+Markdown prose must be in English; narrowly scoped official Chilean terms, SQL literals,
+seed data, and historical quotations configured in
+[`scripts/language-policy.txt`](scripts/language-policy.txt) are allowed. The validator
+runs in the root and every module's pre-commit hook and in a dedicated documentation
+workflow for each repository.
+
 | Script | Purpose |
 | --- | --- |
 | [`scripts/find-docs.sh`](scripts/find-docs.sh) | Recursively lists `*.md`, `*.txt`, and `*.sh` files, skipping noise dirs (`.venv`, `.git`, `node_modules`, etc.). Supports `-d DIR` to scope the search and `-i FILE1,FILE2` to exclude filenames. Run `./scripts/find-docs.sh --help` for details. |

@@ -16,5 +16,13 @@ else
   echo "Skipping word-check: $WORD_CHECK not found."
 fi
 
+echo "==> [pre-commit] language-check"
+if ! python3 scripts/check-language.py --staged; then
+  echo ""
+  echo "English-language documentation check failed."
+  echo "Use 'python3 scripts/check-language.py --staged --report' for details."
+  exit 1
+fi
+
 echo ""
 echo "pre-commit checks passed"

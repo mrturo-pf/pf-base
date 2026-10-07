@@ -1,0 +1,25 @@
+# Language policy for documentation validation.
+#
+# The required prose language is English. Add only narrow, justified exceptions.
+# Official Chilean regulatory terms, SQL literals, seed data, and historical
+# quotations are allowed by policy; do not use this file to exempt whole repos.
+
+[paths]
+# path = relative repository path, one exact path per line
+
+[terms]
+# term = official term or domain vocabulary, one lowercase term per line
+AFP
+BCCh
+FONASA
+Fonasa
+Isapre
+IPC
+RUT
+SII
+UF
+UTM
+honorarios
+liquidación
+liquidacion
+devengado
