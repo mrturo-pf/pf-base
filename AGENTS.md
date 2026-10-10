@@ -1,193 +1,176 @@
-# AGENTS.md — pf (ecosystem root)
+# AGENTS.md — PF ecosystem
 
-Index for AI agents working in this workspace. This file **does not go deep**: each
-subproject is its own git repo with its own authoritative `AGENTS.md`. Read that before
-touching code there.
+This file is the **ecosystem coordination guide** for the PF (Personal Finances)
+workspace. It defines repository boundaries, ownership, cross-repository workflows,
+shared safety rules, and integration contracts.
 
-## Structure
+It does **not** define detailed implementation rules for individual repositories.
+Before changing a subrepository, read that repository's own `AGENTS.md`. The local
+`AGENTS.md` is authoritative for implementation, testing, and repository-specific
+operations, provided it does not violate ecosystem-wide boundaries or safety rules.
 
-| Subproject | AGENTS.md | Role |
+## Purpose and document boundaries
+
+This root file answers: **How is the ecosystem organized, and how do repositories
+coordinate with one another?** It owns only rules that must be consistent across two
+or more repositories.
+
+A subrepository's `AGENTS.md` answers: **How do I implement, test, document, and
+operate this repository correctly?** It owns the repository's architecture, language
+and framework conventions, directory structure, local commands, test strategy,
+deployment details, and repository-specific invariants.
+
+Keep this boundary explicit:
+
+- Add a rule to the **root** only when it describes ownership, cross-repository
+  coordination, shared safety, or a contract consumed by multiple repositories.
+- Add a rule to a **subrepository** when it describes implementation, testing,
+  tooling, deployment, or operations specific to that repository.
+- Do not copy a local technical rule into the root for convenience. Link to the local
+  `AGENTS.md` instead.
+- Do not put ecosystem-wide ownership or compatibility rules only in a local file.
+  Document them here and link to the affected local instructions.
+- When a rule appears to apply to both levels, keep the root rule short and generic;
+  put the actionable details in the local repository's `AGENTS.md`.
+
+Before editing any `AGENTS.md`, classify the change as **ecosystem coordination** or
+**repository implementation guidance**. That classification determines the file to
+change and prevents the root from becoming a duplicate implementation manual.
+
+## Repository map
+
+| Repository | Responsibility | Local instructions |
 | --- | --- | --- |
-| [`pf-db`](modules/pf-db/AGENTS.md) | DDL + Alembic migrations. No application code, no autogenerate. | Schema owner |
-| [`pf-rates`](modules/pf-rates/AGENTS.md) | FastAPI microservice, hexagonal architecture. | Financial reference data |
-| [`pf-payroll`](modules/pf-payroll/AGENTS.md) | FastAPI microservice, hexagonal architecture. | Payroll/tax |
-| [`pf-common`](modules/pf-common/README.md) | No own AGENTS.md; just a README with shared Make targets. | Shared infra |
-| [`pf-sheets`](modules/pf-sheets/AGENTS.md) | Google Apps Script bound to a Sheet (JavaScript, not Python — see its own `AGENTS.md`, it does not follow the Python rules below). Deployed via `clasp`. | Sheets/Drive integration |
+| [`pf-db`](modules/pf-db) | PostgreSQL schema, DDL, seeds, and Alembic migrations | [`modules/pf-db/AGENTS.md`](modules/pf-db/AGENTS.md) |
+| [`pf-rates`](modules/pf-rates) | Financial reference data and HTTP API | [`modules/pf-rates/AGENTS.md`](modules/pf-rates/AGENTS.md) |
+| [`pf-payroll`](modules/pf-payroll) | Payroll, tax, and employer domain plus HTTP API | [`modules/pf-payroll/AGENTS.md`](modules/pf-payroll/AGENTS.md) |
+| [`pf-sheets`](modules/pf-sheets) | Google Apps Script, Sheets integration, and Web App | [`modules/pf-sheets/AGENTS.md`](modules/pf-sheets/AGENTS.md) |
+| `pf-common` | Shared infrastructure and Make targets; no local `AGENTS.md` | [`modules/pf-common/README.md`](modules/pf-common/README.md) |
 
-This root directory (`pf/`) **is its own git repo** (`pf-base`, remote on GitHub) — it
-tracks only ecosystem-level files: this `AGENTS.md`, `README.md`, `docs/`, `architecture/`,
-and `.gitignore`. The five subprojects (`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`,
-`pf-sheets`) live under `modules/` and remain **independent git repos** with their own
-`.git`, remote, and history — root's
-`.gitignore` deliberately excludes the whole `modules/` folder so `git status` here
-stays clean and never shows them as untracked. To commit/push inside a subproject, `cd`
-into it first; committing from root only ever touches ecosystem-level docs.
+The root repository (`pf-base`) contains ecosystem-level documentation, architecture
+descriptions, Postman assets, and coordination rules. Each directory under
+`modules/` is an independent Git repository with its own history, remote, and
+working tree. Run Git commands from the repository they affect.
 
-**Never autonomously commit, push branches, create issues, or open PRs — requires
-explicit user command.** This applies everywhere: the root repo and every subproject
-repo, no exceptions.
+## Ownership boundaries
 
-**CLI policy:** do not implement, add, restore, or expand any product-facing command-line interface or CLI command in this ecosystem. Existing development, deployment, and automation commands such as `make`, `clasp`, and repository scripts may still be used unless explicitly prohibited. Use the supported HTTP APIs and existing automation instead. Any exception requires explicit user approval first.
+| Responsibility | Owner | Consumers |
+| --- | --- | --- |
+| PostgreSQL schema, DDL, migrations, and schema seeds | `pf-db` | `pf-rates`, `pf-payroll` |
+| Financial reference-data domain and service behavior | `pf-rates` | `pf-payroll`, `pf-sheets` |
+| Payroll and tax domain and service behavior | `pf-payroll` | ecosystem clients |
+| Spreadsheet synchronization and Apps Script Web App | `pf-sheets` | Google Sheets and service clients |
+| Shared development/build infrastructure | `pf-common` | ecosystem repositories |
 
-read-only commands, execute the proxy-unset script first:
+Schema ownership and domain ownership are different responsibilities. `pf-db` owns
+how shared database objects are defined and migrated. A service owns the business
+data and behavior for its domain, including which service writes its tables.
+Services may read shared data according to the owning repository's documented schema
+and integration contracts. Only the service that owns a domain should write its domain
+tables; do not change another repository's implementation as a local workaround.
 
-```bash
-unset-proxies
-```
+## Cross-repository change protocol
 
-`unset-proxies` is the alias defined in `~/.zshrc`:
+Before changing code, identify every repository affected and read each affected
+repository's local `AGENTS.md`.
 
-```bash
-alias unset-proxies="source $HOME/Documents/scripts/unset_proxies.sh"
-```
+### Database and schema changes
 
-If the current shell does not expand aliases, run the underlying command directly:
+1. Define the required schema behavior and compatibility checks.
+2. Implement the DDL and migration in `pf-db`, which is the schema owner.
+3. Coordinate matching ORM/model and repository changes in consuming services.
+4. Apply and validate the migration before deploying consumers that require it.
+5. Update relevant database documentation and integration fixtures.
+
+Services must not edit ORM models for a schema change without a corresponding,
+reviewed migration in `pf-db`.
+
+### HTTP and integration contract changes
+
+1. Update the repository that owns the contract.
+2. Update that repository's `docs/api.md` in the same change.
+3. Update the shared Postman collection and environments when applicable.
+4. Update all known consumers and validate the complete workflow.
+
+The ecosystem's HTTP surface includes FastAPI endpoints from `pf-rates` and
+`pf-payroll`, and Google Apps Script Web App endpoints from `pf-sheets`. These are
+HTTP contracts, but they do not share the same runtime, framework, or deployment
+model.
+
+### Deployment and infrastructure changes
+
+Check dependency order and rollback behavior across repositories. Database migrations
+must be applied before a service receives traffic. Prefer the cheapest viable cloud
+architecture: scale-to-zero, on-demand jobs, free tooling, and no unnecessary
+provisioning. Any infrastructure proposal must state its cost impact and the cheaper
+alternatives considered.
+
+## Shared rules
+
+- Do not autonomously commit, push, create branches, open pull requests, or create
+  issues. These actions require an explicit user command.
+- Use SemVer and Conventional Commits in English.
+- Keep code, identifiers, comments, and documentation in English, except official
+  Chilean regulatory terms, source literals, and seed data when translation would
+  change their meaning.
+- Do not add or expand product-facing CLI commands without explicit user approval.
+  Existing development, deployment, and automation tools such as `make`, `clasp`, and
+  repository scripts may be used.
+- Never commit secrets, credentials, or sensitive personal/health data.
+- Do not introduce silent fallbacks or bypass an owning repository's boundary.
+- Preserve the financial-precision contract: Python monetary/rate values use
+  `Decimal`, and PostgreSQL monetary/rate columns use `NUMERIC`.
+- Behavioral changes must follow the applicable test policy in the local repository.
+  Cross-repository changes should begin with an observable contract or acceptance test
+  and must validate compatibility at the integration boundary.
+- Documentation-only, formatting-only, mechanical refactors, and generated files do
+  not require artificial tests, but applicable validation still has to run.
+
+## Documentation contracts
+
+These files describe public or cross-repository behavior and must stay synchronized
+with implementation:
+
+- `modules/pf-rates/docs/api.md`
+- `modules/pf-payroll/docs/api.md`
+- `modules/pf-sheets/docs/api.md`
+- `postman/pf-ecosystem.postman_collection.json`
+- `postman/pf-ecosystem.postman_environment.local.json`
+- `postman/pf-ecosystem.postman_environment.gcp.json`
+
+If an endpoint path, request/response shape, authentication rule, or error contract
+changes, update the owning repository's API documentation and the relevant Postman
+assets in the same change. When documentation and implementation disagree, verify the
+actual route definitions, `GET /openapi.json`, or `pf-sheets/src/interfaces/webapp.js`
+before deciding which one is stale.
+
+## GitHub and network operations
+
+Before any interaction with GitHub through `gh`, including read-only commands, run
+`unset-proxies` or its underlying script:
 
 ```bash
 source "$HOME/Documents/scripts/unset_proxies.sh"
 ```
 
-Only then execute the `gh` command. This prerequisite applies to every repository in
-this ecosystem.
+Before pushing, inspect the target repository's active workflow runs and cancel only
+older active runs for the same workflow, branch, and repository. Verify cancellation
+before pushing, then monitor the new run by its exact SHA or run ID. Manual deployment
+approval always requires explicit user authorization. If GitHub is unreachable, retry
+a couple of times and stop; never assume an operation succeeded.
 
-Before pushing, inspect the target repository's active workflows and cancel older
-superseded runs for the same workflow, branch, and repository. This prevents a new
-push from waiting behind an obsolete pipeline. Use the actual status field and
-cancel only active runs (`queued`, `pending`, `in_progress`, or `waiting`) that are
-older than the push being prepared; never cancel completed runs or runs from another
-branch/workflow. For each cancellation, verify that GitHub accepted it before
-pushing. The canonical sequence is:
+## Working in this workspace
 
-```bash
-source "$HOME/Documents/scripts/unset_proxies.sh"
-unset SSL_CERT_FILE _SSL_CERT_FILE
-gh workflow list --repo <org>/<repo>
-gh run list --repo <org>/<repo> --workflow <workflow> --branch <branch> --limit 20 \
-  --json databaseId,status,headSha,createdAt \
-  --jq '.[] | select(.status=="queued" or .status=="pending" or .status=="in_progress" or .status=="waiting")'
-gh run cancel <run-id> --repo <org>/<repo>
-```
+Use this sequence:
 
-After the push, monitor the new run by its exact SHA/run ID with `gh run watch`.
-Manual deployment approval still requires explicit user authorization. Filter by
-the actual status field, not free-text matching — a commit message containing the
-word "waiting" causes false positives.
+1. Identify the repository or repositories affected.
+2. Read the relevant local `AGENTS.md` files.
+3. Inspect the existing implementation, tests, and documentation.
+4. For cross-repository work, define the contract and ownership before editing.
+5. Make the smallest cohesive change in each affected repository.
+6. Run each repository's documented validation commands.
+7. Review each repository's diff and status independently.
+8. Commit only when explicitly requested; never push unless explicitly requested.
 
-**Network resilience:** if `gh`/GitHub is unreachable while monitoring (VPN/proxy
-hiccups happen), retry a couple of times with a short wait, then stop — never loop
-indefinitely, and never assume a push/cancel/approval-check succeeded just because an
-earlier command in the same sequence did. Report the blocker to the user explicitly and
-wait for them to fix connectivity or ask for a retry.
-
-One specific, confirmed-working fix for this class of hiccup: `gh` failing with
-`tls: failed to verify certificate: x509: certificate signed by unknown authority`
-while `git push`/`git fetch`/`curl` over HTTPS work fine at the same moment is **not**
-a corporate proxy issue — confirmed via `openssl s_client -connect api.github.com:443`
-that GitHub's certificate itself (Sectigo) is genuine and valid; no interception is
-happening. The real cause (confirmed 2026-09-26, in a Code Puppy session): the
-Corporative-specific Code Puppy plugin sets `SSL_CERT_FILE` (and `_SSL_CERT_FILE`) to a
-custom `corporative-bundle.pem`, and `gh` (a Go binary) honors that override, replacing
-— not appending to — its trust store with a bundle that doesn't include GitHub's
-current Sectigo root/intermediate. `curl` on macOS ignores that env var (it uses
-Secure Transport/the Keychain instead), which is why `curl`/`git` kept working while
-`gh` alone failed. Fix: `unset SSL_CERT_FILE _SSL_CERT_FILE` before running `gh`
-commands (does not affect `curl`/`git`, which don't read that var on macOS). Neither
-the user's own proxy-unset script nor `brew upgrade gh` fixes this — don't waste time
-on those first; check `env | grep -i ssl_cert` before anything else next time this
-error shows up.
-
-**Improvement workflow:** for any Level M or L change, follow
-[`docs/ecosystem-improvement-workflow.md`](docs/ecosystem-improvement-workflow.md)
-and register the work in [`docs/proposals/INDEX.md`](docs/proposals/INDEX.md).
-
-
-Two classes of file exist purely to describe the ecosystem's real HTTP surface to
-humans and tools outside the codebase. Here, **HTTP surface** includes FastAPI
-endpoints exposed by `pf-rates` and `pf-payroll`, plus the Google Apps Script Web App
-endpoints exposed by `pf-sheets`; it does not imply that all three use the same runtime
-or framework. Both rot silently if not updated in the same change that changes behavior
-— treat letting them drift as an incomplete change, not a follow-up:
-
-- **`modules/{pf-rates,pf-payroll,pf-sheets}/docs/api.md`** — each service's own
-  complete endpoint reference (pf-db has no HTTP API, so it has no `api.md`). Adding,
-  removing, or changing an endpoint (path, request/response shape, auth, error codes)
-  requires updating that module's `api.md` in the same change, not "later". This isn't
-  hypothetical: a 2026-09-25 documentation audit of `pf-payroll` found three endpoints
-  (`POST /payroll/import/pdf-preview`, `POST /payroll/import/rows`, and the
-  `template-test` CLI command) that had already shipped, been tested, and been used in
-  production for multiple sessions before ever being documented.
-- **`postman/pf-ecosystem.postman_collection.json`** and
-  **`postman/pf-ecosystem.postman_environment.{local,gcp}.json`** (this root repo,
-  `pf-base`) — a single Postman collection covering every HTTP surface in the
-  ecosystem (`pf-rates`, `pf-payroll`, `pf-sheets`'s Web App), kept in sync with a real
-  Postman workspace via `.github/workflows/sync-postman.yml`. Whenever a module's
-  `api.md` changes, mirror that change here too in the same session when reasonably
-  possible — a Postman request that doesn't match the real endpoint, or a stale base
-  URL/variable name, is worse than no request at all. See
-  [`postman/README.md`](postman/README.md) for the full sync mechanics, including why
-  every `*-api-key` value in those committed JSON files is always an empty string (real
-  values live only in GitHub Secrets, injected at sync time — never assume a non-empty
-  value belongs in git).
-- If ever unsure whether either is stale, check against the actual route
-  definitions/`GET /openapi.json` (services) or `src/interfaces/webapp.js` (pf-sheets)
-  before assuming either is correct.
-
-## Rules common to the 3 services/schema repo
-
-(Full detail in each one's `AGENTS.md` — this is just the summary so you don't waste
-time re-reading the same thing three times. **`pf-sheets` is out of scope for this
-section** — it's a JavaScript/Apps Script repo, not Python, and follows its own
-conventions documented in `pf-sheets/AGENTS.md` instead.)
-
-- **Language:** all code, identifiers, comments, and docstrings in English. Exception:
-  official Chilean regulatory terms/SQL literals/seed data, only when translating would
-  change the meaning.
-- **Financial precision:** `Decimal` in Python, `NUMERIC` in Postgres. Never `float`/`FLOAT`.
-- **Style:** ruff with `extend-select = ["D", "E", "W", "UP"]`, `pep257` convention.
-- **Architecture (pf-rates, pf-payroll):** hexagonal — `interfaces → application → domain`,
-  `infrastructure → application`. `domain/` has no I/O or external dependencies. Ports are
-  `typing.Protocol`. DTOs are the only thing crossing layer boundaries.
-- **Design:** DRY, SOLID, Clean Code, DDD. No god objects. `assert` is forbidden for
-  production validation — raise from `application/errors.py` instead. No silent fallbacks.
-- **pf-db specific:** idempotent migrations (`IF NOT EXISTS`, `ON CONFLICT`), always a real
-  `downgrade()`, hand-written SQL (no autogenerate).
-- **Git/versioning:** SemVer + Conventional Commits in English (commit/push policy above
-  applies here too).
-- **Cross-repo coordination:** schema changes are coordinated in `pf-db`; `pf-rates` and
-  `pf-payroll` never edit their ORM models without a corresponding migration in `pf-db`.
-- **Cloud cost optimization — always the priority:** any decision touching cloud
-  infrastructure (compute, storage, scanning, networking, managed services) must default
-  to the cheapest viable option before anything else. Scale-to-zero, free/cheaper
-  equivalents over paid add-ons, on-demand jobs over always-on services, no
-  over-provisioning "just in case". Existing examples already baked into pf-rates and
-  pf-payroll: `--min-instances=0`, Trivy (free) instead of paid Artifact Registry
-  scanning, external DB option to avoid Cloud SQL when not needed. Any new infra
-  proposal must state its cost impact and the cheaper alternatives considered.
-
-## Test-driven development
-
-Test-Driven Development (TDD) is the default development method for all behavioral code changes in this ecosystem.
-
-For new behavior, follow Red-Green-Refactor: write a failing test, implement the smallest change that makes it pass, then refactor while keeping the suite green.
-
-Use the following complementary variants according to the change:
-
-- **Outside-In TDD** for features crossing architectural boundaries: start with an observable acceptance or contract test, drive the implementation inward through use cases and ports, then add focused domain and adapter tests.
-- **Acceptance Test-Driven Development (ATDD)** for functional requirements, API contracts, workflows, and cross-repository behavior: define acceptance criteria and executable acceptance tests before implementation.
-- **Behavior-Driven Development (BDD)** when Given/When/Then scenarios improve communication of business behavior. BDD complements TDD and is not required for every unit test.
-- **Migration TDD** for database changes: validate upgrade, downgrade, idempotency, schema invariants, and consumer compatibility with executable checks.
-
-Tests must verify meaningful behavior, outputs, state transitions, errors, and observable contracts—not implementation details or coverage numbers alone. Preserve existing unit, integration, contract, migration, smoke-test, and coverage requirements.
-
-This policy applies to behavioral code, APIs, integrations, database migrations, and executable infrastructure. Documentation-only, formatting-only, mechanical refactors, and generated-file changes do not require new tests, but applicable validation commands must still run.
-
-## Where to go deeper
-
-Don't repeat context here — go straight to the relevant doc:
-
-- Service architecture/style → the subproject's `AGENTS.md`.
-- How to run something → the subproject's `docs/getting-started.md`.
-- CI/CD → `docs/deployment.md` (pf-rates, pf-payroll) or `docs/ci.md` (pf-db).
-- Schema/tables → `modules/pf-db/docs/tables.md` and `modules/pf-db/docs/migrations.md`.
-- Apps Script/Sheets integration → `modules/pf-sheets/AGENTS.md` and
-  `modules/pf-sheets/docs/ci.md`.
+For detailed architecture, development, testing, database, and deployment rules, use
+the local documentation referenced by the relevant subrepository's `AGENTS.md`.
