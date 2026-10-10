@@ -164,6 +164,23 @@ conventions documented in `pf-sheets/AGENTS.md` instead.)
   scanning, external DB option to avoid Cloud SQL when not needed. Any new infra
   proposal must state its cost impact and the cheaper alternatives considered.
 
+## Test-driven development
+
+Test-Driven Development (TDD) is the default development method for all behavioral code changes in this ecosystem.
+
+For new behavior, follow Red-Green-Refactor: write a failing test, implement the smallest change that makes it pass, then refactor while keeping the suite green.
+
+Use the following complementary variants according to the change:
+
+- **Outside-In TDD** for features crossing architectural boundaries: start with an observable acceptance or contract test, drive the implementation inward through use cases and ports, then add focused domain and adapter tests.
+- **Acceptance Test-Driven Development (ATDD)** for functional requirements, API contracts, workflows, and cross-repository behavior: define acceptance criteria and executable acceptance tests before implementation.
+- **Behavior-Driven Development (BDD)** when Given/When/Then scenarios improve communication of business behavior. BDD complements TDD and is not required for every unit test.
+- **Migration TDD** for database changes: validate upgrade, downgrade, idempotency, schema invariants, and consumer compatibility with executable checks.
+
+Tests must verify meaningful behavior, outputs, state transitions, errors, and observable contracts—not implementation details or coverage numbers alone. Preserve existing unit, integration, contract, migration, smoke-test, and coverage requirements.
+
+This policy applies to behavioral code, APIs, integrations, database migrations, and executable infrastructure. Documentation-only, formatting-only, mechanical refactors, and generated-file changes do not require new tests, but applicable validation commands must still run.
+
 ## Where to go deeper
 
 Don't repeat context here — go straight to the relevant doc:
