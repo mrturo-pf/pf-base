@@ -98,7 +98,24 @@ The register entry must include:
 - importance and estimated size;
 - owner and affected repositories;
 - source artifact where it was discovered;
-- next action and related links.
+- a unique numeric priority ranking, where `1` is the first item to take;
+- blocking relationships: `Blocked by`, `Blocks`, and `Blocking scope`;
+- next action, resolution when applicable, and related links.
+
+Use `none` when no dependency is known. `Blocking scope` distinguishes
+`local preparation`, `migration`, `cutover`, `release`, and `incident response`.
+Do not infer a dependency merely because entries share a repository. The active
+task may continue through local preparation when a follow-up blocks only
+migration, cutover, or release.
+
+`Priority` is a unique positive integer across active register entries. Active
+statuses are `planned`, `investigating`, `designed`, `approved`, `in progress`,
+and `blocked`; completed or discarded statuses (`validated`, `released`,
+`superseded`, and `closed`) must use `—` instead of a live priority. Recalculate
+the complete active ranking whenever an entry is added, its status changes, a
+blocker changes, or the critical path changes. Priority is an execution-order
+recommendation, not authorization. Critical security findings still require
+immediate escalation.
 
 Critical security, privacy, data-loss, production-safety, and credential findings
 must be escalated immediately. Registering the finding is required, but it does
