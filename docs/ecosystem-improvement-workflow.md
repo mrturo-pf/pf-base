@@ -83,6 +83,33 @@ owns the coordination record; each affected repository still owns its code,
 tests, migrations, and release status. If the change is genuinely ecosystem-
 wide rather than initiated by one module, use the root `docs/proposals/` area.
 
+## Out-of-scope findings
+
+During investigation or implementation, a valid improvement may be discovered
+that is unrelated to the primary task. Do not expand the active brief,
+recommendation, or plan with that improvement. Add a concise, sanitized entry to
+the [PF Ecosystem Improvement Register](proposals/ECOSYSTEM-IMPROVEMENT-REGISTER.md)
+instead.
+
+The register entry must include:
+
+- a short summary;
+- type of improvement;
+- importance and estimated size;
+- owner and affected repositories;
+- source artifact where it was discovered;
+- next action and related links.
+
+Critical security, privacy, data-loss, production-safety, and credential findings
+must be escalated immediately. Registering the finding is required, but it does
+not replace urgent containment or incident response and must not delay it.
+
+When the improvement receives explicit authorization, promote it to the normal
+proposal lifecycle: create the applicable artifacts, add Level M/L work to
+`docs/proposals/INDEX.md`, and link the formal proposal from the register entry.
+The original task plan should retain only a short cross-reference to the entry.
+
+
 `*-action-plan.md` is accepted for historical compatibility, but all new work
 should use `*-plan.md`. A plan is mandatory for Level L work. For Level M,
 the recommendation may contain a short implementation checklist instead of a
@@ -324,7 +351,9 @@ After validation or release, the plan must end with a short final summary:
 what shipped, what did not, which artifacts are authoritative, and which
 follow-ups remain. Update the single central index
 `docs/proposals/INDEX.md` with the final status, commit/run references, and
-authoritative contract locations. Ask explicitly: **did this work reveal a change
+authoritative contract locations. Keep unrelated follow-ups in the
+[PF Ecosystem Improvement Register](proposals/ECOSYSTEM-IMPROVEMENT-REGISTER.md)
+rather than expanding the completed task artifacts. Ask explicitly: **did this work reveal a change
 needed in this workflow?** If yes, update this workflow through a normal
 documented change; do not let process changes exist only in memory.
 

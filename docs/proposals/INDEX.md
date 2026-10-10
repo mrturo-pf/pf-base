@@ -6,8 +6,11 @@ hosts the coordination artifacts. `Affected` lists other modules involved.
 
 Use only the controlled statuses defined in
 [`docs/ecosystem-improvement-workflow.md`](../ecosystem-improvement-workflow.md).
-The status meanings and metadata minimum are defined there; this index stores
-only lifecycle data and notes.
+The central index tracks formal Level M/L proposal lifecycles. Unrelated findings
+discovered during active work are captured separately in the
+[PF Ecosystem Improvement Register](ECOSYSTEM-IMPROVEMENT-REGISTER.md) until they
+are authorized and promoted to formal proposal work.
+
 
 | Slug | Level | Owner | Affected | Scope | Status | Notes | Authoritative artifact | Related investigation | Superseded-by | Updated |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
