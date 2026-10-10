@@ -140,15 +140,12 @@ when the investigation has already resolved the questions; that exception must
 be stated at the top of the plan.
 
 ## GCP access via Cloud Shell scripts
-
 When an agent needs to obtain information from or execute an action in GCP and
 cannot do so directly because of network, VPC Service Controls, or equivalent
 restrictions, the agent must not assume results or ask the user for loose commands.
 It must prepare a Cloud Shell `.sh` script and give the user one controlled entry
 point.
-
 ### Script location and versioning
-
 - Store the script under `<module>/docs/cloudshell/`, or under
   `docs/cloudshell/` at the root when no module owns the work.
 - `cloudshell/` is ignored and scripts in it are **not versioned**.
@@ -156,11 +153,9 @@ point.
   from the owning repository. If the path is already tracked, tell the user and do
   not silently bypass tracking.
 - Every `modules/*/docs/` and the root `docs/` must contain a `.gitignore` with:
-
   ```gitignore
   cloudshell/
   ```
-
   Add the line only when absent and preserve all other `.gitignore` content. A new
   module must create this `.gitignore` when its `docs/` directory is created.
 - Use `<improvement-id>-gcp-<nn>.sh`, for example `imp-001-gcp-01.sh`, with a
@@ -168,11 +163,8 @@ point.
 - Do not mention the script name, path, downloaded archive, or archive contents in
   versioned investigations, briefs, recommendations, plans, logs, commits, or PRs.
   Versioned artifacts may contain only sanitized conclusions and decisions.
-
 ### Required script behavior
-
 Every Cloud Shell script must:
-
 1. Start with `#!/usr/bin/env bash`, `set -euo pipefail`, and `umask 077`; never use
    `set -x`.
 2. Define an explicit `PROJECT_ID` near the top. Do not silently infer the project.
@@ -200,98 +192,107 @@ Every Cloud Shell script must:
      project ID, using `gcloud cloud-shell scp cloudshell:... localhost:./`;
    - a Cloud Shell cleanup command using absolute paths resolved from
      `realpath "${BASH_SOURCE[0]}"`.
-
 The cleanup command must warn the user not to run it until the local archive has
 been verified. If `cloudshell download` is used, do not delete immediately after
 it returns: the browser transfer may still be pending.
-
 ### Base template
-
 Copy and adapt this template in the ignored `docs/cloudshell/` directory. Keep the
 project ID explicit, replace the example read-only query, and preserve the safety
 boundaries:
-
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
 umask 077
-PROJECT_ID="REPLACE_WITH_EXPLICIT_PROJECT_ID"
-IMPROVEMENT_ID="imp-xxx"
-EXECUTION_NUMBER="01"
-STEP="initialization"
-SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
-BASE_DIR="$PWD"
-TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
-RUN_NAME="${IMPROVEMENT_ID}-gcp-${EXECUTION_NUMBER}-${TIMESTAMP}"
-WORK_DIR="$BASE_DIR/$RUN_NAME"
-ARCHIVE="$BASE_DIR/$RUN_NAME.tar.gz"
-on_error() {
-  status=$?
-  {
-    printf '# Cloud Shell execution summary\n\n'
-    printf -- '- status: failed\n'
-    printf -- '- step: %s\n' "$STEP"
-    printf -- '- exit_code: %s\n' "$status"
-    printf -- '- sensitive_values_recorded: false\n'
-  } >"$WORK_DIR/summary.md" 2>/dev/null || true
-  printf 'status=failed step=%s exit_code=%s\n' "$STEP" "$status" >&2
-  printf 'partial_results=%s\n' "$WORK_DIR" >&2
-  exit "$status"
-}
-trap on_error ERR
-require_command() {
-  command -v "$1" >/dev/null 2>&1 || {
-    STEP="require_$1"
-    printf 'missing_command=%s\n' "$1" >&2
-    return 1
-  }
-}
-STEP="validate_tools"
-require_command gcloud
-require_command tar
-require_command stat
-if [[ "$PROJECT_ID" == REPLACE_WITH_EXPLICIT_PROJECT_ID ]]; then
-  printf 'PROJECT_ID must be replaced explicitly.\n' >&2
-  exit 2
-fi
-mkdir -m 700 "$WORK_DIR"
-gcloud projects describe "$PROJECT_ID" \
-  --format='json(projectId,lifecycleState)' >"$WORK_DIR/project.json"
-gcloud auth list --filter=status:ACTIVE --format='value(account)' >"$WORK_DIR/session-metadata.txt"
-if ! grep -q . "$WORK_DIR/session-metadata.txt"; then
-  printf 'No active gcloud session.\n' >&2
-  exit 1
-fi
-gcloud resource-manager projects describe "$PROJECT_ID" \
-  --format='json(projectId,projectNumber,lifecycleState)' \
-  >"$WORK_DIR/project-resource.json"
-{
-  printf '# Cloud Shell execution summary\n\n'
-  printf -- '- status: completed\n'
-  printf -- '- project: %s\n' "$PROJECT_ID"
-  printf -- '- run: %s\n' "$RUN_NAME"
-  printf -- '- sensitive_values_recorded: false\n'
-} >"$WORK_DIR/summary.md"
-tar -czf "$ARCHIVE" -C "$BASE_DIR" "$RUN_NAME"
-tar -tzf "$ARCHIVE" >/dev/null
-archive_size="$(stat -c %s "$ARCHIVE" 2>/dev/null || stat -f %z "$ARCHIVE")"
-if [[ "$archive_size" -le 0 ]]; then
-  printf 'Archive size is zero; preserving work directory.\n' >&2
-  exit 1
-fi
-rm -rf -- "$WORK_DIR"
-HOME_RELATIVE="${ARCHIVE#$HOME/}"
-if [[ "$HOME_RELATIVE" == "$ARCHIVE" ]]; then
-  HOME_RELATIVE="$ARCHIVE"
-fi
-printf 'success=true archive_size=%s\n' "$archive_size"
-printf 'Download from the local terminal, not Cloud Shell:\n'
-printf 'gcloud cloud-shell scp cloudshell:~/%s localhost:./ --project=%s\n' \
-  "$HOME_RELATIVE" "$PROJECT_ID"
-printf 'Verify the local archive before cleanup. Then run in Cloud Shell:\n'
-printf 'rm -f -- %q %q\n' "$ARCHIVE" "$SCRIPT_PATH"
+PROJECT_ID="REPLACE_PROJECT_ID"; ID="imp-xxx"; N="01"
+SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"; BASE="$PWD"
+RUN="${ID}-gcp-${N}-$(date -u +%Y%m%dT%H%M%SZ)"; DIR="$BASE/$RUN"; ARCHIVE="$BASE/$RUN.tar.gz"
+STEP=init
+fail() { s=$?; printf 'status=failed step=%s exit_code=%s\n' "$STEP" "$s" >&2; exit "$s"; }
+trap fail ERR
+command -v gcloud >/dev/null || exit 1; command -v tar >/dev/null || exit 1
+[[ "$PROJECT_ID" != REPLACE_PROJECT_ID ]] || { printf 'replace PROJECT_ID\n' >&2; exit 2; }
+mkdir -m 700 "$DIR"
+STEP=project; gcloud projects describe "$PROJECT_ID" --format=json >"$DIR/project.json"
+STEP=session; gcloud auth list --filter=status:ACTIVE --format='value(account)' >"$DIR/session.txt"
+grep -q . "$DIR/session.txt"
+STEP=query; gcloud resource-manager projects describe "$PROJECT_ID" --format=json >"$DIR/query.json"
+STEP=summary; printf '# Summary\n\n- project: %s\n- mutations: none\n- secrets: none\n' "$PROJECT_ID" >"$DIR/summary.md"
+STEP=archive; tar -czf "$ARCHIVE" -C "$BASE" "$RUN"; tar -tzf "$ARCHIVE" >/dev/null
+size="$(stat -c %s "$ARCHIVE" 2>/dev/null || stat -f %z "$ARCHIVE")"; [[ "$size" -gt 0 ]]
+rm -rf -- "$DIR"
+rel="${ARCHIVE#$HOME/}"; [[ "$rel" != "$ARCHIVE" ]] || rel="$ARCHIVE"
+printf 'success=true archive_size=%s\n' "$size"
+printf 'gcloud cloud-shell scp cloudshell:~/%s localhost:./ --project=%s\n' "$rel" "$PROJECT_ID"
+printf 'Verify the local archive before cleanup; then run in Cloud Shell:\nrm -f -- %q %q\n' "$ARCHIVE" "$SCRIPT_PATH"
 ```
-
+## Neon access via local execution scripts
+When an agent needs Neon information or an action through the Neon API, `neonctl`,
+or SQL via `psql`, but network/VPC restrictions prevent direct access, the agent must
+not assume results or ask for loose commands. It must prepare a local `.sh` script for
+the user to execute on their machine.
+### Location and versioning
+- Store the script under `<module>/docs/neon/`, or root `docs/neon/` when no module
+  owns the work.
+- `neon/` is ignored and scripts/results are **not versioned**.
+- Before creating/updating a script, run `git check-ignore -v <script-path>` from the
+  owning repository. If already tracked, report it and do not silently bypass tracking.
+- Every module `docs/` and root `docs/` must contain `neon/` in `.gitignore`, preserving
+  all other rules. New modules add it when `docs/` is created.
+- Name scripts `<improvement-id>-neon-<nn>.sh`, with a sequence unique to the improvement.
+- Do not mention the script name/path, result directory, downloaded results, or their
+  contents in versioned artifacts. Record only sanitized conclusions.
+### Required script behavior
+Every Neon script must:
+1. Use `#!/usr/bin/env bash`, `set -euo pipefail`, `umask 077`, and never `set -x`.
+2. Define explicit `PROJECT_ID`, `BRANCH`, and `DATABASE` variables; validate the
+   project and branch before showing the target context.
+3. Check required binaries (`neonctl`, `psql`, `jq`, etc.) and print installation
+   guidance before aborting when one is missing.
+4. Use `neonctl auth`, `NEON_API_KEY`, or a single-line credential file explicitly
+   documented by the module and ignored under `neon/`; credential files must be mode
+   `600`. Never accept credentials as arguments. If a value is needed interactively,
+   use `read -rs`. For SQL, capture the connection string in memory and use a `mktemp`
+   `pgpass` file with mode `600`, `sslmode=require`, and an unconditional trap.
+5. Use the least-privileged role. Warn in console and `summary.md` before using an
+   owner role. Unset sensitive variables immediately after use.
+6. Be read-only by default: use `BEGIN READ ONLY`, `default_transaction_read_only=on`,
+   and a reasonable `statement_timeout`. Mutations require a listed action and `y/N`
+   confirmation, must be idempotent, and schema/data changes should use a temporary
+   Neon branch first.
+7. Never extract raw business/personal data. Prefer schema, index, size, count,
+   explain, and configuration metadata; mask sensitive columns and keep samples tiny.
+8. Create `<id>-neon-<nn>-<YYYYMMDDTHHMMSSZ>` in the current directory, verify it is
+   ignored with `git check-ignore -v`, and write every result there.
+9. Put each query in its own structured file (`neonctl --output json`, CSV, or
+   unaligned `psql`) and write `summary.md` with target context, commands, findings,
+   errors, resources, and cleanup commands. Never write credentials or connection strings.
+10. Use a failure trap that records the failed step without sensitive data, removes the
+    temporary `pgpass`, and preserves partial results.
+### Base template
+Adapt this template in the ignored `docs/neon/` directory; keep credentials out of
+arguments and source:
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+umask 077
+PROJECT_ID="REPLACE_PROJECT_ID"; BRANCH="REPLACE_BRANCH"; DATABASE="REPLACE_DATABASE"
+ID="imp-xxx"; N="01"; STEP=init; SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"; CREDENTIAL_FILE="$SCRIPT_DIR/neon-credentials.txt"
+BASE="$PWD"; RUN="${ID}-neon-${N}-$(date -u +%Y%m%dT%H%M%SZ)"; DIR="$BASE/$RUN"
+PGPASS_FILE="$(mktemp)"; trap 'rm -f "$PGPASS_FILE"' EXIT
+fail() { s=$?; printf 'status=failed step=%s exit_code=%s\n' "$STEP" "$s" >&2; exit "$s"; }
+trap fail ERR
+for c in neonctl psql jq; do command -v "$c" >/dev/null || exit 1; done
+[[ "$PROJECT_ID" != REPLACE_PROJECT_ID && "$BRANCH" != REPLACE_BRANCH && "$DATABASE" != REPLACE_DATABASE ]]
+mkdir -m 700 "$DIR"; git check-ignore -q "$DIR/.keep"
+[[ -f "$CREDENTIAL_FILE" ]] && [[ "$(stat -c %a "$CREDENTIAL_FILE" 2>/dev/null || stat -f %Lp "$CREDENTIAL_FILE")" == 600 ]]
+NEON_DATABASE_URL="$(cat "$CREDENTIAL_FILE")"
+STEP=validate; neonctl projects get "$PROJECT_ID" --output json >"$DIR/project.json"; neonctl branches get "$BRANCH" --project-id "$PROJECT_ID" --output json >"$DIR/branch.json"
+# No secret is printed. Parse NEON_DATABASE_URL in memory and write only the
+# temporary 600-mode PGPASS_FILE before read-only psql execution.
+# PGPASSFILE="$PGPASS_FILE" psql "$DATABASE" -X -v ON_ERROR_STOP=1 --set=statement_timeout=30000 --command='BEGIN READ ONLY; SELECT ...; COMMIT;' >"$DIR/query.csv"
+printf '# Summary\n\n- project: %s\n- branch: %s\n- database: %s\n- mutations: none\n' "$PROJECT_ID" "$BRANCH" "$DATABASE" >"$DIR/summary.md"
+```
 ## Step 0 — Investigation (optional, mandatory when uncertainty exists)
 Start with an investigation when the request involves unknown consumers,
 production behavior, a suspected defect, an API/schema change, deletion,
