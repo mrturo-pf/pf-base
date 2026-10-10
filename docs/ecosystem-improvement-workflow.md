@@ -126,7 +126,6 @@ proposal lifecycle: create the applicable artifacts, add Level M/L work to
 `docs/proposals/INDEX.md`, and link the formal proposal from the register entry.
 The original task plan should retain only a short cross-reference to the entry.
 
-
 `*-action-plan.md` is accepted for historical compatibility, but all new work
 should use `*-plan.md`. A plan is mandatory for Level L work. For Level M,
 the recommendation may contain a short implementation checklist instead of a
@@ -140,8 +139,160 @@ batch lookup work also shows that skipping a redundant artifact is reasonable
 when the investigation has already resolved the questions; that exception must
 be stated at the top of the plan.
 
-## Step 0 — Investigation (optional, mandatory when uncertainty exists)
+## GCP access via Cloud Shell scripts
 
+When an agent needs to obtain information from or execute an action in GCP and
+cannot do so directly because of network, VPC Service Controls, or equivalent
+restrictions, the agent must not assume results or ask the user for loose commands.
+It must prepare a Cloud Shell `.sh` script and give the user one controlled entry
+point.
+
+### Script location and versioning
+
+- Store the script under `<module>/docs/cloudshell/`, or under
+  `docs/cloudshell/` at the root when no module owns the work.
+- `cloudshell/` is ignored and scripts in it are **not versioned**.
+- Before creating or updating a script, run `git check-ignore -v <script-path>`
+  from the owning repository. If the path is already tracked, tell the user and do
+  not silently bypass tracking.
+- Every `modules/*/docs/` and the root `docs/` must contain a `.gitignore` with:
+
+  ```gitignore
+  cloudshell/
+  ```
+
+  Add the line only when absent and preserve all other `.gitignore` content. A new
+  module must create this `.gitignore` when its `docs/` directory is created.
+- Use `<improvement-id>-gcp-<nn>.sh`, for example `imp-001-gcp-01.sh`, with a
+  sequence number unique within the improvement.
+- Do not mention the script name, path, downloaded archive, or archive contents in
+  versioned investigations, briefs, recommendations, plans, logs, commits, or PRs.
+  Versioned artifacts may contain only sanitized conclusions and decisions.
+
+### Required script behavior
+
+Every Cloud Shell script must:
+
+1. Start with `#!/usr/bin/env bash`, `set -euo pipefail`, and `umask 077`; never use
+   `set -x`.
+2. Define an explicit `PROJECT_ID` near the top. Do not silently infer the project.
+   Validate the project with `gcloud projects describe` and validate an active session
+   before doing anything else.
+3. Be read-only by default. If mutation is required, list the resources first, ask
+   for interactive `y/N` confirmation, check whether each resource already exists,
+   and make the operation idempotent.
+4. Create `<id>-gcp-<nn>-<timestamp UTC YYYYMMDDTHHMMSSZ>` in the current directory
+   and write every result there.
+5. Never print or persist secrets, tokens, passwords, connection strings, raw
+   payloads, or sensitive headers. Read secrets only in memory when strictly
+   necessary, unset them afterward, and report only metadata or a truncated hash
+   when comparison is required. Redact sensitive `gcloud` output before saving it.
+6. Write each query to its own structured file, preferably with `--format=json`, and
+   create `summary.md` containing commands, findings, errors, and created resources
+   plus their cleanup command.
+7. Use a trap that records the failed step in `summary.md` without exposing data;
+   preserve partial results for diagnosis.
+8. Compress the work directory as `<same-name>.tar.gz` in the current directory,
+   verify `tar -tzf` succeeds and the archive size is greater than zero, then remove
+   the work directory. Never automatically remove the archive or the script.
+9. Finish by printing, in this order:
+   - a local-terminal download command built from the actual archive path and
+     project ID, using `gcloud cloud-shell scp cloudshell:... localhost:./`;
+   - a Cloud Shell cleanup command using absolute paths resolved from
+     `realpath "${BASH_SOURCE[0]}"`.
+
+The cleanup command must warn the user not to run it until the local archive has
+been verified. If `cloudshell download` is used, do not delete immediately after
+it returns: the browser transfer may still be pending.
+
+### Base template
+
+Copy and adapt this template in the ignored `docs/cloudshell/` directory. Keep the
+project ID explicit, replace the example read-only query, and preserve the safety
+boundaries:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+umask 077
+PROJECT_ID="REPLACE_WITH_EXPLICIT_PROJECT_ID"
+IMPROVEMENT_ID="imp-xxx"
+EXECUTION_NUMBER="01"
+STEP="initialization"
+SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
+BASE_DIR="$PWD"
+TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+RUN_NAME="${IMPROVEMENT_ID}-gcp-${EXECUTION_NUMBER}-${TIMESTAMP}"
+WORK_DIR="$BASE_DIR/$RUN_NAME"
+ARCHIVE="$BASE_DIR/$RUN_NAME.tar.gz"
+on_error() {
+  status=$?
+  {
+    printf '# Cloud Shell execution summary\n\n'
+    printf -- '- status: failed\n'
+    printf -- '- step: %s\n' "$STEP"
+    printf -- '- exit_code: %s\n' "$status"
+    printf -- '- sensitive_values_recorded: false\n'
+  } >"$WORK_DIR/summary.md" 2>/dev/null || true
+  printf 'status=failed step=%s exit_code=%s\n' "$STEP" "$status" >&2
+  printf 'partial_results=%s\n' "$WORK_DIR" >&2
+  exit "$status"
+}
+trap on_error ERR
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || {
+    STEP="require_$1"
+    printf 'missing_command=%s\n' "$1" >&2
+    return 1
+  }
+}
+STEP="validate_tools"
+require_command gcloud
+require_command tar
+require_command stat
+if [[ "$PROJECT_ID" == REPLACE_WITH_EXPLICIT_PROJECT_ID ]]; then
+  printf 'PROJECT_ID must be replaced explicitly.\n' >&2
+  exit 2
+fi
+mkdir -m 700 "$WORK_DIR"
+gcloud projects describe "$PROJECT_ID" \
+  --format='json(projectId,lifecycleState)' >"$WORK_DIR/project.json"
+gcloud auth list --filter=status:ACTIVE --format='value(account)' >"$WORK_DIR/session-metadata.txt"
+if ! grep -q . "$WORK_DIR/session-metadata.txt"; then
+  printf 'No active gcloud session.\n' >&2
+  exit 1
+fi
+gcloud resource-manager projects describe "$PROJECT_ID" \
+  --format='json(projectId,projectNumber,lifecycleState)' \
+  >"$WORK_DIR/project-resource.json"
+{
+  printf '# Cloud Shell execution summary\n\n'
+  printf -- '- status: completed\n'
+  printf -- '- project: %s\n' "$PROJECT_ID"
+  printf -- '- run: %s\n' "$RUN_NAME"
+  printf -- '- sensitive_values_recorded: false\n'
+} >"$WORK_DIR/summary.md"
+tar -czf "$ARCHIVE" -C "$BASE_DIR" "$RUN_NAME"
+tar -tzf "$ARCHIVE" >/dev/null
+archive_size="$(stat -c %s "$ARCHIVE" 2>/dev/null || stat -f %z "$ARCHIVE")"
+if [[ "$archive_size" -le 0 ]]; then
+  printf 'Archive size is zero; preserving work directory.\n' >&2
+  exit 1
+fi
+rm -rf -- "$WORK_DIR"
+HOME_RELATIVE="${ARCHIVE#$HOME/}"
+if [[ "$HOME_RELATIVE" == "$ARCHIVE" ]]; then
+  HOME_RELATIVE="$ARCHIVE"
+fi
+printf 'success=true archive_size=%s\n' "$archive_size"
+printf 'Download from the local terminal, not Cloud Shell:\n'
+printf 'gcloud cloud-shell scp cloudshell:~/%s localhost:./ --project=%s\n' \
+  "$HOME_RELATIVE" "$PROJECT_ID"
+printf 'Verify the local archive before cleanup. Then run in Cloud Shell:\n'
+printf 'rm -f -- %q %q\n' "$ARCHIVE" "$SCRIPT_PATH"
+```
+
+## Step 0 — Investigation (optional, mandatory when uncertainty exists)
 Start with an investigation when the request involves unknown consumers,
 production behavior, a suspected defect, an API/schema change, deletion,
 security, legal retention, or cross-repository behavior.
