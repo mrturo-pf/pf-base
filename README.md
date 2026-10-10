@@ -81,9 +81,9 @@ The active artifact index is [`docs/proposals/INDEX.md`](docs/proposals/INDEX.md
 
 [`postman/pf-ecosystem.postman_collection.json`](postman/pf-ecosystem.postman_collection.json)
 is a single Postman collection covering every HTTP surface in the ecosystem
-(`pf-rates`, `pf-payroll`, `pf-sheets`'s Web App — `pf-db` has no HTTP API). It's plain
-JSON, edited directly like any other file here, and pushed to a real Postman workspace
-automatically on every push to `main` via `.github/workflows/sync-postman.yml`. See
+(`pf-rates`, `pf-payroll`, and `pf-sheets`'s Web App — `pf-db` has no HTTP API).
+After an authorized push to `main`, `.github/workflows/sync-postman.yml` automatically
+syncs the collection and environments to the Postman workspace. See
 [`postman/README.md`](postman/README.md) for one-time setup and how the sync works.
 
 ## Where to start
@@ -120,5 +120,5 @@ Fully detailed in each subproject's `AGENTS.md`, in short:
 - SemVer + Conventional Commits.
 - **Cloud cost is always the priority for cloud decisions**: cheapest viable option first
   (scale-to-zero, free/cheaper equivalents, on-demand over always-on). See
-  [`AGENTS.md`](AGENTS.md#rules-common-to-the-3-servicesschema-repo) and each subproject's
+  [`AGENTS.md`](AGENTS.md#shared-rules) and each subproject's
   `docs/deployment.md` (pf-rates/pf-payroll) or `docs/ci.md` (pf-db).

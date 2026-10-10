@@ -5083,7 +5083,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <div class="pulse-dot"></div>
         <h1>pf-db — Table Ownership</h1>
       </div>
-      <p class="subtitle">Who writes to which of the 18 tables, and how they&#39;re actually read cross-service</p>
+      <p class="subtitle">Who writes to which of the 20 tables and one materialized view, and how they&#39;re actually read cross-service</p>
     </div>
 
     <script id="archify-guided-views-data" type="application/json">[]</script>
@@ -5133,7 +5133,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
          data-preset-badge-editorial-plate="ARCHIFY / PLATE 04">
       <svg viewBox="0 0 1160 612" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
         <title id="archify-diagram-title">pf-db — Table Ownership</title>
-        <desc id="archify-diagram-description">Who writes to which of the 18 tables, and how they&#39;re actually read cross-service</desc>
+        <desc id="archify-diagram-description">Who writes to which of the 20 tables and one materialized view, and how they&#39;re actually read cross-service</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -5165,7 +5165,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="pf_payroll" data-edge-to="payroll_tables" data-edge-label="writes (owns)" data-edge-key="2" data-edge-id="payroll-to-paytables" data-composition-points="480,165;700,165" d="M 480 165 L 700 165" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_payroll" data-edge-to="payroll_analytics" data-edge-label="REFRESH MATERIALIZED VIEW" data-edge-key="3" data-edge-id="payroll-to-analytics" data-composition-points="480,179;590,179;590,332;700,332" d="M 480 179 L 582 179 Q 590 179 590 187 L 590 324 Q 590 332 598 332 L 700 332" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_rates" data-edge-to="rates_tables" data-edge-label="writes (owns)" data-edge-key="4" data-edge-id="rates-to-rattables" data-composition-points="480,492;700,492" d="M 480 492 L 700 492" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_db" data-edge-to="payroll_tables" data-edge-label="DDL for all 18 tables (migrations 0001-0004)" data-edge-key="5" data-edge-id="db-to-paytables" data-composition-points="940,172;880,172" d="M 940 172 L 880 172" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="pf_db" data-edge-to="payroll_tables" data-edge-label="DDL for all 20 tables and one materialized view (migrations 0001-0004)" data-edge-key="5" data-edge-id="db-to-paytables" data-composition-points="940,172;880,172" d="M 940 172 L 880 172" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-pf_sheets" data-node-id="pf_sheets" data-node-label="pf-sheets" tabindex="0" role="button" aria-label="Focus pf-sheets, Apps Script macro, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Apps Script macro" data-node-context="Architecture component">
@@ -5272,9 +5272,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="553.8" y="472" width="72.4" height="14" rx="3" class="c-mask"/>
           <text x="590" y="482" class="t-muted" font-size="8" text-anchor="middle">writes (owns)</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_db" data-edge-to="payroll_tables" data-edge-label="DDL for all 18 tables (migrations 0001-0004)" data-edge-key="5" data-edge-id="db-to-paytables">
+        <g data-detail="context" data-edge-from="pf_db" data-edge-to="payroll_tables" data-edge-label="DDL for all 20 tables and one materialized view (migrations 0001-0004)" data-edge-key="5" data-edge-id="db-to-paytables">
           <rect x="799.4" y="208" width="221.2" height="14" rx="3" class="c-mask"/>
-          <text x="910" y="218" class="t-messagebus" font-size="8" text-anchor="middle">DDL for all 18 tables (migrations 0001-0004)</text>
+          <text x="910" y="218" class="t-messagebus" font-size="8" text-anchor="middle">DDL for all 20 tables and one materialized view (migrations 0001-0004)</text>
         </g>
 
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
@@ -5488,11 +5488,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <div class="card">
         <div class="card-header">
           <div class="card-dot cyan"></div>
-          <h3>18 tables, two owners</h3>
+          <h3>20 tables and one materialized view, two owners</h3>
         </div>
         <ul>
           <li>&bull; RAT_CURRENCY, RAT_EXCH_RATE, RAT_ECON_INDEX, RAT_TAX_BRCKT, RAT_EXPORT_JOB -- owned by pf-rates</li>
-          <li>&bull; 13 PAY_* tables + PAY_MV_SUMARY (view) -- owned by pf-payroll</li>
+          <li>&bull; 15 PAY_* tables + PAY_MV_SUMARY (view) -- owned by pf-payroll</li>
           <li>&bull; Full list with schemas: pf-db/docs/tables.md</li>
         </ul>
       </div>

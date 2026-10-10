@@ -1,10 +1,10 @@
 # Postman collection — pf ecosystem
 
-Single Postman collection covering all `pf-*` services with an HTTP surface (pf-rates,
-pf-payroll, pf-sheets — `pf-db` has no HTTP API, it's DDL/migrations only), plus two
-environments (`LOCAL`, `GCP`). Everything lives here as plain JSON so it can be edited
-like any other file in this repo (by hand, by code-puppy, in a PR) and is pushed to your
-real Postman workspace automatically on every push to `main` that touches it.
+Single Postman collection covering all `pf-*` services with an HTTP surface (`pf-rates`,
+`pf-payroll`, and `pf-sheets` — `pf-db` has no HTTP API; it is DDL/migrations only),
+plus two environments (`LOCAL`, `GCP`). After an authorized push to `main`, the workflow
+syncs the repository assets to Postman. Everything lives here as plain JSON so it can be
+edited like any other file in this repo (by hand, by code-puppy, in a PR).
 
 ## How the sync works
 

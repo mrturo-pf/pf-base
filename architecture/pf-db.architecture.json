@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "pf-db — Table Ownership",
-    "subtitle": "Who writes to which of the 18 tables, and how they're actually read cross-service",
+    "subtitle": "Who writes to which of the 20 tables and one materialized view, and how they're actually read cross-service",
     "output": "pf-db.html",
     "quality_profile": "showcase",
     "repository": {
@@ -43,10 +43,10 @@
     { "id": "payroll-to-paytables", "from": "pf_payroll", "to": "payroll_tables", "label": "writes (owns)" },
     { "id": "payroll-to-analytics", "from": "pf_payroll", "to": "payroll_analytics", "label": "REFRESH MATERIALIZED VIEW" },
     { "id": "rates-to-rattables", "from": "pf_rates", "to": "rates_tables", "label": "writes (owns)" },
-    { "id": "db-to-paytables", "from": "pf_db", "to": "payroll_tables", "label": "DDL for all 18 tables (migrations 0001-0004)", "variant": "dashed", "labelAt": [910, 218] }
+    { "id": "db-to-paytables", "from": "pf_db", "to": "payroll_tables", "label": "DDL for all 20 tables and one materialized view (migrations 0001-0004)", "variant": "dashed", "labelAt": [910, 218] }
   ],
   "cards": [
-    { "dot": "cyan", "title": "18 tables, two owners", "items": ["RAT_CURRENCY, RAT_EXCH_RATE, RAT_ECON_INDEX, RAT_TAX_BRCKT, RAT_EXPORT_JOB -- owned by pf-rates", "13 PAY_* tables + PAY_MV_SUMARY (view) -- owned by pf-payroll", "Full list with schemas: pf-db/docs/tables.md"] },
+    { "dot": "cyan", "title": "20 tables and one materialized view, two owners", "items": ["RAT_CURRENCY, RAT_EXCH_RATE, RAT_ECON_INDEX, RAT_TAX_BRCKT, RAT_EXPORT_JOB -- owned by pf-rates", "15 PAY_* tables + PAY_MV_SUMARY (view) -- owned by pf-payroll", "Full list with schemas: pf-db/docs/tables.md"] },
     { "dot": "emerald", "title": "Ownership = write access", "items": ["Only the owning microservice writes to its domain's tables", "The DB itself permits any service to read any table directly", "In practice, pf-payroll never queries RAT_* tables via SQL -- it calls pf-rates' HTTP API instead"] },
     { "dot": "violet", "title": "Hand-written migrations", "items": ["target_metadata = None -- no autogenerate, ever", "All DDL is idempotent (IF NOT EXISTS / ON CONFLICT)", "Every migration ships a real downgrade(), never pass"] },
     { "dot": "amber", "title": "PAY_MV_SUMARY", "items": ["Aggregates payroll periods for analytics", "Refreshed with REFRESH MATERIALIZED VIEW CONCURRENTLY", "Never written to directly by application code"] }

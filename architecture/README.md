@@ -15,7 +15,7 @@ replacement for each subproject's own docs.
 | `pf-payroll.architecture.json` / `.html` | Zoomed-in spec + output of `pf-payroll`'s internal hexagonal layers, with **repository evidence** (see below). |
 | `pf-rates.architecture.json` / `.html` | Same idea for `pf-rates` (single FastAPI interface, plus its rate-provider/Google Drive infrastructure adapters). |
 | `pf-sheets.architecture.json` / `.html` | Same idea for `pf-sheets` — note its shape differs (see below), since it's Apps Script, not a hexagonal Python service. |
-| `pf-db.architecture.json` / `.html` | Not a layered-architecture diagram — a **table-ownership** diagram: which of the 18 tables each service owns/writes, and the actual read access pattern. |
+| `pf-db.architecture.json` / `.html` | Not a layered-architecture diagram — a **table-ownership** diagram: which of the 20 tables and one materialized view each service owns/writes, and the actual read access pattern. |
 | `generate.sh` | Wraps the Archify CLI to validate/(re)deliver any of the specs above. |
 
 ## Navigating between diagrams
@@ -84,7 +84,7 @@ topology changes (new service, new dependency, table ownership moves), update
 
 ## What's on each per-app diagram
 
-- **`pf-payroll`:** the four hexagonal layers — `Interfaces` (FastAPI, Typer CLI),
+- **`pf-payroll`:** the four hexagonal layers — `Interfaces` (FastAPI HTTP API),
   `Application` (use cases/services + `Protocol` ports), `Domain` (pure logic,
   zero I/O), `Infrastructure` (SQLAlchemy repositories, HTTP clients, importers/reporting)
   — plus its two externals, `PostgreSQL` and `pf-rates`.
@@ -96,8 +96,8 @@ topology changes (new service, new dependency, table ownership moves), update
   separate `Interfaces` entry points (a human-triggered bound macro, an HTTP Web App, and
   an Apps Script Library consumed by other spreadsheets like Payroll/MedicalRefund).
 - **`pf-db`:** not a layered diagram — a **table-ownership** diagram. Shows the two table
-  clusters (`RAT_*`, 5 tables, owned by `pf-rates`; `PAY_*` + `PAY_MV_SUMARY`, 14, owned by
-  `pf-payroll`), which service writes to which, `pf-db` as the DDL source for both, and the
+  clusters (`RAT_*`, 5 tables, owned by `pf-rates`; `PAY_*`, 15 tables, plus
+  `PAY_MV_SUMARY` (materialized view), owned by `pf-payroll`), which service writes to which, `pf-db` as the DDL source for both, and the
   one access-pattern nuance worth diagramming: `pf-payroll` never reads `RAT_*` tables via
   direct SQL even though the DB would technically allow it — it always goes through
   `pf-rates`' HTTP API instead.
