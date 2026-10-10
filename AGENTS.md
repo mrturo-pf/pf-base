@@ -27,9 +27,7 @@ into it first; committing from root only ever touches ecosystem-level docs.
 explicit user command.** This applies everywhere: the root repo and every subproject
 repo, no exceptions.
 
-**CLI policy:** do not implement, add, restore, or expand any command-line interface
-or CLI command in this ecosystem. Use the supported HTTP APIs and existing automation
-instead. Any exception requires explicit user approval first.
+**CLI policy:** do not implement, add, restore, or expand any product-facing command-line interface or CLI command in this ecosystem. Existing development, deployment, and automation commands such as `make`, `clasp`, and repository scripts may still be used unless explicitly prohibited. Use the supported HTTP APIs and existing automation instead. Any exception requires explicit user approval first.
 
 read-only commands, execute the proxy-unset script first:
 
@@ -104,9 +102,11 @@ and register the work in [`docs/proposals/INDEX.md`](docs/proposals/INDEX.md).
 
 
 Two classes of file exist purely to describe the ecosystem's real HTTP surface to
-humans and tools outside the codebase. Both rot silently if not updated in the same
-change that changes behavior — treat letting them drift as an incomplete change, not
-a follow-up:
+humans and tools outside the codebase. Here, **HTTP surface** includes FastAPI
+endpoints exposed by `pf-rates` and `pf-payroll`, plus the Google Apps Script Web App
+endpoints exposed by `pf-sheets`; it does not imply that all three use the same runtime
+or framework. Both rot silently if not updated in the same change that changes behavior
+— treat letting them drift as an incomplete change, not a follow-up:
 
 - **`modules/{pf-rates,pf-payroll,pf-sheets}/docs/api.md`** — each service's own
   complete endpoint reference (pf-db has no HTTP API, so it has no `api.md`). Adding,
