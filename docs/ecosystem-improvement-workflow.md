@@ -231,13 +231,17 @@ or SQL via `psql`, but network/VPC restrictions prevent direct access, the agent
 not assume results or ask for loose commands. It must prepare a local `.sh` script for
 the user to execute on their machine.
 ### Location and versioning
-- Store the script under `<module>/docs/neon/`, or root `docs/neon/` when no module
-  owns the work.
-- `neon/` is ignored and scripts/results are **not versioned**.
+- Store the script under `<repository>/scripts/neon/`, where
+  `<repository>` is the owning module or the root repository.
+- An owning `scripts/neon/` directory is ignored except for explicitly
+  versioned safe templates/examples; runtime scripts, credentials, and results are
+  not versioned. The root repository and every module use the same
+  `scripts/neon/` location.
 - Before creating/updating a script, run `git check-ignore -v <script-path>` from the
   owning repository. If already tracked, report it and do not silently bypass tracking.
-- Every module `docs/` and root `docs/` must contain `neon/` in `.gitignore`, preserving
-  all other rules. New modules add it when `docs/` is created.
+- The owning repository's `scripts/.gitignore` must contain the `neon/*`
+  rule and explicit exceptions for any approved safe templates/examples.
+  Preserve all other rules. New modules add this rule when `scripts/` is created.
 - Name scripts `<improvement-id>-neon-<nn>.sh`, with a sequence unique to the improvement.
 - Do not mention the script name/path, result directory, downloaded results, or their
   contents in versioned artifacts. Record only sanitized conclusions.
@@ -249,7 +253,8 @@ Every Neon script must:
 3. Check required binaries (`neonctl`, `psql`, `jq`, etc.) and print installation
    guidance before aborting when one is missing.
 4. Use `neonctl auth`, `NEON_API_KEY`, or a single-line credential file explicitly
-   documented by the module and ignored under `neon/`; credential files must be mode
+   documented by the module and ignored under `scripts/neon/`; credential files
+   must be mode
    `600`. Never accept credentials as arguments. If a value is needed interactively,
    use `read -rs`. For SQL, capture the connection string in memory and use a `mktemp`
    `pgpass` file with mode `600`, `sslmode=require`, and an unconditional trap.
@@ -269,7 +274,8 @@ Every Neon script must:
 10. Use a failure trap that records the failed step without sensitive data, removes the
     temporary `pgpass`, and preserves partial results.
 ### Base template
-Adapt this template in the ignored `docs/neon/` directory; keep credentials out of
+Adapt this template in the owning repository's ignored `scripts/neon/`
+directory; keep credentials out of
 arguments and source:
 ```bash
 #!/usr/bin/env bash
