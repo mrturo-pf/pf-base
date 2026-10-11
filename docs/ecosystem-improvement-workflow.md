@@ -293,7 +293,71 @@ STEP=validate; neonctl projects get "$PROJECT_ID" --output json >"$DIR/project.j
 # PGPASSFILE="$PGPASS_FILE" psql "$DATABASE" -X -v ON_ERROR_STOP=1 --set=statement_timeout=30000 --command='BEGIN READ ONLY; SELECT ...; COMMIT;' >"$DIR/query.csv"
 printf '# Summary\n\n- project: %s\n- branch: %s\n- database: %s\n- mutations: none\n' "$PROJECT_ID" "$BRANCH" "$DATABASE" >"$DIR/summary.md"
 ```
-## Step 0 — Investigation (optional, mandatory when uncertainty exists)
+## Reusable lessons from sensitive database operations
+
+The Neon hardening work exposed process rules that apply to any shared database,
+credential, migration, backup, or production-data investigation:
+
+1. **Build an evidence packet before proposing mutations.** Start with a
+   read-only inventory of the target, retention controls, identities,
+   memberships, ownership, default privileges, effective grants, and consumer
+   write paths. Record facts, inferences, and unknowns separately. A provider
+   setting or role name is not proof of effective access; verify the effective
+   privilege and the code path that needs it.
+2. **Derive access from actual consumers, not from the current credential.**
+   Map each service's tables, sequences, API boundaries, migrations, and
+   read/write behavior. Separate runtime, migration, backup, and operator
+   identities. Treat owner-level access, `CREATEROLE`, `CREATEDB`, and
+   `BYPASSRLS` as explicit findings requiring a decision, not as a convenient
+   default.
+3. **Make rollback evidence executable.** A dump, snapshot, or provider
+   retention setting is not a backup control until it has a documented
+   retention window, restricted storage, checksum/identity metadata, a restore
+   into a compatible isolated database, and schema/data-invariant assertions.
+   For shared schemas, validate migration revision, object counts, constraints,
+   sequences, materialized views, ownership, and representative consumer
+   compatibility.
+4. **Separate preparation from irreversible cleanup.** New capability roles,
+   credentials, and deployment wiring can be introduced before removing broad
+   legacy access when that reduces outage risk. Do not revoke memberships,
+   transfer ownership, delete rollback artifacts, or shorten retention until
+   the dependent gate has passed and the owner, deadline, rollback path, and
+   deletion evidence are recorded.
+5. **Use staged, idempotent mutations with consumer checks.** Each mutation must
+   have explicit authorization, a precondition check, a safe rerun behavior, and
+   validation of every affected consumer after the change. A successful provider
+   command is not a successful rollout; service health and migration behavior
+   are part of the acceptance criteria.
+6. **Treat sensitive evidence as a first-class lifecycle.** Collect metadata and
+   hashes where possible, never raw business rows or secrets. Keep temporary
+   credentials and dumps outside version control with restrictive permissions,
+   define who owns cleanup, and make closure depend on deletion or an explicit
+   approved retention exception. “Created” is not “closed.”
+7. **Design the access path for constrained environments.** When direct provider
+   access is unavailable, use a reviewed local or Cloud Shell script with an
+   explicit target, read-only defaults, no secret arguments, failure-safe cleanup,
+   structured sanitized output, and preserved partial evidence. The workflow
+   must define how results are verified and how the temporary execution context
+   is removed; an agent must not infer inaccessible production state.
+8. **Keep operational evidence distinct from design records.** Versioned
+   investigations and plans should preserve sanitized conclusions, decisions,
+   approvals, and validation results. Raw query output, dumps, connection
+   strings, and temporary scripts belong in ignored, access-controlled storage.
+   This keeps the proposal reviewable without turning Git into a database backup.
+
+For Level L work involving credentials, shared databases, or rollback data, add
+these gates to the plan explicitly:
+
+```text
+read-only inventory → access/consumer mapping → owner decision
+→ reversible preparation → backup/restore proof → controlled cutover
+→ consumer validation → retention-window cleanup → closure evidence
+```
+
+Skipping a gate requires a written risk decision and explicit owner approval; it
+must not be hidden as an implementation detail or replaced by a green provider
+command alone.
+
 Start with an investigation when the request involves unknown consumers,
 production behavior, a suspected defect, an API/schema change, deletion,
 security, legal retention, or cross-repository behavior.
