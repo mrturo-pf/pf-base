@@ -164,6 +164,13 @@ Before any interaction with GitHub through `gh`, including read-only commands, r
 source "$HOME/Documents/scripts/unset_proxies.sh"
 ```
 
+If `gh` reports `tls: failed to verify certificate: x509: certificate signed by
+unknown authority`, first run [`scripts/gh-healthcheck.sh`](scripts/gh-healthcheck.sh)
+(or ask the user to run it in another terminal). The script clears
+`SSL_CERT_FILE`/`_SSL_CERT_FILE`, resets proxies, prints the relevant environment,
+and verifies `gh` access. Do not bypass TLS verification with insecure flags or
+assume GitHub state when this check fails.
+
 Before pushing, inspect the target repository's active workflow runs and cancel only
 older active runs for the same workflow, branch, and repository. Verify cancellation
 before pushing, then monitor the new run by its exact SHA or run ID. Manual deployment
