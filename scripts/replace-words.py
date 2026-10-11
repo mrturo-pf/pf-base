@@ -66,7 +66,7 @@ Usage:
     scripts/replace-words.py --apply --force           # skip dirty-repo check
 
 Config (search-words.json, next to this script, gitignored -- see
-search-words-example.jsonc for the committed template):
+search-words.jsonc.example for the committed template):
     {
       "replacements": [{"from": "current", "to": "corporative"}],
       "exclude_files": [".env"],
@@ -108,7 +108,7 @@ STRUCTURAL_EXCLUDE_FILES = {
     SCRIPT_PATH.name,
     "search-words.sh",
     "search-words.json",
-    "search-words-example.jsonc",
+    "search-words.jsonc.example",
 }
 
 

@@ -25,7 +25,7 @@
 #
 # Config file (search-words.json, next to this script -- gitignored):
 #   Persistent words/excludes/ignores live in JSON instead of having to
-#   retype them as args every run. Copy scripts/search-words-example.jsonc
+#   retype them as args every run. Copy scripts/search-words.jsonc.example
 #   to scripts/search-words.json and edit it -- the example file is the
 #   only one committed (a template); your real search-words.json is
 #   personal/local and never gets picked up by git. Schema (all keys

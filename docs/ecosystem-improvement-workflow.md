@@ -242,6 +242,9 @@ the user to execute on their machine.
 - The owning repository's `scripts/.gitignore` must contain the `neon/*`
   rule and explicit exceptions for any approved safe templates/examples.
   Preserve all other rules. New modules add this rule when `scripts/` is created.
+- Name safe templates/examples by appending `.example` to the complete source
+  filename (`config.json.example`, `.env.example`); do not use `-example` or
+  `example` before the source extension.
 - Name scripts `<improvement-id>-neon-<nn>.sh`, with a sequence unique to the improvement.
 - Do not mention the script name/path, result directory, downloaded results, or their
   contents in versioned artifacts. Record only sanitized conclusions.

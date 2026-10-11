@@ -10,7 +10,7 @@
 # Local runtime logs from scripts/pf-services.sh
 /scripts/logs/
 
-# Personal search-words.sh config -- copy scripts/search-words-example.jsonc
+# Personal search-words.sh config -- copy scripts/search-words.jsonc.example
 # to scripts/search-words.json and edit locally, never committed.
 /scripts/search-words.json
 
