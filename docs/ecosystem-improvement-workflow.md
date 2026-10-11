@@ -63,7 +63,7 @@ choose the larger level and document why.
 Every Level M or L change gets a stable slug, for example
 `pdf-template-management` or `payroll-update-delete`.
 
-Register the slug in `docs/proposals/INDEX.md` when the investigation,
+Register the slug in `docs/proposals/index.md` when the investigation,
 brief, or recommendation is created, and update its status at every lifecycle
 transition.
 
@@ -88,7 +88,7 @@ wide rather than initiated by one module, use the root `docs/proposals/` area.
 During investigation or implementation, a valid improvement may be discovered
 that is unrelated to the primary task. Do not expand the active brief,
 recommendation, or plan with that improvement. Add a concise, sanitized entry to
-the [PF Ecosystem Improvement Register](proposals/ECOSYSTEM-IMPROVEMENT-REGISTER.md)
+the [PF Ecosystem Improvement Register](proposals/ecosystem-improvement-register.md)
 instead.
 
 The register entry must include:
@@ -123,7 +123,7 @@ not replace urgent containment or incident response and must not delay it.
 
 When the improvement receives explicit authorization, promote it to the normal
 proposal lifecycle: create the applicable artifacts, add Level M/L work to
-`docs/proposals/INDEX.md`, and link the formal proposal from the register entry.
+`docs/proposals/index.md`, and link the formal proposal from the register entry.
 The original task plan should retain only a short cross-reference to the entry.
 
 `*-action-plan.md` is accepted for historical compatibility, but all new work
@@ -592,9 +592,9 @@ blocker remains.
 After validation or release, the plan must end with a short final summary:
 what shipped, what did not, which artifacts are authoritative, and which
 follow-ups remain. Update the single central index
-`docs/proposals/INDEX.md` with the final status, commit/run references, and
+`docs/proposals/index.md` with the final status, commit/run references, and
 authoritative contract locations. Keep unrelated follow-ups in the
-[PF Ecosystem Improvement Register](proposals/ECOSYSTEM-IMPROVEMENT-REGISTER.md)
+[PF Ecosystem Improvement Register](proposals/ecosystem-improvement-register.md)
 rather than expanding the completed task artifacts. Ask explicitly: **did this work reveal a change
 needed in this workflow?** If yes, update this workflow through a normal
 documented change; do not let process changes exist only in memory.

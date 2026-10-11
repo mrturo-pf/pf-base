@@ -75,7 +75,7 @@ cd architecture
 The formal process for ecosystem improvements, including investigations, briefs,
 recommendations, living plans, lifecycle statuses, and the central proposal index,
 is documented in [`docs/ecosystem-improvement-workflow.md`](docs/ecosystem-improvement-workflow.md).
-The active artifact index is [`docs/proposals/INDEX.md`](docs/proposals/INDEX.md).
+The active artifact index is [`docs/proposals/index.md`](docs/proposals/index.md).
 
 ## Postman collection
 

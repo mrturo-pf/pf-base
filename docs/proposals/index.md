@@ -8,7 +8,7 @@ Use only the controlled statuses defined in
 [`docs/ecosystem-improvement-workflow.md`](../ecosystem-improvement-workflow.md).
 The central index tracks formal Level M/L proposal lifecycles. Unrelated findings
 discovered during active work are captured separately in the
-[PF Ecosystem Improvement Register](ECOSYSTEM-IMPROVEMENT-REGISTER.md) until they
+[PF Ecosystem Improvement Register](ecosystem-improvement-register.md) until they
 are authorized and promoted to formal proposal work.
 
 
