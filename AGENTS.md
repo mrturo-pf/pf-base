@@ -69,6 +69,17 @@ Services may read shared data according to the owning repository's documented sc
 and integration contracts. Only the service that owns a domain should write its domain
 tables; do not change another repository's implementation as a local workaround.
 
+## Dedicated database identities
+
+Every service that connects directly to a shared database must use its own
+service-dedicated database user or role. The identity must have only the
+least-privilege permissions required by that service's approved domain and
+integration contract; shared runtime users, database-owner users, and
+owner-level credentials are prohibited for service traffic. Migration, backup,
+and operator identities must remain separate from runtime identities. The
+schema-owning repository defines the role/grant matrix, and consuming services
+must not bypass it with a broader credential.
+
 ## Cross-repository change protocol
 
 Before changing code, identify every repository affected and read each affected
