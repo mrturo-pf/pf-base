@@ -83,7 +83,32 @@ owns the coordination record; each affected repository still owns its code,
 tests, migrations, and release status. If the change is genuinely ecosystem-
 wide rather than initiated by one module, use the root `docs/proposals/` area.
 
-## Out-of-scope findings
+## Operational tracking platform
+
+The PF improvement lifecycle is operated through a GitHub-centered projection while
+Git remains authoritative for technical records:
+
+- the organization Project `PF Ecosystem Improvements` is authoritative for current
+  operational status, priority, owner, affected repositories, dependencies, and
+  views;
+- one GitHub Issue represents each improvement and links to its canonical Git
+  artifacts; historical Issues preserve context without replacing evidence;
+- investigations, briefs, recommendations, plans, contracts, and release evidence
+  remain in the owning repository;
+- `docs/proposals/improvements.json` is the validated transition manifest and must
+  not contradict the Project; generated outputs are not manually edited;
+- GitHub Actions validates the manifest and generates `docs/generated/agent-context.md`,
+  `docs/generated/improvements.json`, and the static dashboard;
+- agents use the generated context and read-only GitHub/repository access to answer
+  tracking questions; they do not receive implicit mutation authority;
+- incomplete historical metadata is marked as unclassified rather than inferred;
+- Project synchronization changes require explicit authorization, idempotent
+  behavior, and reconciliation evidence.
+
+The current Project and generated context are navigation and coordination layers.
+They do not override released code, OpenAPI, API documentation, Postman, schema
+migrations, repository ownership, or the decision/release evidence in Git.
+
 
 During investigation or implementation, a valid improvement may be discovered
 that is unrelated to the primary task. Do not expand the active brief,

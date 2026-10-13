@@ -1,7 +1,7 @@
 # Plan: ecosystem improvement tracking migration
 
 Date: 2026-10-12
-Status: in progress
+Status: released
 Level: L
 Scope: Migrate PF improvement tracking to a GitHub-centered operating model while preserving Git-based investigations, decisions, plans, and evidence.
 Related artifacts: [investigation](../investigations/ecosystem-improvement-tracking-migration.md) · [brief](ecosystem-improvement-tracking-migration-brief.md) · [recommendation](ecosystem-improvement-tracking-migration-recommendation.md) · [register](ecosystem-improvement-register.md) · [workflow](../ecosystem-improvement-workflow.md)
@@ -19,11 +19,11 @@ Superseded-by: none
 - [x] Project creation and pilot migration explicitly authorized.
 - [x] Metadata schema and Issue template approved.
 - [x] Pilot reconciliation passes.
-- [ ] Validation and generation workflows pass negative tests.
-- [ ] Agent read-only retrieval is validated.
+- [x] Validation and generation workflows pass negative tests.
+- [x] Agent read-only retrieval is validated.
 - [x] Historical migration is authorized and reconciled.
-- [ ] Workflow is updated with the validated steady-state process.
-- [ ] Release and closure evidence recorded.
+- [x] Workflow is updated with the validated steady-state process.
+- [x] Release and closure evidence recorded.
 
 No Project, Issue, permission, or Actions mutation is authorized while the first
 six gates are incomplete.
@@ -237,6 +237,17 @@ Improvement metadata validation: run 38399784688 — success
 
 ## 7. Validation commands and evidence
 
+The generated context validation passed with all 25 manifest entries represented:
+
+```text
+agent read-only context validation passed: 25 improvements
+```
+
+The steady-state operating model was added to
+`docs/ecosystem-improvement-workflow.md`. The migration is now released pending
+only normal future maintenance of the Project and generated outputs.
+
+
 Planned local checks:
 
 ```text
@@ -291,11 +302,12 @@ commits, or release evidence.
 ## 7. Release record
 
 - Project URL: https://github.com/orgs/mrturo-pf/projects/1
-- Pilot Issues: #1, #2, and #3 created and added to the Project
-- Workflow runs: pending
-- Agent retrieval validation: pending
+- Pilot Issues: #1 through #4 created and added to the Project
+- Historical Issues: #5 through #25 created and reconciled in the Project
+- Workflow runs: `38393766846`, `38393766923`, `38399784634`, `38399784688`, `38403500852`, `38403500886`, `38415231284` — success
+- Agent retrieval validation: passed for 25 generated entries
 - Owner approval: recorded 2026-10-12
-- Historical migration approval: pending
-- Rollback evidence: pending
-- Final authoritative sources: pending
-- Follow-ups: IMP-010 coordination Issue decision pending
+- Historical migration approval: recorded through continuation authorization
+- Rollback evidence: no rollback required; all Project mutations were additive and idempotent
+- Final authoritative sources: GitHub Project for operational state; Git artifacts for technical evidence
+- Follow-ups: normal Project/manifest maintenance; no pending migration slice
