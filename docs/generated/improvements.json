@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "source": "transition manifest; GitHub Project is operational status authority",
+  "improvements": [
+    {
+      "id": "IMP-006",
+      "slug": "ecosystem-http-error-baseline",
+      "level": "M",
+      "status": "in progress",
+      "project_status": "In Progress",
+      "priority": "high",
+      "queue_priority": 5,
+      "type": "observability",
+      "owner": "pf-base",
+      "affected": [
+        "pf-rates",
+        "pf-payroll",
+        "pf-sheets"
+      ],
+      "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
+      "issue_url": "https://github.com/mrturo-pf/pf-base/issues/1",
+      "plan_url": "https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-http-error-baseline-plan.md",
+      "next_action": "Define error categories, evidence requirements, and monitoring outputs."
+    },
+    {
+      "id": "IMP-007",
+      "slug": "cloud-run-observability-and-capacity",
+      "level": "M",
+      "status": "in progress",
+      "project_status": "In Progress",
+      "priority": "high",
+      "queue_priority": 6,
+      "type": "reliability",
+      "owner": "pf-common",
+      "affected": [
+        "pf-db",
+        "pf-rates",
+        "pf-payroll"
+      ],
+      "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
+      "issue_url": "https://github.com/mrturo-pf/pf-base/issues/2",
+      "plan_url": "https://github.com/mrturo-pf/pf-common/blob/main/docs/proposals/cloud-run-observability-and-capacity-plan.md",
+      "next_action": "Define the cheapest viable operational baseline."
+    },
+    {
+      "id": "IMP-009",
+      "slug": "scheduler-oidc-hardening",
+      "level": "M",
+      "status": "in progress",
+      "project_status": "In Progress",
+      "priority": "high",
+      "queue_priority": 7,
+      "type": "security",
+      "owner": "pf-payroll",
+      "affected": [
+        "pf-base",
+        "gcp-scheduler-runner"
+      ],
+      "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
+      "issue_url": "https://github.com/mrturo-pf/pf-base/issues/3",
+      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/scheduler-oidc-hardening-plan.md",
+      "next_action": "Create a separate OIDC design only when explicitly authorized."
+    },
+    {
+      "id": "IMP-010",
+      "slug": "ecosystem-improvement-tracking-migration",
+      "level": "L",
+      "status": "in progress",
+      "project_status": "In Progress",
+      "priority": "high",
+      "queue_priority": 8,
+      "type": "process",
+      "owner": "pf-base",
+      "affected": [
+        "pf-base",
+        "pf-db",
+        "pf-rates",
+        "pf-payroll",
+        "pf-sheets",
+        "pf-common"
+      ],
+      "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
+      "issue_url": null,
+      "plan_url": "https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-improvement-tracking-migration-plan.md",
+      "next_action": "Validate generated context and repository automation before historical migration."
+    }
+  ]
+}
