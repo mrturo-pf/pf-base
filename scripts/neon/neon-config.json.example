@@ -2,5 +2,19 @@
   "project_id": "example-project-123456",
   "branch_id": "br-example-branch-123456",
   "database": "pf_db_example",
-  "neon_database_url": "postgresql+asyncpg://example_user:REPLACE_WITH_LOCAL_SECRET@ep-example-host.us-east-1.aws.neon.tech/pf_db_example?ssl=require&channel_binding=require&sslmode=require"
+  "neon_database_url": "postgresql+asyncpg://example_user:REPLACE_WITH_LOCAL_SECRET@ep-example-host.us-east-1.aws.neon.tech/pf_db_example?ssl=require&channel_binding=require&sslmode=require",
+  "services": {
+    "pf-rates": {
+      "validation_endpoint_url": "https://REPLACE_WITH_PF_RATES_URL/monetary-units",
+      "validation_api_key": "REPLACE_WITH_PF_RATES_API_KEY"
+    },
+    "pf-payroll": {
+      "validation_endpoint_url": "https://REPLACE_WITH_PF_PAYROLL_URL/reference-data/health-institutions",
+      "validation_api_key": "REPLACE_WITH_PF_PAYROLL_API_KEY"
+    }
+  },
+  "validation_duration_seconds": 30,
+  "validation_workers": 2,
+  "validation_request_timeout_seconds": 10,
+  "validation_sample_interval_seconds": 1
 }

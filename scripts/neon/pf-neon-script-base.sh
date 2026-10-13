@@ -5,6 +5,15 @@
 set -euo pipefail
 umask 077
 
+neon_unset_proxies() {
+  local unset_script="$HOME/Documents/scripts/unset_proxies.sh"
+  [[ -f "$unset_script" ]] || {
+    printf 'missing_unset_proxies_script=%s\n' "$unset_script" >&2
+    return 1
+  }
+  # shellcheck disable=SC1090
+  source "$unset_script"
+}
 neon_require_commands() {
   local command
   for command in "$@"; do
@@ -40,6 +49,7 @@ neon_init() {
   trap neon_on_error ERR
   trap 'rm -f "$PGPASS_FILE"; unset NEON_DATABASE_URL PGHOST PGPORT PGUSER PGPASSFILE' EXIT
 
+  neon_unset_proxies
   neon_require_commands neonctl psql jq python3 git stat
   [[ "$#" -eq 2 ]] || { printf 'neon_init_argument_error=true\n' >&2; return 1; }
   [[ -f "$CONFIG_FILE" ]] || { printf 'missing_neon_config=true\n' >&2; return 1; }
