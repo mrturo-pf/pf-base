@@ -187,8 +187,13 @@ python3 scripts/check-language.py --all
 ```
 
 The negative fixture for a duplicate improvement ID failed as expected. The GitHub
-workflow remains pending its first run; it performs no Project synchronization and
-uses `contents: read` only.
+workflow performs no Project synchronization and uses `contents: read` only. Its
+first run passed on commit `a038395dd3a9d2fed9acfa6ba4ebd2cbcdc76396`:
+
+```text
+CI / Documentation language: run 38393766846 — success
+Improvement metadata validation: run 38393766923 — success
+```
 
 ## 7. Validation commands and evidence
 
