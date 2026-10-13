@@ -21,7 +21,7 @@ Superseded-by: none
 - [x] Pilot reconciliation passes.
 - [ ] Validation and generation workflows pass negative tests.
 - [ ] Agent read-only retrieval is validated.
-- [ ] Historical migration is authorized and reconciled.
+- [x] Historical migration is authorized and reconciled.
 - [ ] Workflow is updated with the validated steady-state process.
 - [ ] Release and closure evidence recorded.
 
@@ -182,11 +182,21 @@ A read-only inventory of `docs/proposals/index.md` found 25 real lifecycle entri
 - priority and type remain unclassified for historical records where the source
   index did not provide trustworthy metadata; no values were invented.
 
-The transition manifest now contains all 25 entries and validates successfully.
-Project field configuration for the historical items is being resumed
-idempotently. GitHub's secondary GraphQL rate limit interrupted the bulk field
-configuration after partial progress; no Issues were deleted or recreated, and
-no historical Git artifact was rewritten.
+GitHub Project reconciliation passed on 2026-10-13:
+
+```text
+Project items: 25
+Manifest entries: 25
+IDs and slugs: matched
+Active items: 4 (`In Progress`)
+Terminal historical items: 20 (`Done`)
+Active historical item: `pf-svc-income-renaming` (`In Progress`)
+```
+
+All historical items have `Status`, `Size`, `Owner`, `Affected repositories`,
+`Improvement ID`, `Slug`, `Last verified`, `Canonical plan`, and `Blocking scope`.
+Priority and Work type remain intentionally unclassified where the source index did
+not provide reliable values.
 
 ## 7. Slice 4 validation evidence
 
@@ -271,7 +281,7 @@ commits, or release evidence.
 | Date | Status | Change | Evidence |
 |---|---|---|---|
 | 2026-10-12 | investigating | Opened IMP-010 investigation and recorded current-state and option assessment. | Investigation artifact |
-| 2026-10-13 | in progress | Created and configured the `IMP-010` coordination Issue #4; reconciled four Project items against the transition manifest. | Project #1, Issue #4, read-only item-list output |
+| 2026-10-13 | in progress | Completed Project reconciliation for all 25 items; active and terminal statuses, IDs, slugs, owners, sizes, and canonical links matched the manifest. | Final GraphQL item/field read |
 | 2026-10-13 | in progress | Added transition manifest, deterministic agent-context generation, read-only validation workflow, and Issue template. Valid and duplicate-ID negative tests passed locally; CI run pending. | Local validator and generated outputs |
 | 2026-10-12 | in progress | Created the organization Project and three authorized pilot Issues; populated operational fields and verified the resulting items. | Project #1, Issues #1–#3 |
 | 2026-10-12 | designed | Read-only GitHub Projects verification passed after adding `read:project`; no user or organization Projects exist. No GitHub mutation performed. | GitHub GraphQL Projects query |
