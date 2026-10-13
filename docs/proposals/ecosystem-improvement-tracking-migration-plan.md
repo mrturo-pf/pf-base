@@ -140,7 +140,7 @@ Read-only GitHub verification completed on 2026-10-12:
 | Projects API access | Passed with `read:project` scope |
 | User Projects visible | None |
 | Organization Projects visible for `mrturo-pf` | None |
-| Current token scopes observed | `copilot`, `gist`, `read:org`, `read:project`, `repo`, `workflow` |
+| Current token scopes observed | `copilot`, `gist`, `project`, `read:org`, `repo`, `workflow` |
 
 The read-only capability check is complete. At the time of the check no Project
 existed for the user or `mrturo-pf`; the authorized pilot Project was subsequently
@@ -166,7 +166,23 @@ Read-only reconciliation on 2026-10-13 confirmed exactly four Project items and
 matching `Improvement ID`/`Slug` values for `IMP-006`, `IMP-007`, `IMP-009`, and
 `IMP-010`. The fourth item is [Issue #4](https://github.com/mrturo-pf/pf-base/issues/4).
 
-## 6. Slice 4 validation evidence
+## 6. Historical migration dry-run
+
+A read-only inventory of `docs/proposals/index.md` found 25 real lifecycle entries:
+
+- 4 entries are represented in the transition manifest and Project (`IMP-006`,
+  `IMP-007`, `IMP-009`, and `IMP-010`);
+- 21 entries remain outside the Project;
+- the pending set includes released, closed, superseded, validated, and active
+  improvements;
+- no historical Project or Issue mutation has been performed yet.
+
+The next migration slice must separate active operational work from historical
+reference work. Released, closed, and superseded items should not be placed in the
+active queue without explicit treatment and final-state mapping. The inventory is
+therefore a dry-run result, not authorization to create 21 Issues.
+
+## 7. Slice 4 validation evidence
 
 Implemented in the root repository:
 
@@ -194,6 +210,13 @@ first run passed on commit `a038395dd3a9d2fed9acfa6ba4ebd2cbcdc76396`:
 ```text
 CI / Documentation language: run 38393766846 — success
 Improvement metadata validation: run 38393766923 — success
+```
+
+The pilot reconciliation workflow run on commit `4e7c5b7` also passed:
+
+```text
+CI / Documentation language: run 38399784634 — success
+Improvement metadata validation: run 38399784688 — success
 ```
 
 ## 7. Validation commands and evidence
