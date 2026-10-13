@@ -62,7 +62,7 @@
       "owner": "pf-base",
       "affected": ["pf-base", "pf-db", "pf-rates", "pf-payroll", "pf-sheets", "pf-common"],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
-      "issue_url": null,
+      "issue_url": "https://github.com/mrturo-pf/pf-base/issues/4",
       "plan_url": "https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-improvement-tracking-migration-plan.md",
       "next_action": "Validate generated context and repository automation before historical migration."
     }

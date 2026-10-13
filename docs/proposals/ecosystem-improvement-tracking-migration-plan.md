@@ -142,28 +142,29 @@ Read-only GitHub verification completed on 2026-10-12:
 | Organization Projects visible for `mrturo-pf` | None |
 | Current token scopes observed | `copilot`, `gist`, `read:org`, `read:project`, `repo`, `workflow` |
 
-The read-only capability check is complete. No Project currently exists for the
-user or `mrturo-pf`, so the pilot will require explicit authorization to create a
-new Project. No GitHub resource was created or mutated during this check.
+The read-only capability check is complete. At the time of the check no Project
+existed for the user or `mrturo-pf`; the authorized pilot Project was subsequently
+created and configured. No unauthorized GitHub mutation occurred during the check.
 
 ## 5. Pilot operational record
 
-Created with explicit owner authorization on 2026-10-12:
+Created with explicit owner authorization on 2026-10-12 and 2026-10-13:
 
 - Project: [PF Ecosystem Improvements](https://github.com/orgs/mrturo-pf/projects/1)
 - `IMP-006`: [Issue #1](https://github.com/mrturo-pf/pf-base/issues/1)
 - `IMP-007`: [Issue #2](https://github.com/mrturo-pf/pf-base/issues/2)
 - `IMP-009`: [Issue #3](https://github.com/mrturo-pf/pf-base/issues/3)
+- `IMP-010`: [Issue #4](https://github.com/mrturo-pf/pf-base/issues/4)
 
-The Project contains the pilot items with populated operational fields:
+The Project contains the four pilot items with populated operational fields:
 `Status`, `Priority`, `Size`, `Work type`, `Owner`, `Affected repositories`,
 `Blocking scope`, `Improvement ID`, `Slug`, `Last verified`, and `Canonical plan`.
 The Project's native `Type` field name was reserved by GitHub, so the custom field
 is named `Work type`.
 
-No fourth Issue was created for `IMP-010`; the explicit authorization covered the
-Project and the three pilot Issues. Creating a coordination Issue for `IMP-010` is
-a separate follow-up decision.
+Read-only reconciliation on 2026-10-13 confirmed exactly four Project items and
+matching `Improvement ID`/`Slug` values for `IMP-006`, `IMP-007`, `IMP-009`, and
+`IMP-010`. The fourth item is [Issue #4](https://github.com/mrturo-pf/pf-base/issues/4).
 
 ## 6. Slice 4 validation evidence
 
@@ -241,6 +242,7 @@ commits, or release evidence.
 | Date | Status | Change | Evidence |
 |---|---|---|---|
 | 2026-10-12 | investigating | Opened IMP-010 investigation and recorded current-state and option assessment. | Investigation artifact |
+| 2026-10-13 | in progress | Created and configured the `IMP-010` coordination Issue #4; reconciled four Project items against the transition manifest. | Project #1, Issue #4, read-only item-list output |
 | 2026-10-13 | in progress | Added transition manifest, deterministic agent-context generation, read-only validation workflow, and Issue template. Valid and duplicate-ID negative tests passed locally; CI run pending. | Local validator and generated outputs |
 | 2026-10-12 | in progress | Created the organization Project and three authorized pilot Issues; populated operational fields and verified the resulting items. | Project #1, Issues #1–#3 |
 | 2026-10-12 | designed | Read-only GitHub Projects verification passed after adding `read:project`; no user or organization Projects exist. No GitHub mutation performed. | GitHub GraphQL Projects query |

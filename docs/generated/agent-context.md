@@ -49,4 +49,4 @@
 - Affected: `pf-base`, `pf-db`, `pf-rates`, `pf-payroll`, `pf-sheets`, `pf-common`
 - Next action: Validate generated context and repository automation before historical migration.
 - Plan: https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-improvement-tracking-migration-plan.md
-- Issue: pending coordination issue
+- Issue: https://github.com/mrturo-pf/pf-base/issues/4
