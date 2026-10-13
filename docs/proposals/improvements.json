@@ -15,7 +15,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/1",
-      "plan_url": "https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-http-error-baseline-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-006-ecosystem-http-error-baseline/plan.md",
       "next_action": "Define error categories, evidence requirements, and monitoring outputs."
     },
     {
@@ -31,7 +31,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/2",
-      "plan_url": "https://github.com/mrturo-pf/pf-common/blob/main/docs/proposals/cloud-run-observability-and-capacity-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-007-cloud-run-observability-and-capacity/plan.md",
       "next_action": "Define the cheapest viable operational baseline."
     },
     {
@@ -46,7 +46,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/3",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/scheduler-oidc-hardening-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-009-scheduler-oidc-hardening/plan.md",
       "next_action": "Create a separate OIDC design only when explicitly authorized."
     },
     {
@@ -65,7 +65,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/4",
-      "plan_url": "https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-improvement-tracking-migration-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-010-ecosystem-improvement-tracking-migration/plan.md",
       "next_action": "Validate generated context and repository automation before historical migration."
     },
     {
@@ -79,7 +79,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/5",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/scheduler-credential-exposure-remediation-recommendation.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-001-scheduler-credential-exposure-remediation/plan.md",
       "next_action": "Credential remediation and validation completed; residual historical log limitation accepted; OIDC remains separate",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -97,7 +97,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/6",
-      "plan_url": "https://github.com/mrturo-pf/pf-common/blob/main/docs/proposals/cloud-deployer-identity-hardening-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-005-cloud-deployer-identity-hardening/plan.md",
       "next_action": "WIF production deployments and smoke tests passed; legacy keys/grants removed; cleanup evidence recorded",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -114,7 +114,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/7",
-      "plan_url": "https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/database-runtime-role-hardening-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-003-database-runtime-role-hardening/plan.md",
       "next_action": "Superseded by IMP-002, which implemented and evidenced the role hardening; retained for historical traceability",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -131,7 +131,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/8",
-      "plan_url": "https://github.com/mrturo-pf/pf-rates/blob/main/docs/proposals/pf-rates-database-secret-access-review-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-004-pf-rates-database-secret-access-review/plan.md",
       "next_action": "Scoped IAM mutation complete and verified; post-mutation health and authenticated read passed",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -147,7 +147,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/9",
-      "plan_url": "https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/database-identifier-length-policy-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-008-database-identifier-length-policy/plan.md",
       "next_action": "Policy and validator complete; local quality validation passed; commit/push/CI evidence pending; physical rename migration delegated",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -164,7 +164,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/10",
-      "plan_url": "https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/neon-credential-and-backup-hardening-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/IMP-002-neon-credential-and-backup-hardening/plan.md",
       "next_action": "Backup/restore, dump/credential cleanup, ownership migration, and runtime cutover complete; provider-managed role residual risk accepted",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -183,7 +183,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/11",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/pf-svc-income-renaming-recommendation.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-007-pf-svc-income-renaming/plan.md",
       "next_action": "Recommendation approved 2026-10-05; implementation still blocked on live inventory, package-boundary details, migration locking strategy, and rollback exit evidence",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -196,7 +196,7 @@
       "affected": [],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/12",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/investigations/gcp-scheduler-credential-exposure.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-008-gcp-scheduler-credential-exposure/investigation.md",
       "next_action": "Investigation and remediation evidence closed; follow-up OIDC hardening is tracked separately as IMP-009",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -211,7 +211,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/13",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/employers-contracts-maintenance-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-009-employers-contracts-maintenance/plan.md",
       "next_action": "Code, migration, tests, API contract, and production deployment evidence completed",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -226,7 +226,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/14",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/investigations/health-additional-uf-mismatch.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-010-health-additional-uf-mismatch/investigation.md",
       "next_action": "Investigation says production issue resolved; one reference-data decision remains deliberately non-actionable",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -244,7 +244,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/15",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/investigations/payroll-operations-endpoint-usage.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-011-payroll-operations-endpoint-usage/investigation.md",
       "next_action": "Current OpenAPI/docs/Postman surface reconciled; historical traffic retained as context",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -257,7 +257,7 @@
       "affected": [],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/16",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/src/",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-012-cli-removal/investigation.md",
       "next_action": "Removed in `3e9acb6`; CI/deploy run `37169399930` passed",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -270,7 +270,7 @@
       "affected": [],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/17",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/src/payroll/infrastructure/db/repositories/payroll_repository_shared.py",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-013-future-increase-ipc-extrapolation/recommendation.md",
       "next_action": "Code paths `_extrapolate_cycle_ratio` and `_apply_ipc_step` are present; included in deployed descendant `50e7bb5`, run `37128861113` passed",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -285,7 +285,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/18",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/net-pay-prediction-reimplementation-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-014-net-pay-prediction-reimplementation/plan.md",
       "next_action": "Deployed with successful run `36933676711`; later improvements remain subject to their own release evidence",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -300,7 +300,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/19",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/src/",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-015-pay-period-columns-removal/recommendation.md",
       "next_action": "Migration and consumer implementation are historical; current code is the contract",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -313,7 +313,7 @@
       "affected": [],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/20",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/api.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-016-payroll-update-delete/recommendation.md",
       "next_action": "Commit `7db5d3b`; CI/deployment run `37219998220` passed",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -326,7 +326,7 @@
       "affected": [],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/21",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/payroll-natural-key-conflict-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-017-payroll-natural-key-conflict/plan.md",
       "next_action": "Implementation, tests, API docs, Postman, CI and deployment evidence completed",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -341,7 +341,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/22",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/pdf-import-action-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-018-pdf-import/plan.md",
       "next_action": "Living action plan records implementation and validation",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -356,7 +356,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/23",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/pdf-template-management-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-019-pdf-template-management/plan.md",
       "next_action": "Living plan records schema and consumer follow-ups",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -371,7 +371,7 @@
       ],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/24",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/pf-rates-batch-lookup-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-020-pf-rates-batch-lookup/plan.md",
       "next_action": "Implemented in `4ecaaa2`, coverage in `acc49da`; release/deploy run `37166988500` passed after the initial feature run failed",
       "metadata_status": "historical; priority and type not inferred"
     },
@@ -384,7 +384,7 @@
       "affected": [],
       "project_url": "https://github.com/orgs/mrturo-pf/projects/1",
       "issue_url": "https://github.com/mrturo-pf/pf-base/issues/25",
-      "plan_url": "https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/spreadsheet-export-plan.md",
+      "plan_url": "https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-021-spreadsheet-export/plan.md",
       "next_action": "Living plan records implementation corrections and live verification",
       "metadata_status": "historical; priority and type not inferred"
     }
