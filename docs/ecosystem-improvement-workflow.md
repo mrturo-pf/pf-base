@@ -129,7 +129,7 @@ The register entry must include:
 - importance and estimated size;
 - owner and affected repositories;
 - source artifact where it was discovered;
-- a unique numeric priority ranking, where `1` is the first item to take;
+- execution priority and numeric queue rank in the GitHub Project;
 - blocking relationships: `Blocked by`, `Blocks`, and `Blocking scope`;
 - next action, resolution when applicable, and related links.
 
@@ -139,14 +139,10 @@ Do not infer a dependency merely because entries share a repository. The active
 task may continue through local preparation when a follow-up blocks only
 migration, cutover, or release.
 
-`Priority` is a unique positive integer across active register entries. Active
-statuses are `planned`, `investigating`, `designed`, `approved`, `in progress`,
-and `blocked`; completed or discarded statuses (`validated`, `released`,
-`superseded`, and `closed`) must use `—` instead of a live priority. Recalculate
-the complete active ranking whenever an entry is added, its status changes, a
-blocker changes, or the critical path changes. Priority is an execution-order
-recommendation, not authorization. Critical security findings still require
-immediate escalation.
+The GitHub Project owns execution priority and `Queue rank`; the register stores
+importance and intake context only. `Queue rank` is a unique positive integer where
+`1` is the first item to take. Recalculate it in the Project whenever a blocker or
+critical path changes. It is an execution-order recommendation, not authorization.
 
 Critical security, privacy, data-loss, production-safety, and credential findings
 must be escalated immediately. Registering the finding is required, but it does

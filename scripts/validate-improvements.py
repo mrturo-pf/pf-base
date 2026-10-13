@@ -11,7 +11,6 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-PRIORITIES = {"critical", "high", "medium", "low"}
 LEVELS = {"S", "M", "L"}
 TYPES = {
     "security",
@@ -74,8 +73,6 @@ def validate(manifest: dict[str, Any]) -> list[str]:
 
         if item.get("level") not in LEVELS:
             errors.append(f"{prefix}.level is invalid")
-        if item.get("priority") is not None and item.get("priority") not in PRIORITIES:
-            errors.append(f"{prefix}.priority is invalid")
         if item.get("type") is not None and item.get("type") not in TYPES:
             errors.append(f"{prefix}.type is invalid")
         if not isinstance(item.get("owner"), str) or not item["owner"]:

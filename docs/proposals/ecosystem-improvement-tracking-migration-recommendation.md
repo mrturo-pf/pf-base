@@ -1,5 +1,3 @@
-status: investigating
-priority: 8
 # Recommendation: ecosystem improvement tracking migration
 
 Date: 2026-10-12
