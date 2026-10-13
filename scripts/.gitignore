@@ -1,12 +1,5 @@
-# Runtime Cloud Shell and Neon outputs/configuration.
-# Shell scripts are not versioned except for the reviewed Neon base template.
-**/*.sh
-!scripts/neon/pf-neon-script-base.sh
-
-cloudshell/*/
-cloudshell/*.tar.gz
-neon/*/
-neon/*.txt
-neon/*.json
+# Cloud Shell and Neon directories are runtime-only, except reviewed Neon templates.
+cloudshell/**
+neon/**
 !neon/neon-config.json.example
 !neon/pf-neon-script-base.sh
