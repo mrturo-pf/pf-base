@@ -5,7 +5,7 @@ Status: closed
 Level: L
 Scope: Evaluate and prepare the migration of PF improvement tracking from manually maintained Markdown indexes and distributed proposal documents to GitHub Projects, GitHub Issues, Git repositories, GitHub Actions, and generated agent context.
 Owner: `pf-base`
-Related artifacts: [brief](../proposals/ecosystem-improvement-tracking-migration-brief.md) · [recommendation](../proposals/ecosystem-improvement-tracking-migration-recommendation.md) · [plan](../proposals/ecosystem-improvement-tracking-migration-plan.md) · [register](../proposals/ecosystem-improvement-register.md) · [index](../proposals/index.md) · [workflow](../ecosystem-improvement-workflow.md)
+Related artifacts: [brief](../proposals/ecosystem-improvement-tracking-migration-brief.md) · [recommendation](../proposals/ecosystem-improvement-tracking-migration-recommendation.md) · [plan](../proposals/ecosystem-improvement-tracking-migration-plan.md) · [index](../proposals/index.md) · [workflow](../ecosystem-improvement-workflow.md)
 Approved: pending explicit owner approval
 Superseded-by: none
 
@@ -22,18 +22,16 @@ The current process uses:
 
 - `docs/ecosystem-improvement-workflow.md` for lifecycle gates, artifact
   responsibilities, controlled statuses, and definition of done;
-- `docs/proposals/index.md` for the formal Level M/L lifecycle index;
-- `docs/proposals/ecosystem-improvement-register.md` for active and historical
-  improvement intake, priorities, dependencies, and promotion links;
+- `docs/proposals/index.md` for navigation and canonical artifact references;
+- GitHub Issues and the `PF Ecosystem Improvements` Project for intake, coordination,
+  current status, priority, blockers, and execution order;
 - repository and module `docs/` directories for investigations, briefs,
   recommendations, plans, API contracts, deployment evidence, and operational
   documentation.
 
-The process is sound as a documentation and audit trail, but operational state is
-hard to visualize and query. Status, ownership, priority, dependencies, and next
-actions are maintained in Markdown tables and may require manual reconciliation
-with the living plan and implementation state. The agent must discover related
-artifacts by following links instead of querying one structured work queue.
+The process is durable as a technical and audit trail. Operational state is now
+visualized and queried in GitHub Project/Issues; the agent should query those
+sources instead of discovering current state by following Markdown tables.
 
 ## 3. Desired target
 
@@ -58,7 +56,7 @@ less auditable process.
 
 - The root repository already defines controlled lifecycle statuses and Level M/L
   artifact requirements.
-- The ecosystem has a central index and a separate improvement register.
+- The ecosystem has a central index plus GitHub Issues and Project for intake and coordination.
 - The ecosystem spans independent repositories with explicit ownership boundaries.
 - The current documentation contains active, released, superseded, and closed work.
 - Sensitive evidence must remain sanitized and outside version control when raw.

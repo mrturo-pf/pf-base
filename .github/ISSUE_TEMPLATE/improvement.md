@@ -17,9 +17,10 @@ assignees: []
 - Level: `S|M|L`
 - Owner: `<owning-repository>`
 - Affected repositories: `<repositories>`
-- Status: `<controlled workflow status>`
-- Priority: `<critical|high|medium|low>`
+- Type: `<controlled work type>`
+- Importance: `<critical|high|medium|low>`
 - Next action: `<smallest useful next step>`
+- Discovered in: `<artifact path and section, or none>`
 
 ## Canonical artifacts
 
@@ -27,12 +28,14 @@ assignees: []
 - Brief: `<URL or none>`
 - Recommendation: `<URL or none>`
 - Plan: `<URL or none>`
+- Related artifacts: `<URLs or none>`
 
 ## Dependencies
 
 - Blocked by: `<IDs or none>`
 - Blocks: `<IDs or none>`
 - Blocking scope: `<none|local preparation|migration|cutover|release|incident response>`
+- Resolution: `<pending or concise outcome>`
 
 ## Evidence boundary
 

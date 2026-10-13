@@ -4,7 +4,7 @@ Date: 2026-10-12
 Status: approved
 Level: L
 Scope: Migrate PF improvement tracking to a GitHub-centered operating model while preserving Git-based investigations, decisions, plans, and evidence.
-Related artifacts: [brief](ecosystem-improvement-tracking-migration-brief.md) · [investigation](../investigations/ecosystem-improvement-tracking-migration.md) · [plan](ecosystem-improvement-tracking-migration-plan.md) · [register](ecosystem-improvement-register.md) · [workflow](../ecosystem-improvement-workflow.md)
+Related artifacts: [brief](ecosystem-improvement-tracking-migration-brief.md) · [investigation](../investigations/ecosystem-improvement-tracking-migration.md) · [plan](ecosystem-improvement-tracking-migration-plan.md) · [workflow](../ecosystem-improvement-workflow.md)
 Approved: 2026-10-12 by owner (conversation)
 Superseded-by: none
 
@@ -22,13 +22,11 @@ Adopt a GitHub-centered hybrid model:
 - the agent consumes a generated, sanitized context rather than treating a board
   description or historical proposal as the current contract.
 
-Do not move technical evidence into the Project, create a custom GCP application,
-or replace the existing workflow. This provides the requested visualization and
+Do not move technical evidence into the Project or maintain a second repository register. This provides the requested visualization and
 queryability with the smallest change to the established process.
 
 Implementation is conditional on a read-only GitHub capability check and explicit
-approval. Until then, the current Markdown index and register remain the
-transition source of truth.
+Until then, the current Markdown index remains a navigation view and GitHub Issues/Project are the operational intake and coordination system.
 
 ## 2. Alternatives considered
 

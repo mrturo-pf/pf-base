@@ -116,55 +116,44 @@ They do not override released code, OpenAPI, API documentation, Postman, schema
 migrations, repository ownership, or the decision/release evidence in Git.
 
 
-During investigation or implementation, a valid improvement may be discovered
-that is unrelated to the primary task. Do not expand the active brief,
-recommendation, or plan with that improvement. Add a concise, sanitized entry to
-the [PF Ecosystem Improvement Register](proposals/ecosystem-improvement-register.md)
-instead.
+During investigation or implementation, a valid improvement that is unrelated to the
+primary task must be opened as a GitHub Issue using the `Ecosystem improvement`
+template and added to the `PF Ecosystem Improvements` Project. Do not expand the
+active brief, recommendation, or plan with unrelated work.
 
-The register entry must include:
+Every intake Issue must contain:
 
-- a short summary;
-- type of improvement;
-- importance and estimated size;
-- owner and affected repositories;
-- source artifact where it was discovered;
-- execution priority and numeric queue rank in the GitHub Project;
-- blocking relationships: `Blocked by`, `Blocks`, and `Blocking scope`;
-- next action, resolution when applicable, and related links.
+- a concise objective and sanitized evidence boundary;
+- stable ID and slug;
+- type, importance, level, owner, and affected repositories;
+- `Discovered in`, `Blocked by`, `Blocks`, and `Blocking scope`;
+- next action, resolution, and related artifact links;
+- canonical investigation, brief, recommendation, or plan links when they exist.
 
-Use `none` when no dependency is known. `Blocking scope` distinguishes
+The Project owns current status, categorical priority, queue rank, and operational
+views. The Issue owns intake context and coordination details. Git owns durable
+technical evidence. If a security, privacy, data-loss, production-safety, or
+credential finding appears, escalate it immediately; creating the Issue never
+replaces incident response.
+
+Use `none` when no dependency is known. `Blocking scope` distinguishes `none`,
 `local preparation`, `migration`, `cutover`, `release`, and `incident response`.
-Do not infer a dependency merely because entries share a repository. The active
-task may continue through local preparation when a follow-up blocks only
-migration, cutover, or release.
+Do not infer dependencies merely because entries share a repository.
 
-The GitHub Project owns execution priority and `Queue rank`; the register stores
-importance and intake context only. `Queue rank` is a unique positive integer where
-`1` is the first item to take. Recalculate it in the Project whenever a blocker or
-critical path changes. It is an execution-order recommendation, not authorization.
-
-Critical security, privacy, data-loss, production-safety, and credential findings
-must be escalated immediately. Registering the finding is required, but it does
-not replace urgent containment or incident response and must not delay it.
-
-When the improvement receives explicit authorization, promote it to the normal
-proposal lifecycle: create the applicable artifacts, add Level M/L work to
-`docs/proposals/index.md`, and link the formal proposal from the register entry.
-The original task plan should retain only a short cross-reference to the entry.
+When an Issue receives authorization for Level M/L work, promote it to the normal
+proposal lifecycle, add the slug and links to `docs/proposals/index.md`, and keep
+the Issue as the coordination record. No separate Markdown intake register is
+maintained.
 
 `*-action-plan.md` is accepted for historical compatibility, but all new work
-should use `*-plan.md`. A plan is mandatory for Level L work. For Level M,
-the recommendation may contain a short implementation checklist instead of a
-separate plan. Level S does not require proposal artifacts.
+should use `*-plan.md`. A plan is mandatory for Level L work. For Level M, the
+recommendation may contain a short implementation checklist instead of a separate
+plan. Level S does not require proposal artifacts.
 
-The existing documents demonstrate why this separation matters: the PDF
-import, spreadsheet export, PDF template, and batch lookup plans contain useful
-implementation corrections and live validation results, while some
-recommendations and briefs are better treated as frozen design records. The
-batch lookup work also shows that skipping a redundant artifact is reasonable
-when the investigation has already resolved the questions; that exception must
-be stated at the top of the plan.
+The existing documents demonstrate why this separation matters: implementation
+plans contain corrections and validation evidence, while recommendations and briefs
+are frozen design records. The GitHub Issue is the intake and coordination layer;
+those technical artifacts remain in Git.
 
 ## GCP access via Cloud Shell scripts
 When an agent needs to obtain information from or execute an action in GCP and
@@ -620,11 +609,10 @@ After validation or release, the plan must end with a short final summary:
 what shipped, what did not, which artifacts are authoritative, and which
 follow-ups remain. Update the single central index
 `docs/proposals/index.md` with the final status, commit/run references, and
-authoritative contract locations. Keep unrelated follow-ups in the
-[PF Ecosystem Improvement Register](proposals/ecosystem-improvement-register.md)
-rather than expanding the completed task artifacts. Ask explicitly: **did this work reveal a change
-needed in this workflow?** If yes, update this workflow through a normal
-documented change; do not let process changes exist only in memory.
+authoritative contract locations. Keep unrelated follow-ups in their GitHub Issues and the GitHub Project. Do not
+create a second Markdown register. Ask explicitly: **did this work reveal a change
+needed in this workflow?** If yes, update this workflow through a normal documented
+change; do not let process changes exist only in memory.
 
 ## Definition of done
 

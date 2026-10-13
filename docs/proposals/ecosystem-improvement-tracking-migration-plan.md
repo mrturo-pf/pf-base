@@ -4,7 +4,7 @@ Date: 2026-10-12
 Status: released
 Level: L
 Scope: Migrate PF improvement tracking to a GitHub-centered operating model while preserving Git-based investigations, decisions, plans, and evidence.
-Related artifacts: [investigation](../investigations/ecosystem-improvement-tracking-migration.md) · [brief](ecosystem-improvement-tracking-migration-brief.md) · [recommendation](ecosystem-improvement-tracking-migration-recommendation.md) · [register](ecosystem-improvement-register.md) · [workflow](../ecosystem-improvement-workflow.md)
+Related artifacts: [investigation](../investigations/ecosystem-improvement-tracking-migration.md) · [brief](ecosystem-improvement-tracking-migration-brief.md) · [recommendation](ecosystem-improvement-tracking-migration-recommendation.md) · [workflow](../ecosystem-improvement-workflow.md)
 Approved: 2026-10-12 by owner (conversation)
 Superseded-by: none
 
@@ -57,7 +57,7 @@ initial views, and exactly one Issue for each pilot item: IMP-006, IMP-007, and
 IMP-009. Link each item to its canonical Git artifacts.
 
 **Exit criteria:** pilot Project items and Issues reconcile with the current index,
-register, and plans; no historical artifact is rewritten.
+- GitHub Issues and Project contain the coordination state; no historical Git artifact is rewritten.
 
 ### Slice 4 — Repository validation
 
@@ -99,7 +99,7 @@ any metadata gaps are explicitly recorded rather than inferred.
 
 Generate or retire duplicate Markdown views only after reconciliation. Update the
 workflow, document ownership and failure recovery, record costs and run evidence,
-and close the improvement with follow-ups separated into the register.
+and close the improvement with follow-ups remaining in GitHub Issues/Project.
 
 **Exit criteria:** Definition of Done is complete and the final authoritative
 sources are documented.
@@ -110,7 +110,7 @@ Root repository:
 
 - `docs/ecosystem-improvement-workflow.md` after the target process is validated;
 - `docs/proposals/index.md` during transition or as generated output;
-- `docs/proposals/ecosystem-improvement-register.md` during transition;
+- `docs/proposals/index.md` during transition or as generated output;
 - metadata/template directories;
 - GitHub Actions workflows and validation scripts;
 - generated dashboard and agent-context outputs, according to the final hosting

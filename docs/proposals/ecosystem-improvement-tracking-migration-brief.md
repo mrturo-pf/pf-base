@@ -4,7 +4,7 @@ Date: 2026-10-12
 Status: approved
 Level: L
 Scope: Migrate PF improvement tracking to a GitHub-centered operating model while preserving Git-based investigations, decisions, plans, and evidence.
-Related artifacts: [investigation](../investigations/ecosystem-improvement-tracking-migration.md) · [recommendation](ecosystem-improvement-tracking-migration-recommendation.md) · [plan](ecosystem-improvement-tracking-migration-plan.md) · [register](ecosystem-improvement-register.md) · [workflow](../ecosystem-improvement-workflow.md)
+Related artifacts: [investigation](../investigations/ecosystem-improvement-tracking-migration.md) · [recommendation](ecosystem-improvement-tracking-migration-recommendation.md) · [plan](ecosystem-improvement-tracking-migration-plan.md) · [workflow](../ecosystem-improvement-workflow.md)
 Approved: 2026-10-12 by owner (conversation)
 Superseded-by: none
 
@@ -27,16 +27,15 @@ weakening the existing lifecycle gates.
   approved cost and operational justification;
 - collecting credentials, raw production payloads, personal data, financial data,
   health data, or unsanitized operational evidence;
-- retiring the existing Markdown index or register before the replacement is
-  validated and reconciliation is repeatable.
+- retiring the existing Markdown index before the replacement is validated and reconciliation is repeatable.
 
 ## Current behavior
 
 The ecosystem workflow defines lifecycle states, planning levels, artifact
 responsibilities, approval gates, cross-repository ownership, validation, release,
-and closure rules. The central index and improvement register provide navigation
-and intake, while detailed state and evidence are distributed across plans and
-module documentation.
+and closure rules. The central index provides navigation while GitHub Issues and
+Project provide intake and coordination; detailed evidence remains distributed
+across plans and module documentation.
 
 This is durable but difficult to operate as a queue. The same improvement may
 require reading several Markdown files to determine its current state, blockers,
@@ -178,7 +177,7 @@ The implementation must update, as applicable:
 - the recommendation and living plan;
 - `docs/ecosystem-improvement-workflow.md` with the validated target process;
 - `docs/proposals/index.md` as a generated or transition-compatible view;
-- `docs/proposals/ecosystem-improvement-register.md` during the transition;
+- GitHub Issue template and Project field/view conventions;
 - repository documentation describing the Project, Issue, and agent access model;
 - GitHub Issue and Project templates;
 - GitHub Actions workflow documentation;

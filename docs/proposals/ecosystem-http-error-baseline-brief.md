@@ -4,7 +4,7 @@ Date: 2026-10-12
 Status: investigating
 Level: M
 Scope: Reusable HTTP error classification and evidence baseline for `pf-rates`, `pf-payroll`, and `pf-sheets`.
-Related artifacts: [investigation](../investigations/ecosystem-http-error-baseline.md) · [recommendation](ecosystem-http-error-baseline-recommendation.md) · [plan](ecosystem-http-error-baseline-plan.md) · [register](ecosystem-improvement-register.md)
+Related artifacts: [investigation](../investigations/ecosystem-http-error-baseline.md) · [recommendation](ecosystem-http-error-baseline-recommendation.md) · [plan](ecosystem-http-error-baseline-plan.md)
 Approved: pending explicit owner approval
 Superseded-by: none
 

@@ -5,7 +5,7 @@ Status: investigating
 Level: M
 Scope: Establish a reusable baseline and classification process for HTTP errors and contract failures across `pf-rates`, `pf-payroll`, and `pf-sheets`.
 Owner: `pf-base`
-Related artifacts: [brief](../proposals/ecosystem-http-error-baseline-brief.md) · [recommendation](../proposals/ecosystem-http-error-baseline-recommendation.md) · [plan](../proposals/ecosystem-http-error-baseline-plan.md) · [register](../proposals/ecosystem-improvement-register.md)
+Related artifacts: [brief](../proposals/ecosystem-http-error-baseline-brief.md) · [recommendation](../proposals/ecosystem-http-error-baseline-recommendation.md) · [plan](../proposals/ecosystem-http-error-baseline-plan.md)
 Superseded-by: none
 
 ## 1. Question

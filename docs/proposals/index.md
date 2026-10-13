@@ -4,12 +4,8 @@ Central lifecycle index for investigations and proposal artifacts across the PF
 ecosystem. The `Owner` is exactly one module/repository: the initiator that
 hosts the coordination artifacts. `Affected` lists other modules involved.
 
-The GitHub Project is the only source for current task status, priority, blockers,
-and progress. This index stores navigation and durable artifact references only.
-The central index tracks formal Level M/L proposal artifacts. Unrelated findings
-discovered during active work are captured separately in the
-[PF Ecosystem Improvement Register](ecosystem-improvement-register.md) until they
-are authorized and promoted to formal proposal work.
+The central index tracks formal Level M/L proposal artifacts. New intake and coordination
+happen in GitHub Issues and the `PF Ecosystem Improvements` Project.
 
 
 | `Slug` | `ID` | `GitHub Issue` | `Level` | `Owner` | `Affected` | `Scope` | `Notes` | `Authoritative artifact` | `Related investigation` | `Superseded-by` | `Updated` |
