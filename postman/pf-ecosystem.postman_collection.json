@@ -1189,7 +1189,7 @@
               "response": []
             }
           ],
-          "description": "Manages the versioned templates POST /payroll/pdf-preview matches PDFs against. Persisted in pf-db's PAY_PDF_TEMPLATE/PAY_PDF_TEMPLATE_FIELD tables, not a git-tracked file -- see pf-payroll/docs/proposals/pdf-template-management-recommendation.md."
+          "description": "Manages the versioned templates POST /payroll/pdf-preview matches PDFs against. Persisted in pf-db's PAY_PDF_TEMPLATE/PAY_PDF_TEMPLATE_FIELD tables, not a git-tracked file -- see https://github.com/mrturo-pf/pf-improvements/blob/main/improvements/HIST-019-pdf-template-management/recommendation.md."
         },
         {
           "name": "Reference data",
