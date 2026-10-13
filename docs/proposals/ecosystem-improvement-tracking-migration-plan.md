@@ -237,6 +237,11 @@ Improvement metadata validation: run 38399784688 — success
 
 ## 7. Validation commands and evidence
 
+The Project `Status` field now uses the detailed lifecycle defined by the workflow:
+`Planned`, `Investigating`, `Designed`, `Approved`, `In Progress`, `Blocked`,
+`Validated`, `Released`, `Superseded`, and `Closed`. All 25 items were remapped
+according to their documented lifecycle and read back successfully.
+
 The generated context validation passed with all 25 manifest entries represented:
 
 ```text
@@ -244,6 +249,13 @@ agent read-only context validation passed: 25 improvements
 ```
 
 The steady-state operating model was added to
+
+The generated context validation passed with all 25 manifest entries represented:
+
+```text
+agent read-only context validation passed: 25 improvements
+```
+
 `docs/ecosystem-improvement-workflow.md`. The migration is now released pending
 only normal future maintenance of the Project and generated outputs.
 

@@ -91,6 +91,9 @@ Git remains authoritative for technical records:
 - the organization Project `PF Ecosystem Improvements` is authoritative for current
   operational status, priority, owner, affected repositories, dependencies, and
   views;
+- its `Status` field uses the detailed lifecycle: `Planned`, `Investigating`,
+  `Designed`, `Approved`, `In Progress`, `Blocked`, `Validated`, `Released`,
+  `Superseded`, and `Closed`;
 - one GitHub Issue represents each improvement and links to its canonical Git
   artifacts; historical Issues preserve context without replacing evidence;
 - investigations, briefs, recommendations, plans, contracts, and release evidence
