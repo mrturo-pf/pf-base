@@ -1,8 +1,12 @@
-# Runtime Cloud Shell result directories and archives; reviewable scripts are versioned.
-cloudshell/*/
+# Runtime Cloud Shell and Neon outputs/configuration.
+# Shell scripts are not versioned except for the reviewed Neon base template.
+**/*.sh
+!scripts/neon/pf-neon-script-base.sh
 
-# Runtime Neon result directories and local configuration; safe templates/scripts are versioned.
+cloudshell/*/
+cloudshell/*.tar.gz
 neon/*/
+neon/*.txt
 neon/*.json
 !neon/neon-config.json.example
 !neon/pf-neon-script-base.sh
