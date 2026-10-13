@@ -89,11 +89,14 @@ The PF improvement lifecycle is operated through a GitHub-centered projection wh
 Git remains authoritative for technical records:
 
 - the organization Project `PF Ecosystem Improvements` is authoritative for current
-  operational status, priority, owner, affected repositories, dependencies, and
-  views;
+  operational status, categorical priority, numeric queue rank, owner, affected
+  repositories, dependencies, and views;
 - its `Status` field uses the detailed lifecycle: `Planned`, `Investigating`,
   `Designed`, `Approved`, `In Progress`, `Blocked`, `Validated`, `Released`,
   `Superseded`, and `Closed`;
+- categorical `Priority` expresses urgency (`Critical`, `High`, `Medium`, or
+  `Low`), while numeric `Queue rank` expresses recommended execution order; these
+  are separate fields and neither authorizes implementation;
 - one GitHub Issue represents each improvement and links to its canonical Git
   artifacts; historical Issues preserve context without replacing evidence;
 - investigations, briefs, recommendations, plans, contracts, and release evidence
