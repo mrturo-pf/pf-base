@@ -166,21 +166,27 @@ Read-only reconciliation on 2026-10-13 confirmed exactly four Project items and
 matching `Improvement ID`/`Slug` values for `IMP-006`, `IMP-007`, `IMP-009`, and
 `IMP-010`. The fourth item is [Issue #4](https://github.com/mrturo-pf/pf-base/issues/4).
 
-## 6. Historical migration dry-run
+## 6. Historical migration dry-run and execution
 
 A read-only inventory of `docs/proposals/index.md` found 25 real lifecycle entries:
 
-- 4 entries are represented in the transition manifest and Project (`IMP-006`,
-  `IMP-007`, `IMP-009`, and `IMP-010`);
-- 21 entries remain outside the Project;
-- the pending set includes released, closed, superseded, validated, and active
+- 4 entries were already represented in the transition manifest and Project;
+- 21 historical entries were missing from the Project;
+- the pending set included released, closed, superseded, validated, and active
   improvements;
-- no historical Project or Issue mutation has been performed yet.
+- 21 historical Issues were then created as `HIST-001` through `HIST-021` and
+  linked to their canonical index references;
+- `pf-svc-income-renaming` is the only historical entry that remains active and is
+  mapped to Project status `In Progress`; terminal historical entries map to
+  `Done`;
+- priority and type remain unclassified for historical records where the source
+  index did not provide trustworthy metadata; no values were invented.
 
-The next migration slice must separate active operational work from historical
-reference work. Released, closed, and superseded items should not be placed in the
-active queue without explicit treatment and final-state mapping. The inventory is
-therefore a dry-run result, not authorization to create 21 Issues.
+The transition manifest now contains all 25 entries and validates successfully.
+Project field configuration for the historical items is being resumed
+idempotently. GitHub's secondary GraphQL rate limit interrupted the bulk field
+configuration after partial progress; no Issues were deleted or recreated, and
+no historical Git artifact was rewritten.
 
 ## 7. Slice 4 validation evidence
 

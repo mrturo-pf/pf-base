@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import re
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -70,8 +71,8 @@ def validate(manifest: dict[str, Any]) -> list[str]:
             continue
         item_id = item.get("id")
         slug = item.get("slug")
-        if not isinstance(item_id, str) or not item_id.startswith("IMP-"):
-            errors.append(f"{prefix}.id must use IMP-XXX format")
+        if not isinstance(item_id, str) or not re.match(r"^(?:IMP|HIST)-\d+$", item_id):
+            errors.append(f"{prefix}.id must use IMP-XXX or HIST-XXX format")
         elif item_id in seen_ids:
             errors.append(f"duplicate id: {item_id}")
         else:
@@ -88,14 +89,14 @@ def validate(manifest: dict[str, Any]) -> list[str]:
         status = item.get("status")
         if status not in STATUSES:
             errors.append(f"{prefix}.status is invalid")
-        if item.get("priority") not in PRIORITIES:
+        if item.get("priority") is not None and item.get("priority") not in PRIORITIES:
             errors.append(f"{prefix}.priority is invalid")
-        if item.get("type") not in TYPES:
+        if item.get("type") is not None and item.get("type") not in TYPES:
             errors.append(f"{prefix}.type is invalid")
         if not isinstance(item.get("owner"), str) or not item["owner"]:
             errors.append(f"{prefix}.owner must be non-empty")
-        if not isinstance(item.get("affected"), list) or not item["affected"]:
-            errors.append(f"{prefix}.affected must be a non-empty list")
+        if not isinstance(item.get("affected"), list) or (not item["affected"] and item.get("metadata_status") != "historical; priority and type not inferred"):
+            errors.append(f"{prefix}.affected must be a non-empty list unless historical metadata is incomplete")
         if not https_url(item.get("project_url")):
             errors.append(f"{prefix}.project_url must be HTTPS")
         if not https_url(item.get("issue_url"), nullable=True):
@@ -138,10 +139,10 @@ def generate_context(manifest: dict[str, Any]) -> str:
                 f"### {item['id']} — {item['slug']}",
                 "",
                 f"- Status: `{item['status']}` / Project `{item['project_status']}`",
-                f"- Priority: `{item['priority']}` ({item['queue_priority']})",
-                f"- Level: `{item['level']}`; type: `{item['type']}`",
+                f"- Priority: `{item['priority'] or 'unclassified'}` ({item['queue_priority'] or 'historical'})",
+                f"- Level: `{item['level']}`; type: `{item['type'] or 'unclassified'}`",
                 f"- Owner: `{item['owner']}`",
-                f"- Affected: {', '.join(f'`{repo}`' for repo in item['affected'])}",
+                f"- Affected: {', '.join(f'`{repo}`' for repo in item['affected']) or 'none'}",
                 f"- Next action: {item['next_action']}",
                 f"- Plan: {item['plan_url']}",
                 f"- Issue: {item['issue_url'] or 'pending coordination issue'}",
@@ -158,7 +159,7 @@ def generate_dashboard(manifest: dict[str, Any]) -> str:
             "<tr>"
             f"<td><strong>{html.escape(item['id'])}</strong><br>{html.escape(item['slug'])}</td>"
             f"<td>{html.escape(item['status'])}</td>"
-            f"<td>{html.escape(item['priority'])}</td>"
+            f"<td>{html.escape(item['priority'] or 'unclassified')}</td>"
             f"<td>{html.escape(item['owner'])}</td>"
             f"<td>{html.escape(item['next_action'])}</td>"
             f"<td><a href=\"{html.escape(item['plan_url'], quote=True)}\">plan</a></td>"
