@@ -29,5 +29,3 @@ __pycache__/
 # ever exist in GitHub Secrets, injected at sync time by
 # .github/workflows/sync-postman.yml. Never hand-edit a real key into one
 # of those files and commit it.
-
-/pf-improvements/
