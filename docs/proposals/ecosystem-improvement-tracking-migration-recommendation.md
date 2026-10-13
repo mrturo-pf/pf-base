@@ -1,3 +1,5 @@
+status: investigating
+priority: 8
 # Recommendation: ecosystem improvement tracking migration
 
 Date: 2026-10-12
@@ -62,7 +64,7 @@ coordination surface because it lacks a practical discussion and work-item model
 
 | Field or concern | Authoritative source | Generated or linked views |
 |---|---|---|
-| Current operational status | GitHub Project | Index and agent context |
+| Current operational status | GitHub Project | GitHub Project query |
 | Priority, owner, affected repositories, blockers | GitHub Project | Dashboard and agent context |
 | Improvement identity and durable slug | Repository metadata and Issue | Project item and generated views |
 | Investigation findings | Git investigation artifact | Issue links and agent context |
@@ -73,9 +75,8 @@ coordination surface because it lacks a practical discussion and work-item model
 | Historical decision | Git history and superseded artifact | Agent context with historical label |
 
 During transition, manually maintained Markdown indexes remain compatibility views.
-After the pilot and reconciliation pass, they should be generated or explicitly
-marked as snapshots. No equivalent status field should be manually maintained in
-both Project and Markdown.
+After the pilot and reconciliation pass, they are navigation and artifact-reference
+views only. No equivalent operational status field is maintained in Project and Git.
 
 ## 4. GitHub Project design
 
@@ -139,7 +140,7 @@ repositories, canonical artifact links, next action, and sensitive-data boundary
 ## 6. Repository metadata and generated outputs
 
 Add a small structured metadata block to formal proposal artifacts. It should not
-repeat the full document. Minimum fields:
+repeat the full document. Stable fields include:
 
 ```yaml
 id: IMP-010
@@ -152,13 +153,11 @@ affected:
   - pf-payroll
   - pf-sheets
   - pf-common
-status: investigating
-priority: 8
 ```
 
-The final schema must decide whether `status` and `priority` remain transition
-fields or become generated snapshots of Project values. The steady-state design
-should avoid two editable operational sources.
+The manifest contains stable identity and reference metadata only. Current status,
+priority, blockers, and progress are read from the GitHub Project; they are not
+stored as editable task state in Git.
 
 Generate:
 

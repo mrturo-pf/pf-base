@@ -5,67 +5,13 @@
 - Schema version: `1`
 - Items: `25`
 
-## Current queue
+## Improvement references
 
-### IMP-006 — ecosystem-http-error-baseline
-
-- Status: `in progress` / Project `In Progress`
-- Priority: `high` (5)
-- Level: `M`; type: `observability`
-- Owner: `pf-base`
-- Affected: `pf-rates`, `pf-payroll`, `pf-sheets`
-- Next action: Define error categories, evidence requirements, and monitoring outputs.
-- Plan: https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-http-error-baseline-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/1
-
-### IMP-007 — cloud-run-observability-and-capacity
-
-- Status: `in progress` / Project `In Progress`
-- Priority: `high` (6)
-- Level: `M`; type: `reliability`
-- Owner: `pf-common`
-- Affected: `pf-db`, `pf-rates`, `pf-payroll`
-- Next action: Define the cheapest viable operational baseline.
-- Plan: https://github.com/mrturo-pf/pf-common/blob/main/docs/proposals/cloud-run-observability-and-capacity-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/2
-
-### IMP-009 — scheduler-oidc-hardening
-
-- Status: `in progress` / Project `In Progress`
-- Priority: `high` (7)
-- Level: `M`; type: `security`
-- Owner: `pf-payroll`
-- Affected: `pf-base`, `gcp-scheduler-runner`
-- Next action: Create a separate OIDC design only when explicitly authorized.
-- Plan: https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/scheduler-oidc-hardening-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/3
-
-### IMP-010 — ecosystem-improvement-tracking-migration
-
-- Status: `in progress` / Project `In Progress`
-- Priority: `high` (8)
-- Level: `L`; type: `process`
-- Owner: `pf-base`
-- Affected: `pf-base`, `pf-db`, `pf-rates`, `pf-payroll`, `pf-sheets`, `pf-common`
-- Next action: Validate generated context and repository automation before historical migration.
-- Plan: https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-improvement-tracking-migration-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/4
-
-### HIST-007 — pf-svc-income-renaming
-
-- Status: `investigating` / Project `In Progress`
-- Priority: `unclassified` (9)
-- Level: `L`; type: `unclassified`
-- Owner: `pf-base`
-- Affected: `pf-svc-income`, `pf-db`, `pf-common`, `pf-rates`, `pf-sheets`
-- Next action: Recommendation approved 2026-10-05; implementation still blocked on live inventory, package-boundary details, migration locking strategy, and rollback exit evidence
-- Plan: https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/pf-svc-income-renaming-recommendation.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/11
+Current status, priority, and progress are authoritative in the GitHub Project.
+Query the Project before making planning decisions; this generated file stores no task state.
 
 ### HIST-001 — scheduler-credential-exposure-remediation
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-base`
@@ -75,8 +21,6 @@
 
 ### HIST-002 — cloud-deployer-identity-hardening
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-common`
 - Affected: `pf-base`, `pf-db`, `pf-rates`, `pf-payroll`
@@ -86,8 +30,6 @@
 
 ### HIST-003 — database-runtime-role-hardening
 
-- Status: `superseded` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-db`
 - Affected: `pf-payroll`, `pf-rates`, `pf-base`
@@ -97,8 +39,6 @@
 
 ### HIST-004 — pf-rates-database-secret-access-review
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `M`; type: `unclassified`
 - Owner: `pf-rates`
 - Affected: `pf-db`, `pf-rates`, `pf-base`
@@ -108,8 +48,6 @@
 
 ### HIST-005 — database-identifier-length-policy
 
-- Status: `validated` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `M`; type: `unclassified`
 - Owner: `pf-db`
 - Affected: `pf-base`, `pf-payroll`
@@ -119,8 +57,6 @@
 
 ### HIST-006 — neon-credential-and-backup-hardening
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-db`
 - Affected: `pf-base`, `pf-payroll`, `pf-rates`
@@ -128,10 +64,17 @@
 - Plan: https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/neon-credential-and-backup-hardening-plan.md
 - Issue: https://github.com/mrturo-pf/pf-base/issues/10
 
+### HIST-007 — pf-svc-income-renaming
+
+- Level: `L`; type: `unclassified`
+- Owner: `pf-base`
+- Affected: `pf-svc-income`, `pf-db`, `pf-common`, `pf-rates`, `pf-sheets`
+- Next action: Recommendation approved 2026-10-05; implementation still blocked on live inventory, package-boundary details, migration locking strategy, and rollback exit evidence
+- Plan: https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/pf-svc-income-renaming-recommendation.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/11
+
 ### HIST-008 — gcp-scheduler-credential-exposure
 
-- Status: `closed` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: none
@@ -141,8 +84,6 @@
 
 ### HIST-009 — employers-contracts-maintenance
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-db`
@@ -152,8 +93,6 @@
 
 ### HIST-010 — health-additional-uf-mismatch
 
-- Status: `closed` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-rates`
@@ -163,8 +102,6 @@
 
 ### HIST-011 — payroll-operations-endpoint-usage
 
-- Status: `closed` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-base`, `pf-db`, `pf-rates`, `pf-sheets`
@@ -174,8 +111,6 @@
 
 ### HIST-012 — cli-removal
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: none
@@ -185,8 +120,6 @@
 
 ### HIST-013 — future-increase-ipc-extrapolation
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `M`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: none
@@ -196,8 +129,6 @@
 
 ### HIST-014 — net-pay-prediction-reimplementation
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `M`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-rates`
@@ -207,8 +138,6 @@
 
 ### HIST-015 — pay-period-columns-removal
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-db`
@@ -218,8 +147,6 @@
 
 ### HIST-016 — payroll-update-delete
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: none
@@ -229,8 +156,6 @@
 
 ### HIST-017 — payroll-natural-key-conflict
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: none
@@ -240,8 +165,6 @@
 
 ### HIST-018 — pdf-import
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-rates`
@@ -251,8 +174,6 @@
 
 ### HIST-019 — pdf-template-management
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-db`
@@ -262,8 +183,6 @@
 
 ### HIST-020 — pf-rates-batch-lookup
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `L`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: `pf-rates`
@@ -273,11 +192,45 @@
 
 ### HIST-021 — spreadsheet-export
 
-- Status: `released` / Project `Done`
-- Priority: `unclassified` (historical)
 - Level: `M`; type: `unclassified`
 - Owner: `pf-payroll`
 - Affected: none
 - Next action: Living plan records implementation corrections and live verification
 - Plan: https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/spreadsheet-export-plan.md
 - Issue: https://github.com/mrturo-pf/pf-base/issues/25
+
+### IMP-006 — ecosystem-http-error-baseline
+
+- Level: `M`; type: `observability`
+- Owner: `pf-base`
+- Affected: `pf-rates`, `pf-payroll`, `pf-sheets`
+- Next action: Define error categories, evidence requirements, and monitoring outputs.
+- Plan: https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-http-error-baseline-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/1
+
+### IMP-007 — cloud-run-observability-and-capacity
+
+- Level: `M`; type: `reliability`
+- Owner: `pf-common`
+- Affected: `pf-db`, `pf-rates`, `pf-payroll`
+- Next action: Define the cheapest viable operational baseline.
+- Plan: https://github.com/mrturo-pf/pf-common/blob/main/docs/proposals/cloud-run-observability-and-capacity-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/2
+
+### IMP-009 — scheduler-oidc-hardening
+
+- Level: `M`; type: `security`
+- Owner: `pf-payroll`
+- Affected: `pf-base`, `gcp-scheduler-runner`
+- Next action: Create a separate OIDC design only when explicitly authorized.
+- Plan: https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/scheduler-oidc-hardening-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/3
+
+### IMP-010 — ecosystem-improvement-tracking-migration
+
+- Level: `L`; type: `process`
+- Owner: `pf-base`
+- Affected: `pf-base`, `pf-db`, `pf-rates`, `pf-payroll`, `pf-sheets`, `pf-common`
+- Next action: Validate generated context and repository automation before historical migration.
+- Plan: https://github.com/mrturo-pf/pf-base/blob/main/docs/proposals/ecosystem-improvement-tracking-migration-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/4

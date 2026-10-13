@@ -11,18 +11,6 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-STATUSES = {
-    "planned",
-    "investigating",
-    "designed",
-    "approved",
-    "in progress",
-    "blocked",
-    "validated",
-    "released",
-    "superseded",
-    "closed",
-}
 PRIORITIES = {"critical", "high", "medium", "low"}
 LEVELS = {"S", "M", "L"}
 TYPES = {
@@ -86,9 +74,6 @@ def validate(manifest: dict[str, Any]) -> list[str]:
 
         if item.get("level") not in LEVELS:
             errors.append(f"{prefix}.level is invalid")
-        status = item.get("status")
-        if status not in STATUSES:
-            errors.append(f"{prefix}.status is invalid")
         if item.get("priority") is not None and item.get("priority") not in PRIORITIES:
             errors.append(f"{prefix}.priority is invalid")
         if item.get("type") is not None and item.get("type") not in TYPES:
@@ -106,17 +91,6 @@ def validate(manifest: dict[str, Any]) -> list[str]:
         if not isinstance(item.get("next_action"), str) or not item["next_action"]:
             errors.append(f"{prefix}.next_action must be non-empty")
 
-        queue_priority = item.get("queue_priority")
-        if status in {"validated", "released", "superseded", "closed"}:
-            if queue_priority is not None:
-                errors.append(f"{prefix}.queue_priority must be null for inactive work")
-        elif not isinstance(queue_priority, int) or queue_priority <= 0:
-            errors.append(f"{prefix}.queue_priority must be a positive integer")
-        elif queue_priority in active_priorities:
-            errors.append(f"duplicate active queue_priority: {queue_priority}")
-        else:
-            active_priorities.add(queue_priority)
-
     return errors
 
 
@@ -130,16 +104,17 @@ def generate_context(manifest: dict[str, Any]) -> str:
         f"- Schema version: `{manifest['schema_version']}`",
         f"- Items: `{len(items)}`",
         "",
-        "## Current queue",
+        "## Improvement references",
+        "",
+        "Current status, priority, and progress are authoritative in the GitHub Project.",
+        "Query the Project before making planning decisions; this generated file stores no task state.",
         "",
     ]
-    for item in sorted(items, key=lambda value: value["queue_priority"] or 10**9):
+    for item in sorted(manifest["improvements"], key=lambda value: value["id"]):
         lines.extend(
             [
                 f"### {item['id']} — {item['slug']}",
                 "",
-                f"- Status: `{item['status']}` / Project `{item['project_status']}`",
-                f"- Priority: `{item['priority'] or 'unclassified'}` ({item['queue_priority'] or 'historical'})",
                 f"- Level: `{item['level']}`; type: `{item['type'] or 'unclassified'}`",
                 f"- Owner: `{item['owner']}`",
                 f"- Affected: {', '.join(f'`{repo}`' for repo in item['affected']) or 'none'}",
@@ -154,12 +129,11 @@ def generate_context(manifest: dict[str, Any]) -> str:
 
 def generate_dashboard(manifest: dict[str, Any]) -> str:
     rows = []
-    for item in sorted(manifest["improvements"], key=lambda value: value["queue_priority"] or 10**9):
+    for item in sorted(manifest["improvements"], key=lambda value: value["id"]):
         rows.append(
             "<tr>"
             f"<td><strong>{html.escape(item['id'])}</strong><br>{html.escape(item['slug'])}</td>"
-            f"<td>{html.escape(item['status'])}</td>"
-            f"<td>{html.escape(item['priority'] or 'unclassified')}</td>"
+            f"<td>{html.escape(item['level'])}</td>"
             f"<td>{html.escape(item['owner'])}</td>"
             f"<td>{html.escape(item['next_action'])}</td>"
             f"<td><a href=\"{html.escape(item['plan_url'], quote=True)}\">plan</a></td>"
@@ -178,7 +152,7 @@ th{background:#e8eef5}a{color:#075985}caption{text-align:left;font-size:1.5rem;f
 </style>
 </head>
 <body><main><table><caption>PF Ecosystem Improvements</caption>
-<thead><tr><th>ID / slug</th><th>Status</th><th>Priority</th><th>Owner</th><th>Next action</th><th>Canonical plan</th></tr></thead>
+<thead><tr><th>ID / slug</th><th>Level</th><th>Owner</th><th>Next action</th><th>Canonical plan</th></tr></thead>
 <tbody>""" + "\n".join(rows) + """</tbody></table>
 <p>Generated from <code>docs/proposals/improvements.json</code>. Do not edit manually.</p>
 </main></body></html>

@@ -4,15 +4,15 @@ Central lifecycle index for investigations and proposal artifacts across the PF
 ecosystem. The `Owner` is exactly one module/repository: the initiator that
 hosts the coordination artifacts. `Affected` lists other modules involved.
 
-Use only the controlled statuses defined in
-[`docs/ecosystem-improvement-workflow.md`](../ecosystem-improvement-workflow.md).
-The central index tracks formal Level M/L proposal lifecycles. Unrelated findings
+The GitHub Project is the only source for current task status, priority, blockers,
+and progress. This index stores navigation and durable artifact references only.
+The central index tracks formal Level M/L proposal artifacts. Unrelated findings
 discovered during active work are captured separately in the
 [PF Ecosystem Improvement Register](ecosystem-improvement-register.md) until they
 are authorized and promoted to formal proposal work.
 
 
-| `Slug` | `Level` | `Owner` | `Affected` | `Scope` | `Status` | `Notes` | `Authoritative artifact` | `Related investigation` | `Superseded-by` | `Updated` |
+| `Slug` | `Level` | `Owner` | `Affected` | `Scope` | `Notes` | `Authoritative artifact` | `Related investigation` | `Superseded-by` | `Updated` |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `scheduler-credential-exposure-remediation` | L | `pf-payroll` | `pf-base` | Remediate the exposed GCP Scheduler credential and validate replacement authentication | released | Credential remediation and validation completed; residual historical log limitation accepted; OIDC remains separate | [recommendation](../../modules/pf-payroll/docs/proposals/scheduler-credential-exposure-remediation-recommendation.md) + [plan](../../modules/pf-payroll/docs/proposals/scheduler-credential-exposure-remediation-plan.md) | [investigation](../../modules/pf-payroll/docs/investigations/gcp-scheduler-credential-exposure.md) | none | 2026-10-11 |
 | `cloud-deployer-identity-hardening` | L | `pf-common` | `pf-base`, `pf-db`, `pf-rates`, `pf-payroll` | Cloud deployer, runtime, migration, administration identity separation and WIF evaluation | released | WIF production deployments and smoke tests passed; legacy keys/grants removed; cleanup evidence recorded | [plan](../../modules/pf-common/docs/proposals/cloud-deployer-identity-hardening-plan.md) + [recommendation](../../modules/pf-common/docs/proposals/cloud-deployer-identity-hardening-recommendation.md) | [brief](../../modules/pf-common/docs/proposals/cloud-deployer-identity-hardening-brief.md) + [investigation](../../modules/pf-common/docs/investigations/cloud-deployer-identity-hardening.md) | none | 2026-10-11 |
@@ -43,15 +43,13 @@ are authorized and promoted to formal proposal work.
 ## Index rules
 
 - Add a row when a Level M or L investigation, brief, or recommendation is
-  created. An investigation starts as `investigating`, even if it later closes
-  as non-actionable and never produces a brief.
-- Register the slug in this index at creation and update `Status` and `Updated`
-  at every lifecycle transition.
-- Keep `Status` machine-readable and put explanations in `Notes`.
+  created. The current operational state belongs in the GitHub Project.
+- Keep this index as navigation and artifact references; do not add task status or
+  priority fields here.
 - Keep `Owner` singular. Put every other participating module in `Affected`.
 - Link all affected repositories' docs or README files through `Related
   artifacts` when they need local context.
-- Record commit SHAs, workflow run IDs, and deployment status in the living plan
+- Record commit SHAs, workflow run IDs, and deployment evidence in the living plan
   or authoritative code/API documentation; summarize only the useful reference
   in `Notes`.
 - Never delete superseded rows. Set `Superseded-by` to the replacement artifact.
