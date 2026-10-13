@@ -1,1 +1,10 @@
-neon/*
+# Runtime Cloud Shell result directories and archives; reviewable scripts are versioned.
+cloudshell/*/
+cloudshell/*.tar.gz
+
+# Runtime Neon result directories and local configuration; safe templates/scripts are versioned.
+neon/*/
+neon/*.txt
+neon/*.json
+!neon/*.sh
+!neon/*.json.example
