@@ -73,7 +73,7 @@
       "next_action": "Validate generated context and repository automation before historical migration."
     },
     {
-      "id": "HIST-001",
+      "id": "IMP-001",
       "slug": "scheduler-credential-exposure-remediation",
       "level": "L",
       "priority": null,
@@ -89,7 +89,7 @@
       "metadata_status": "historical; priority and type not inferred"
     },
     {
-      "id": "HIST-002",
+      "id": "IMP-005",
       "slug": "cloud-deployer-identity-hardening",
       "level": "L",
       "priority": null,
@@ -108,7 +108,7 @@
       "metadata_status": "historical; priority and type not inferred"
     },
     {
-      "id": "HIST-003",
+      "id": "IMP-003",
       "slug": "database-runtime-role-hardening",
       "level": "L",
       "priority": null,
@@ -126,7 +126,7 @@
       "metadata_status": "historical; priority and type not inferred"
     },
     {
-      "id": "HIST-004",
+      "id": "IMP-004",
       "slug": "pf-rates-database-secret-access-review",
       "level": "M",
       "priority": null,
@@ -144,7 +144,7 @@
       "metadata_status": "historical; priority and type not inferred"
     },
     {
-      "id": "HIST-005",
+      "id": "IMP-008",
       "slug": "database-identifier-length-policy",
       "level": "M",
       "priority": null,
@@ -161,7 +161,7 @@
       "metadata_status": "historical; priority and type not inferred"
     },
     {
-      "id": "HIST-006",
+      "id": "IMP-002",
       "slug": "neon-credential-and-backup-hardening",
       "level": "L",
       "priority": null,

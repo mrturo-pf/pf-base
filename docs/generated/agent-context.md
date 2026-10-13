@@ -10,60 +10,6 @@
 Current status, priority, and progress are authoritative in the GitHub Project.
 Query the Project before making planning decisions; this generated file stores no task state.
 
-### HIST-001 — scheduler-credential-exposure-remediation
-
-- Level: `L`; type: `unclassified`
-- Owner: `pf-payroll`
-- Affected: `pf-base`
-- Next action: Credential remediation and validation completed; residual historical log limitation accepted; OIDC remains separate
-- Plan: https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/scheduler-credential-exposure-remediation-recommendation.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/5
-
-### HIST-002 — cloud-deployer-identity-hardening
-
-- Level: `L`; type: `unclassified`
-- Owner: `pf-common`
-- Affected: `pf-base`, `pf-db`, `pf-rates`, `pf-payroll`
-- Next action: WIF production deployments and smoke tests passed; legacy keys/grants removed; cleanup evidence recorded
-- Plan: https://github.com/mrturo-pf/pf-common/blob/main/docs/proposals/cloud-deployer-identity-hardening-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/6
-
-### HIST-003 — database-runtime-role-hardening
-
-- Level: `L`; type: `unclassified`
-- Owner: `pf-db`
-- Affected: `pf-payroll`, `pf-rates`, `pf-base`
-- Next action: Superseded by IMP-002, which implemented and evidenced the role hardening; retained for historical traceability
-- Plan: https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/database-runtime-role-hardening-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/7
-
-### HIST-004 — pf-rates-database-secret-access-review
-
-- Level: `M`; type: `unclassified`
-- Owner: `pf-rates`
-- Affected: `pf-db`, `pf-rates`, `pf-base`
-- Next action: Scoped IAM mutation complete and verified; post-mutation health and authenticated read passed
-- Plan: https://github.com/mrturo-pf/pf-rates/blob/main/docs/proposals/pf-rates-database-secret-access-review-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/8
-
-### HIST-005 — database-identifier-length-policy
-
-- Level: `M`; type: `unclassified`
-- Owner: `pf-db`
-- Affected: `pf-base`, `pf-payroll`
-- Next action: Policy and validator complete; local quality validation passed; commit/push/CI evidence pending; physical rename migration delegated
-- Plan: https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/database-identifier-length-policy-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/9
-
-### HIST-006 — neon-credential-and-backup-hardening
-
-- Level: `L`; type: `unclassified`
-- Owner: `pf-db`
-- Affected: `pf-base`, `pf-payroll`, `pf-rates`
-- Next action: Backup/restore, dump/credential cleanup, ownership migration, and runtime cutover complete; provider-managed role residual risk accepted
-- Plan: https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/neon-credential-and-backup-hardening-plan.md
-- Issue: https://github.com/mrturo-pf/pf-base/issues/10
-
 ### HIST-007 — pf-svc-income-renaming
 
 - Level: `L`; type: `unclassified`
@@ -199,6 +145,51 @@ Query the Project before making planning decisions; this generated file stores n
 - Plan: https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/spreadsheet-export-plan.md
 - Issue: https://github.com/mrturo-pf/pf-base/issues/25
 
+### IMP-001 — scheduler-credential-exposure-remediation
+
+- Level: `L`; type: `unclassified`
+- Owner: `pf-payroll`
+- Affected: `pf-base`
+- Next action: Credential remediation and validation completed; residual historical log limitation accepted; OIDC remains separate
+- Plan: https://github.com/mrturo-pf/pf-payroll/blob/main/docs/proposals/scheduler-credential-exposure-remediation-recommendation.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/5
+
+### IMP-002 — neon-credential-and-backup-hardening
+
+- Level: `L`; type: `unclassified`
+- Owner: `pf-db`
+- Affected: `pf-base`, `pf-payroll`, `pf-rates`
+- Next action: Backup/restore, dump/credential cleanup, ownership migration, and runtime cutover complete; provider-managed role residual risk accepted
+- Plan: https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/neon-credential-and-backup-hardening-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/10
+
+### IMP-003 — database-runtime-role-hardening
+
+- Level: `L`; type: `unclassified`
+- Owner: `pf-db`
+- Affected: `pf-payroll`, `pf-rates`, `pf-base`
+- Next action: Superseded by IMP-002, which implemented and evidenced the role hardening; retained for historical traceability
+- Plan: https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/database-runtime-role-hardening-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/7
+
+### IMP-004 — pf-rates-database-secret-access-review
+
+- Level: `M`; type: `unclassified`
+- Owner: `pf-rates`
+- Affected: `pf-db`, `pf-rates`, `pf-base`
+- Next action: Scoped IAM mutation complete and verified; post-mutation health and authenticated read passed
+- Plan: https://github.com/mrturo-pf/pf-rates/blob/main/docs/proposals/pf-rates-database-secret-access-review-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/8
+
+### IMP-005 — cloud-deployer-identity-hardening
+
+- Level: `L`; type: `unclassified`
+- Owner: `pf-common`
+- Affected: `pf-base`, `pf-db`, `pf-rates`, `pf-payroll`
+- Next action: WIF production deployments and smoke tests passed; legacy keys/grants removed; cleanup evidence recorded
+- Plan: https://github.com/mrturo-pf/pf-common/blob/main/docs/proposals/cloud-deployer-identity-hardening-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/6
+
 ### IMP-006 — ecosystem-http-error-baseline
 
 - Level: `M`; type: `observability`
@@ -216,6 +207,15 @@ Query the Project before making planning decisions; this generated file stores n
 - Next action: Define the cheapest viable operational baseline.
 - Plan: https://github.com/mrturo-pf/pf-common/blob/main/docs/proposals/cloud-run-observability-and-capacity-plan.md
 - Issue: https://github.com/mrturo-pf/pf-base/issues/2
+
+### IMP-008 — database-identifier-length-policy
+
+- Level: `M`; type: `unclassified`
+- Owner: `pf-db`
+- Affected: `pf-base`, `pf-payroll`
+- Next action: Policy and validator complete; local quality validation passed; commit/push/CI evidence pending; physical rename migration delegated
+- Plan: https://github.com/mrturo-pf/pf-db/blob/main/docs/proposals/database-identifier-length-policy-plan.md
+- Issue: https://github.com/mrturo-pf/pf-base/issues/9
 
 ### IMP-009 — scheduler-oidc-hardening
 
