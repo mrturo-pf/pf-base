@@ -74,8 +74,8 @@ cd architecture
 
 The formal process for ecosystem improvements, including investigations, briefs,
 recommendations, living plans, lifecycle statuses, and the central proposal index,
-is documented in [`docs/ecosystem-improvement-workflow.md`](docs/ecosystem-improvement-workflow.md).
-The active artifact index is [`docs/proposals/index.md`](docs/proposals/index.md).
+is documented in [`https://github.com/mrturo-pf/pf-improvements/blob/main/workflow.md`](https://github.com/mrturo-pf/pf-improvements/blob/main/workflow.md).
+Improvement artifacts are centralized in [`pf-improvements`](https://github.com/mrturo-pf/pf-improvements), with navigation in its `index.md` and operational state in the `PF Ecosystem Improvements` GitHub Project.
 
 ## Postman collection
 
