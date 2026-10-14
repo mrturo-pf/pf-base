@@ -48,9 +48,11 @@ change and prevents the root from becoming a duplicate implementation manual.
 | `pf-common` | Shared infrastructure and Make targets; no local `AGENTS.md` | [`modules/pf-common/README.md`](modules/pf-common/README.md) |
 
 The root repository (`pf-base`) contains ecosystem-level documentation, architecture
-descriptions, Postman assets, and coordination rules. Each directory under
-`modules/` is an independent Git repository with its own history, remote, and
-working tree. Run Git commands from the repository they affect.
+descriptions, and coordination rules. The Postman collection and environments are
+owned by the independent [`pf-postman`](https://github.com/mrturo-pf/pf-postman)
+repository. Each directory under `modules/` is an independent Git repository with
+its own history, remote, and working tree. Run Git commands from the repository they
+affect.
 
 ## Ownership boundaries
 
@@ -145,9 +147,10 @@ with implementation:
 - `modules/pf-rates/docs/api.md`
 - `modules/pf-payroll/docs/api.md`
 - `modules/pf-sheets/docs/api.md`
-- `postman/pf-ecosystem.postman_collection.json`
-- `postman/pf-ecosystem.postman_environment.local.json`
-- `postman/pf-ecosystem.postman_environment.gcp.json`
+The canonical Postman collection and environments live in the independent
+[`pf-postman`](https://github.com/mrturo-pf/pf-postman) repository. Update that
+repository for Postman contract catalog changes; do not recreate Postman assets in
+`pf-base`.
 
 If an endpoint path, request/response shape, authentication rule, or error contract
 changes, update the owning repository's API documentation and the relevant Postman

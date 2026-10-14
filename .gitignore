@@ -4,6 +4,7 @@
 # so `git status` here stays clean instead of showing them as untracked.
 /modules/
 /improvements/
+/pf-postman/
 
 # OS cruft
 .DS_Store

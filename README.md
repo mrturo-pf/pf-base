@@ -79,12 +79,9 @@ Improvement artifacts are centralized in [`pf-improvements`](https://github.com/
 
 ## Postman collection
 
-[`postman/pf-ecosystem.postman_collection.json`](postman/pf-ecosystem.postman_collection.json)
-is a single Postman collection covering every HTTP surface in the ecosystem
-(`pf-rates`, `pf-payroll`, and `pf-sheets`'s Web App — `pf-db` has no HTTP API).
-After an authorized push to `main`, `.github/workflows/sync-postman.yml` automatically
-syncs the collection and environments to the Postman workspace. See
-[`postman/README.md`](postman/README.md) for one-time setup and how the sync works.
+The canonical Postman collection and environments live in the independent
+[`pf-postman`](https://github.com/mrturo-pf/pf-postman) repository. Its workflow
+synchronizes the collection and environments to the Postman workspace.
 
 ## Where to start
 
