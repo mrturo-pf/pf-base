@@ -118,6 +118,19 @@ architecture: scale-to-zero, on-demand jobs, free tooling, and no unnecessary
 provisioning. Any infrastructure proposal must state its cost impact and the cheaper
 alternatives considered.
 
+## Repository contribution workflow
+
+All PF repositories use a protected `main` branch. Work on a dedicated branch and
+submit changes through a pull request targeting `main`; direct pushes, force-pushes,
+and deletion of `main` are blocked. Pull requests currently require no additional
+approval because PF has a single maintainer, but all review conversations must be
+resolved before merge.
+
+The repositories remain public. GitHub Issues, Projects, and forks remain enabled
+where supported by GitHub repository settings. Public access permits reading,
+cloning, forking, issue creation, and pull requests, but not direct repository
+writes.
+
 ## Shared rules
 
 - Do not autonomously commit, push, create branches, open pull requests, or create

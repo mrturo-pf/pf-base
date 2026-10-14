@@ -8,6 +8,17 @@ income tax brackets).
 > start + docs) and `AGENTS.md` (architecture, style, design principles) — read those,
 > not this one, for anything specific.
 
+## Contribution workflow
+
+All PF repositories use a protected `main` branch. Work on a dedicated branch and
+open a pull request targeting `main`; direct pushes, force-pushes, and deletion of
+`main` are blocked. Pull requests currently require no additional approval because
+PF has a single maintainer, but review conversations must be resolved before merge.
+
+The repositories remain public. GitHub Issues, Projects, forks, and pull requests
+remain available according to GitHub's repository settings. Public access permits
+reading and cloning, but not direct repository writes.
+
 ## Subprojects
 
 | Folder | What it is | Docs |
