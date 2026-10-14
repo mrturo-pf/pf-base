@@ -193,7 +193,17 @@ before pushing, then monitor the new run by its exact SHA or run ID. Manual depl
 approval always requires explicit user authorization. If GitHub is unreachable, retry
 a couple of times and stop; never assume an operation succeeded.
 
-## Working in this workspace
+## Local checkout layout
+
+The workspace uses these local directories for independent repositories that are
+not under `modules/`:
+
+- `postman/` → `mrturo-pf/pf-postman`
+- `improvements/` → `mrturo-pf/pf-improvements`
+
+Use those existing checkouts for work on the corresponding repositories. Do not
+clone either repository again under `modules/` or another sibling directory.
+
 
 Use this sequence:
 
