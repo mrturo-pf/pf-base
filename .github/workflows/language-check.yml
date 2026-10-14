@@ -23,10 +23,12 @@ permissions:
 
 jobs:
   language:
+    name: Documentation language
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - name: Validate Markdown language
         run: |
+          python3 scripts/check-language.py --all --mode markdown
           python3 scripts/check-language.py --all --mode comments
           python3 scripts/check-language.py --all --mode user-facing --report
