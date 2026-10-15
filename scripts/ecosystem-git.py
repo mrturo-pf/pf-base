@@ -100,7 +100,7 @@ def prs(slug: str, branch: str) -> list[dict[str, Any]]:
 def dependent_prs(slug: str, branch: str) -> list[dict[str, Any]]:
     raw = run(["gh", "pr", "list", "--repo", slug, "--state", "open", "--base", branch,
                "--json", PR_FIELDS, "--limit", "50"])
-    return [p for p in json.loads(raw or "[]") if not p.get("isCrossRepository")]
+    return json.loads(raw or "[]")
 
 
 def remote_sha(path: Path, branch: str) -> str | None:
@@ -156,7 +156,9 @@ def inspect_branch(state: RepoState, path: Path, slug: str, branch: str, local: 
         return
     if merged:
         pr_sha = merged["headRefOid"]
-        if local_sha and local_sha != pr_sha:
+        if local_sha is None:
+            add(state, branch, "BLOCK", f"merged PR #{merged['number']} is remote-only; local checkout required before cleanup", pr_sha=pr_sha, remote_sha=remote_tip)
+        elif local_sha != pr_sha:
             add(state, branch, "BLOCK", f"merged PR #{merged['number']} head differs from local HEAD", local_sha=local_sha, pr_sha=pr_sha, remote_sha=remote_tip)
         elif remote_tip and remote_tip != pr_sha:
             add(state, branch, "BLOCK", f"merged PR #{merged['number']} head differs from remote tip", local_sha=local_sha, pr_sha=pr_sha, remote_sha=remote_tip)
@@ -181,7 +183,13 @@ def inspect_branch(state: RepoState, path: Path, slug: str, branch: str, local: 
         if left and right:
             add(state, branch, "BLOCK", f"local and remote branches diverged ({right} ahead, {left} behind)", local_sha=local_sha, remote_sha=remote_tip)
             return
+        if left and not right:
+            add(state, branch, "BLOCK", f"local branch is behind remote by {left} commit(s)", local_sha=local_sha, remote_sha=remote_tip)
+            return
     unique = int(git(path, "rev-list", "--count", f"origin/{state.default_branch}..{branch}"))
+    if not upstream and local_sha == remote_tip:
+        add(state, branch, "WAIT", "remote tip matches local branch but upstream tracking is missing", local_sha=local_sha, remote_sha=remote_tip)
+        return
     if unique == 0:
         add(state, branch, "WAIT", f"no unique commits relative to origin/{state.default_branch}", local_sha=local_sha, remote_sha=remote_tip)
     elif not upstream or local_sha != remote_tip:
@@ -250,15 +258,17 @@ def apply_action(action: Action, state: RepoState, *, create_pr: bool = False,
         raise RuntimeError(f"unsupported action: {action.kind}")
 
 
-def journal_key(repo: str, branch: str, kind: str) -> str:
-    return f"{repo}:{branch}:{kind}"
+def journal_key(repo: str, branch: str, kind: str, local_sha: str | None = None,
+                pr_sha: str | None = None, remote_sha_value: str | None = None) -> str:
+    return ":".join([repo, branch, kind, local_sha or "", pr_sha or "", remote_sha_value or ""])
 
 
 def journal_successes(path: Path | None) -> set[str]:
     if path is None or not path.exists():
         return set()
     records = json.loads(path.read_text())
-    return {journal_key(r["repo"], r["branch"], r["kind"])
+    return {journal_key(r["repo"], r["branch"], r["kind"], r.get("local_sha"),
+                           r.get("pr_sha"), r.get("remote_sha"))
             for r in records if r.get("status") == "success"}
 
 
@@ -320,11 +330,12 @@ def main() -> int:
             print(f"BLOCK {state.repo}: dirty working tree; no actions applied")
             continue
         for action in state.actions:
-            if action.kind not in {"PUSH", "PR", "CLEANUP"}:
+            if action.kind == "PR" and not args.create_pr:
+                print(f"SKIP {state.repo}/{action.branch}: PR creation disabled; use --create-pr")
                 continue
             if not args.apply_all and action.branch != state.current:
                 continue
-            key = journal_key(state.repo, action.branch, action.kind)
+            key = journal_key(state.repo, action.branch, action.kind, action.local_sha, action.pr_sha, action.remote_sha)
             if key in successes:
                 print(f"SKIP {state.repo}/{action.branch}: {action.kind} already succeeded in journal")
                 continue
@@ -340,11 +351,16 @@ def main() -> int:
                     raise RuntimeError("state changed since plan; re-run in plan mode")
                 apply_action(fresh_action, fresh, create_pr=args.create_pr,
                              pr_title_template=args.pr_title_template, pr_body=args.pr_body)
-                record = {"repo": state.repo, "branch": action.branch, "kind": action.kind, "status": "success"}
+                record = {"repo": state.repo, "branch": action.branch, "kind": action.kind,
+                          "status": "success", "local_sha": fresh_action.local_sha,
+                          "pr_sha": fresh_action.pr_sha, "remote_sha": fresh_action.remote_sha}
                 write_journal(args.journal, record)
                 print(f"OK {state.repo}/{action.branch}: {action.kind}")
             except (RuntimeError, ValueError, json.JSONDecodeError) as error:
-                write_journal(args.journal, {"repo": state.repo, "branch": action.branch, "kind": action.kind, "status": "failed", "error": str(error)})
+                write_journal(args.journal, {"repo": state.repo, "branch": action.branch, "kind": action.kind,
+                                             "status": "failed", "error": str(error),
+                                             "local_sha": action.local_sha, "pr_sha": action.pr_sha,
+                                             "remote_sha": action.remote_sha})
                 print(f"ERROR applying {state.repo}/{action.branch}: {error}", file=sys.stderr)
                 print("Stopped at first mutation error; earlier actions remain applied.", file=sys.stderr)
                 return 1
