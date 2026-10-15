@@ -97,6 +97,12 @@ def prs(slug: str, branch: str) -> list[dict[str, Any]]:
     return [p for p in json.loads(raw or "[]") if not p.get("isCrossRepository")]
 
 
+def active_runs(slug: str, branch: str) -> list[dict[str, Any]]:
+    raw = run(["gh", "run", "list", "--repo", slug, "--branch", branch,
+               "--status", "in_progress", "--json", "databaseId,name", "--limit", "50"])
+    return json.loads(raw or "[]")
+
+
 def dependent_prs(slug: str, branch: str) -> list[dict[str, Any]]:
     raw = run(["gh", "pr", "list", "--repo", slug, "--state", "open", "--base", branch,
                "--json", PR_FIELDS, "--limit", "50"])
@@ -228,6 +234,11 @@ def apply_action(action: Action, state: RepoState, *, create_pr: bool = False,
     if state.dirty:
         raise RuntimeError("working tree is dirty")
     if action.kind == "PUSH":
+        slug = github_repo(path)
+        active = active_runs(slug, action.branch)
+        if active:
+            names = ", ".join(run_info.get("name", "unknown") for run_info in active)
+            raise RuntimeError(f"active GitHub runs exist for branch; review before pushing: {names}")
         if action.remote_sha:
             git(path, "push", "origin", f"refs/heads/{action.branch}:refs/heads/{action.branch}")
         else:
@@ -314,7 +325,13 @@ def main() -> int:
         return 2
     successes = journal_successes(args.resume or args.journal)
     if args.json:
-        print(json.dumps({"repositories": [asdict(s) for s in states.values()]}, indent=2))
+        payload = {"repositories": [asdict(s) for s in states.values()]}
+        if args.audit_protection:
+            payload["protection"] = {
+                state.repo: protection_report(github_repo(ROOT / state.path), state.default_branch)
+                for state in states.values()
+            }
+        print(json.dumps(payload, indent=2))
     else:
         for state in states.values():
             print(f"{state.repo}: current={state.current} default={state.default_branch} dirty={state.dirty}")
