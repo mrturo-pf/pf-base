@@ -21,6 +21,7 @@ venv/
 .venv/
 __pycache__/
 *.pyc
+.idea
 
 # Postman: pf-ecosystem.postman_environment.*.json files ARE committed, but
 # their api-key values are always empty placeholders -- real values only
