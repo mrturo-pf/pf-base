@@ -99,8 +99,8 @@ def prs(slug: str, branch: str) -> list[dict[str, Any]]:
 
 def active_runs(slug: str, branch: str) -> list[dict[str, Any]]:
     raw = run(["gh", "run", "list", "--repo", slug, "--branch", branch,
-               "--status", "in_progress", "--json", "databaseId,name", "--limit", "50"])
-    return json.loads(raw or "[]")
+               "--json", "databaseId,name,status", "--limit", "50"])
+    return [run_info for run_info in json.loads(raw or "[]") if run_info.get("status") != "completed"]
 
 
 def dependent_prs(slug: str, branch: str) -> list[dict[str, Any]]:
@@ -244,6 +244,9 @@ def apply_action(action: Action, state: RepoState, *, create_pr: bool = False,
             raise RuntimeError(f"active GitHub runs exist for branch; review before pushing: {names}")
         if action.remote_sha:
             git(path, "push", "origin", f"refs/heads/{action.branch}:refs/heads/{action.branch}")
+            tracking = git(path, "for-each-ref", f"refs/heads/{action.branch}", "--format=%(upstream:short)")
+            if not tracking:
+                git(path, "branch", "--set-upstream-to", f"origin/{action.branch}", action.branch)
         else:
             git(path, "push", "-u", "origin", f"refs/heads/{action.branch}:refs/heads/{action.branch}")
     elif action.kind == "PR":
@@ -266,7 +269,8 @@ def apply_action(action: Action, state: RepoState, *, create_pr: bool = False,
         if action.remote_sha and remote_sha(path, action.branch) != action.pr_sha:
             raise RuntimeError("remote SHA changed since plan; refusing cleanup")
         if action.remote_sha:
-            git(path, "push", "origin", "--delete", action.branch)
+            git(path, "push", f"--force-with-lease=refs/heads/{action.branch}:{action.remote_sha}",
+                "origin", f":refs/heads/{action.branch}")
         git(path, "branch", "-D", action.branch)
     else:
         raise RuntimeError(f"unsupported action: {action.kind}")
