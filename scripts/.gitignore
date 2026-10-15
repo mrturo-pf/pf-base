@@ -3,3 +3,4 @@ cloudshell/**
 neon/**
 !neon/neon-config.json.example
 !neon/pf-neon-script-base.sh
+logs/

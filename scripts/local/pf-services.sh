@@ -15,7 +15,7 @@
 # Notes:
 #   - Does NOT touch any .env file — services run with whatever config
 #     is already in modules/pf-rates/.env and modules/pf-payroll/.env.
-#   - Logs go to scripts/logs/<service>.log (gitignored)
+#   - Logs go to scripts/local/logs/<service>.log (gitignored)
 # ============================================================================
 set -euo pipefail
 
@@ -24,7 +24,7 @@ PF_DB_DIR="$ROOT_DIR/modules/pf-db"
 PF_RATES_DIR="$ROOT_DIR/modules/pf-rates"
 PF_PAYROLL_DIR="$ROOT_DIR/modules/pf-payroll"
 
-LOG_DIR="$ROOT_DIR/scripts/logs"
+LOG_DIR="$ROOT_DIR/scripts/local/logs"
 mkdir -p "$LOG_DIR"
 
 RATES_PORT=8001

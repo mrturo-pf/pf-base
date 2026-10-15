@@ -9,9 +9,6 @@
 # OS cruft
 .DS_Store
 
-# Local runtime logs from scripts/local/pf-services.sh
-/scripts/logs/
-
 # Personal search-words.sh config -- copy scripts/quality/search-words.jsonc.example
 # to scripts/search-words.json and edit locally, never committed.
 /scripts/search-words.json
