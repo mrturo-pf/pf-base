@@ -4,7 +4,7 @@
 set -euo pipefail
 
 echo "==> [pre-commit] word-check (banned terms across the pf ecosystem)"
-WORD_CHECK="scripts/replace-words.py"
+WORD_CHECK="scripts/quality/replace-words.py"
 if [ -f "$WORD_CHECK" ]; then
   if ! python3 "$WORD_CHECK"; then
     echo ""
@@ -17,10 +17,10 @@ else
 fi
 
 echo "==> [pre-commit] language-check"
-if ! python3 scripts/check-language.py --staged --mode comments; then
+if ! python3 scripts/quality/check-language.py --staged --mode comments; then
   echo ""
   echo "English-language documentation check failed."
-  echo "Use 'python3 scripts/check-language.py --staged --mode comments --report' for details."
+  echo "Use 'python3 scripts/quality/check-language.py --staged --mode comments --report' for details."
   exit 1
 fi
 

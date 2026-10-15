@@ -8,9 +8,9 @@
 #   3. pf-payroll - FastAPI microservice on :8000
 #
 # Usage:
-#   scripts/pf-services.sh start
-#   scripts/pf-services.sh stop
-#   scripts/pf-services.sh restart
+#   scripts/local/pf-services.sh start
+#   scripts/local/pf-services.sh stop
+#   scripts/local/pf-services.sh restart
 #
 # Notes:
 #   - Does NOT touch any .env file — services run with whatever config

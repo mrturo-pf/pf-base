@@ -2,7 +2,7 @@
 # Reset the local GitHub CLI TLS/proxy environment and verify gh access.
 #
 # Usage:
-#   scripts/gh-healthcheck.sh
+#   scripts/github/gh-healthcheck.sh
 
 set -euo pipefail
 

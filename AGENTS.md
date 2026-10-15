@@ -181,7 +181,7 @@ source "$HOME/Documents/scripts/unset_proxies.sh"
 ```
 
 If `gh` reports `tls: failed to verify certificate: x509: certificate signed by
-unknown authority`, first run [`scripts/gh-healthcheck.sh`](scripts/gh-healthcheck.sh)
+unknown authority`, first run [`scripts/github/gh-healthcheck.sh`](scripts/github/gh-healthcheck.sh)
 (or ask the user to run it in another terminal). The script clears
 `SSL_CERT_FILE`/`_SSL_CERT_FILE`, resets proxies, prints the relevant environment,
 and verifies `gh` access. Do not bypass TLS verification with insecure flags or
