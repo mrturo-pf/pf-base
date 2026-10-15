@@ -10,14 +10,15 @@ income tax brackets).
 
 ## Contribution workflow
 
-All PF repositories use a protected `main` branch. Work on a dedicated branch and
-open a pull request targeting `main`; direct pushes, force-pushes, and deletion of
-`main` are blocked. Pull requests currently require no additional approval because
-PF has a single maintainer, but review conversations must be resolved before merge.
+The direct-to-`main` delivery workflow applies only to `pf-base`, `pf-postman`, and
+`pf-improvements`: changes are committed and pushed directly to `main`, and CI and
+release automation run from the resulting push. `workflow_dispatch` remains
+available for intentional manual reruns and operational actions.
 
-The repositories remain public. GitHub Issues, Projects, forks, and pull requests
-remain available according to GitHub's repository settings. Public access permits
-reading and cloning, but not direct repository writes.
+Other PF repositories retain their own contribution and CI workflows, including
+pull-request checks where documented by their local `AGENTS.md`. The repositories
+remain public, with GitHub Issues, Projects, forks, and pull requests available
+according to each repository's settings.
 
 ## Subprojects
 

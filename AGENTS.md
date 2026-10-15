@@ -120,16 +120,15 @@ alternatives considered.
 
 ## Repository contribution workflow
 
-All PF repositories use a protected `main` branch. Work on a dedicated branch and
-submit changes through a pull request targeting `main`; direct pushes, force-pushes,
-and deletion of `main` are blocked. Pull requests currently require no additional
-approval because PF has a single maintainer, but all review conversations must be
-resolved before merge.
+The direct-to-`main` delivery workflow applies only to `pf-base`, `pf-postman`, and
+`pf-improvements`: changes are committed and pushed directly to `main`, and CI and
+release automation run from the resulting push. `workflow_dispatch` remains
+available for intentional manual reruns and operational actions.
 
-The repositories remain public. GitHub Issues, Projects, and forks remain enabled
-where supported by GitHub repository settings. Public access permits reading,
-cloning, forking, issue creation, and pull requests, but not direct repository
-writes.
+Other PF repositories retain their own contribution and CI workflows, including
+pull-request checks where documented by their local `AGENTS.md`. The repositories
+remain public, with GitHub Issues, Projects, forks, and pull requests enabled where
+supported by each repository's settings.
 
 ## Shared rules
 
