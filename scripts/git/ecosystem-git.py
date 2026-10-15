@@ -17,7 +17,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 REPOSITORIES = {
     "pf-base": ".", "pf-postman": "postman", "pf-improvements": "improvements",
     "pf-db": "modules/pf-db", "pf-rates": "modules/pf-rates",
