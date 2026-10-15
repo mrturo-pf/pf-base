@@ -350,6 +350,9 @@ def main() -> int:
             print(f"BLOCK {state.repo}: dirty working tree; no actions applied")
             continue
         for action in state.actions:
+            if action.kind not in {"PUSH", "PR", "CLEANUP"}:
+                print(f"SKIP {state.repo}/{action.branch}: {action.kind} is plan-only")
+                continue
             if action.kind == "PR" and not args.create_pr:
                 print(f"SKIP {state.repo}/{action.branch}: PR creation disabled; use --create-pr")
                 continue
