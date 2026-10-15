@@ -88,13 +88,17 @@ def default_branch(path: Path, slug: str) -> str:
     ref = git(path, "symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD", check=False)
     if ref.startswith("origin/"):
         return ref.removeprefix("origin/")
-    return run(["gh", "repo", "view", slug, "--json", "defaultBranchRef", "--jq", ".defaultBranchRef.name"])
+    name = run(["gh", "repo", "view", slug, "--json", "defaultBranchRef", "--jq", ".defaultBranchRef.name"])
+    if not name:
+        raise RuntimeError(f"cannot determine default branch for {slug}")
+    return name
 
 
 def prs(slug: str, branch: str) -> list[dict[str, Any]]:
     raw = run(["gh", "pr", "list", "--repo", slug, "--state", "all", "--head", branch,
                "--json", PR_FIELDS, "--limit", "50"])
-    return [p for p in json.loads(raw or "[]") if not p.get("isCrossRepository")]
+    records = [p for p in json.loads(raw or "[]") if not p.get("isCrossRepository")]
+    return sorted(records, key=lambda p: p.get("number", 0), reverse=True)
 
 
 def active_runs(slug: str, branch: str) -> list[dict[str, Any]]:
@@ -125,25 +129,59 @@ def add(state: RepoState, branch: str, kind: str, reason: str, **sha: str | None
     state.actions.append(Action(state.repo, branch, kind, reason, **sha))
 
 
-def protection_report(slug: str, branch: str) -> dict[str, Any]:
-    """Read GitHub branch protection without mutating repository settings."""
+def gh_api_optional(endpoint: str) -> Any | None:
     try:
-        raw = run(["gh", "api", f"repos/{slug}/branches/{branch}/protection"])
+        raw = run(["gh", "api", endpoint])
     except RuntimeError as error:
         if "404" in str(error):
-            return {"protected": False, "branch": branch}
+            return None
         raise
-    data = json.loads(raw)
-    reviews = data.get("required_pull_request_reviews") or {}
-    checks = data.get("required_status_checks") or {}
+    return json.loads(raw) if raw else None
+
+
+def protection_report(slug: str, branch: str) -> dict[str, Any]:
+    """Read classic branch protection and repository rulesets."""
+    classic = gh_api_optional(f"repos/{slug}/branches/{branch}/protection")
+    rulesets = gh_api_optional(f"repos/{slug}/rules/branches/{branch}") or []
+    sources: list[str] = []
+    checks: list[str] = []
+    pr_required = False
+    reviews = 0
+    conversations = False
+    force_blocked = False
+    deletions_blocked = False
+    if classic:
+        sources.append("branch_protection")
+        pull_reviews = classic.get("required_pull_request_reviews") or {}
+        pr_required |= bool(pull_reviews)
+        reviews = max(reviews, pull_reviews.get("required_approving_review_count", 0))
+        status = classic.get("required_status_checks") or {}
+        checks.extend(status.get("checks") and [item["context"] for item in status["checks"]] or status.get("contexts", []))
+        conversations |= bool((classic.get("required_conversation_resolution") or {}).get("enabled"))
+        force_blocked |= not (classic.get("allow_force_pushes") or {}).get("enabled")
+        deletions_blocked |= not (classic.get("allow_deletions") or {}).get("enabled")
+    if rulesets:
+        sources.append("rulesets")
+        for rule in rulesets:
+            rule_type = rule.get("type")
+            params = rule.get("parameters") or {}
+            if rule_type == "pull_request":
+                pr_required = True
+                reviews = max(reviews, params.get("required_approving_review_count", 0))
+                conversations |= bool(params.get("required_review_thread_resolution"))
+            elif rule_type == "required_status_checks":
+                checks.extend(item.get("context", "") for item in params.get("required_status_checks", []))
+            elif rule_type == "non_fast_forward":
+                force_blocked = True
+            elif rule_type == "deletion":
+                deletions_blocked = True
     return {
-        "protected": True,
-        "branch": branch,
-        "pull_request_required": bool(reviews),
-        "required_reviews": reviews.get("required_approving_review_count", 0),
-        "required_checks": checks.get("contexts", []),
-        "force_pushes_allowed": bool((data.get("allow_force_pushes") or {}).get("enabled")),
-        "deletions_allowed": bool((data.get("allow_deletions") or {}).get("enabled")),
+        "protected": bool(sources), "branch": branch, "sources": sources,
+        "pull_request_required": pr_required, "required_reviews": reviews,
+        "required_checks": sorted(set(filter(None, checks))),
+        "conversation_resolution_required": conversations,
+        "force_pushes_allowed": not force_blocked,
+        "deletions_allowed": not deletions_blocked,
     }
 
 
@@ -153,9 +191,10 @@ def inspect_branch(state: RepoState, path: Path, slug: str, branch: str, local: 
     local_sha = git(path, "rev-parse", branch, check=False) if local else None
     remote_tip = remote_sha(path, branch)
     records = prs(slug, branch)
+    branch_tip = local_sha or remote_tip
     opened = next((p for p in records if p["state"] == "OPEN"), None)
-    merged = next((p for p in records if p["state"] == "MERGED" and p["baseRefName"] == state.default_branch), None)
-    closed = next((p for p in records if p["state"] == "CLOSED" and p["baseRefName"] == state.default_branch), None)
+    merged = next((p for p in records if p["state"] == "MERGED"), None)
+    closed = next((p for p in records if p["state"] == "CLOSED" and p.get("headRefOid") == branch_tip), None)
 
     if opened:
         add(state, branch, "WAIT", f"open PR #{opened['number']}: {opened['url']}", local_sha=local_sha, remote_sha=remote_tip)
@@ -221,8 +260,8 @@ def inspect_repo(name: str, relative: str, fetch: bool) -> RepoState:
         add(state, current, "BLOCK", "working tree has uncommitted or untracked changes")
         return state
     if current == "HEAD":
-        add(state, current, "BLOCK", "detached HEAD")
-        return state
+        # Detached HEAD is common in submodules; explicit refs are still inspectable.
+        current = "HEAD"
     local, remote = branch_names(path)
     for branch in sorted(set(local) | set(remote)):
         inspect_branch(state, path, slug, branch, branch in local)
@@ -254,16 +293,17 @@ def apply_action(action: Action, state: RepoState, *, create_pr: bool = False,
             raise RuntimeError("PR creation requires --create-pr")
         slug = github_repo(path)
         title = pr_title_template.format(repo=state.repo, branch=action.branch)
-        body = pr_body or f"Automated PR for the published `{action.branch}` branch.\\n\\nReview required before merge."
+        body = pr_body or f"Automated PR for the published `{action.branch}` branch.\n\nReview required before merge."
         run(["gh", "pr", "create", "--repo", slug, "--base", state.default_branch,
              "--head", action.branch, "--title", title, "--body", body])
     elif action.kind == "CLEANUP":
         if action.branch in PROTECTED | {state.default_branch}:
             raise RuntimeError("refusing cleanup of protected/default branch")
-        git(path, "switch", state.default_branch)
-        git(path, "pull", "--ff-only", "origin", state.default_branch)
-        if git(path, "rev-parse", state.default_branch) != git(path, "rev-parse", "origin/" + state.default_branch):
-            raise RuntimeError("default branch is not synchronized after pull")
+        if git(path, "branch", "--show-current") == action.branch:
+            git(path, "switch", state.default_branch)
+            git(path, "pull", "--ff-only", "origin", state.default_branch)
+            if git(path, "rev-parse", state.default_branch) != git(path, "rev-parse", "origin/" + state.default_branch):
+                raise RuntimeError("default branch is not synchronized after pull")
         if git(path, "rev-parse", action.branch) != action.pr_sha:
             raise RuntimeError("local SHA changed since plan; refusing cleanup")
         if action.remote_sha and remote_sha(path, action.branch) != action.pr_sha:
@@ -288,6 +328,14 @@ def journal_successes(path: Path | None) -> set[str]:
     return {journal_key(r["repo"], r["branch"], r["kind"], r.get("local_sha"),
                            r.get("pr_sha"), r.get("remote_sha"))
             for r in records if r.get("status") == "success"}
+
+
+def confirm(prompt: str) -> bool:
+    try:
+        return input(prompt).strip().lower() in {"y", "yes"}
+    except EOFError:
+        print()
+        return False
 
 
 def write_journal(path: Path | None, record: dict[str, Any]) -> None:
@@ -367,8 +415,7 @@ def main() -> int:
                 print(f"SKIP {state.repo}/{action.branch}: {action.kind} already succeeded in journal")
                 continue
             if not args.yes:
-                answer = input(f"Apply {action.kind} for {state.repo}/{action.branch}? [y/N] ").strip().lower()
-                if answer not in {"y", "yes"}:
+                if not confirm(f"Apply {action.kind} for {state.repo}/{action.branch}? [y/N] "):
                     print(f"SKIP {state.repo}/{action.branch}: confirmation declined")
                     continue
             try:
