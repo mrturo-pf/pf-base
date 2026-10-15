@@ -127,9 +127,12 @@ def add(state: RepoState, branch: str, kind: str, reason: str, **sha: str | None
 
 def protection_report(slug: str, branch: str) -> dict[str, Any]:
     """Read GitHub branch protection without mutating repository settings."""
-    raw = run(["gh", "api", f"repos/{slug}/branches/{branch}/protection"], check=False)
-    if not raw:
-        return {"protected": False, "branch": branch}
+    try:
+        raw = run(["gh", "api", f"repos/{slug}/branches/{branch}/protection"])
+    except RuntimeError as error:
+        if "404" in str(error):
+            return {"protected": False, "branch": branch}
+        raise
     data = json.loads(raw)
     reviews = data.get("required_pull_request_reviews") or {}
     checks = data.get("required_status_checks") or {}
