@@ -10,12 +10,7 @@ on:
       - "scripts/language-policy.txt"
       - ".github/workflows/language-check.yml"
   pull_request:
-    paths:
-      - "**/*.md"
-      - "**/*.mdx"
-      - "scripts/check-language.py"
-      - "scripts/language-policy.txt"
-      - ".github/workflows/language-check.yml"
+    branches: [main]
   workflow_dispatch: {}
 
 permissions:
