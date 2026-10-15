@@ -6,8 +6,8 @@ on:
     paths:
       - "**/*.md"
       - "**/*.mdx"
-      - "scripts/check-language.py"
-      - "scripts/language-policy.txt"
+      - "scripts/quality/check-language.py"
+      - "scripts/quality/language-policy.txt"
       - ".github/workflows/language-check.yml"
   pull_request:
     branches: [main]
@@ -24,6 +24,6 @@ jobs:
       - uses: actions/checkout@v7
       - name: Validate Markdown language
         run: |
-          python3 scripts/check-language.py --all --mode markdown
-          python3 scripts/check-language.py --all --mode comments
-          python3 scripts/check-language.py --all --mode user-facing --report
+          python3 scripts/quality/check-language.py --all --mode markdown
+          python3 scripts/quality/check-language.py --all --mode comments
+          python3 scripts/quality/check-language.py --all --mode user-facing --report

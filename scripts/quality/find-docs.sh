@@ -2,7 +2,7 @@
 # find-docs.sh — list all *.md, *.txt, and *.sh files recursively, skipping noise dirs by default.
 #
 # Usage:
-#   ./scripts/find-docs.sh [-d DIR] [-i FILE1,FILE2,...] [-h]
+#   ./scripts/quality/find-docs.sh [-d DIR] [-i FILE1,FILE2,...] [-h]
 #
 # Options:
 #   -d, --dir DIR       Directory to search (default: current directory)
@@ -10,10 +10,10 @@
 #   -h, --help          Show this help message
 #
 # Examples:
-#   ./scripts/find-docs.sh
-#   ./scripts/find-docs.sh -d modules/pf-rates
-#   ./scripts/find-docs.sh -i AGENTS.md,README.md
-#   ./scripts/find-docs.sh -d modules/pf-payroll -i README.md
+#   ./scripts/quality/find-docs.sh
+#   ./scripts/quality/find-docs.sh -d modules/pf-rates
+#   ./scripts/quality/find-docs.sh -i AGENTS.md,README.md
+#   ./scripts/quality/find-docs.sh -d modules/pf-payroll -i README.md
 
 set -euo pipefail
 

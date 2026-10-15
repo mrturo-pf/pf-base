@@ -13,19 +13,19 @@
 # (e.g. after scrubbing a banned term out of committed files).
 #
 # Usage:
-#   scripts/search-words.sh [--exclude-file PATTERN ...] \
+#   scripts/quality/search-words.sh [--exclude-file PATTERN ...] \
 #                            [--exclude-dir PATTERN ...] \
 #                            [--ignore-match PATTERN ...] [WORD ...]
 #
 # Examples:
-#   scripts/search-words.sh TODO
-#   scripts/search-words.sh TODO FIXME password secret
-#   scripts/search-words.sh --exclude-file '*.csv' TODO
-#   scripts/search-words.sh                       # uses only search-words.json's "words"
+#   scripts/quality/search-words.sh TODO
+#   scripts/quality/search-words.sh TODO FIXME password secret
+#   scripts/quality/search-words.sh --exclude-file '*.csv' TODO
+#   scripts/quality/search-words.sh                       # uses only search-words.json's "words"
 #
 # Config file (search-words.json, next to this script -- gitignored):
 #   Persistent words/excludes/ignores live in JSON instead of having to
-#   retype them as args every run. Copy scripts/search-words.jsonc.example
+#   retype them as args every run. Copy scripts/quality/search-words.jsonc.example
 #   to scripts/search-words.json and edit it -- the example file is the
 #   only one committed (a template); your real search-words.json is
 #   personal/local and never gets picked up by git. Schema (all keys
@@ -81,13 +81,13 @@
 #   - Skips binary files (grep -I).
 #   - Exit code: 0 if none of the words were found anywhere, 1 if at least
 #     one was -- so this doubles as a pre-commit-style guard, e.g.:
-#       scripts/search-words.sh some-banned-term || echo "found leftover mentions!"
+#       scripts/quality/search-words.sh some-banned-term || echo "found leftover mentions!"
 # ============================================================================
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-CONFIG_FILE="$SCRIPT_DIR/search-words.json"
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+CONFIG_FILE="$ROOT_DIR/scripts/search-words.json"
 
 # Structural baseline -- always skipped, not user-configurable: .git is
 # never meaningful to search, scripts/logs/ is this ecosystem's own

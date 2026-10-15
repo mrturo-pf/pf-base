@@ -3,7 +3,7 @@
 the whole pf ecosystem (this repo + modules/pf-db, pf-rates, pf-payroll,
 pf-common, pf-sheets).
 
-Companion to scripts/search-words.sh: reads replacement pairs from the same
+Companion to scripts/quality/search-words.sh: reads replacement pairs from the same
 scripts/search-words.json config (key "replacements"), and reuses the same
 filtering concepts (exclude_files, exclude_dirs, ignore_matches, and the
 "respect each MODULE's own .gitignore, never the root repo's" rule -- see
@@ -57,13 +57,13 @@ Safety:
   - Skips binary files.
 
 Usage:
-    scripts/replace-words.py                          # dry-run, from JSON
-    scripts/replace-words.py --apply                  # write for real
-    scripts/replace-words.py --replace foo=bar         # add an ad hoc pair
-    scripts/replace-words.py --exclude-dir secrets     # same flags as
-    scripts/replace-words.py --exclude-file '*.csv'    # search-words.sh
-    scripts/replace-words.py --ignore-match some-term
-    scripts/replace-words.py --apply --force           # skip dirty-repo check
+    scripts/quality/replace-words.py                          # dry-run, from JSON
+    scripts/quality/replace-words.py --apply                  # write for real
+    scripts/quality/replace-words.py --replace foo=bar         # add an ad hoc pair
+    scripts/quality/replace-words.py --exclude-dir secrets     # same flags as
+    scripts/quality/replace-words.py --exclude-file '*.csv'    # search-words.sh
+    scripts/quality/replace-words.py --ignore-match some-term
+    scripts/quality/replace-words.py --apply --force           # skip dirty-repo check
 
 Config (search-words.json, next to this script, gitignored -- see
 search-words.jsonc.example for the committed template):
@@ -95,8 +95,8 @@ from pathlib import Path
 
 SCRIPT_PATH = Path(__file__).resolve()
 SCRIPT_DIR = SCRIPT_PATH.parent
-ROOT_DIR = SCRIPT_DIR.parent
-CONFIG_FILE = SCRIPT_DIR / "search-words.json"
+ROOT_DIR = SCRIPT_DIR.parent.parent
+CONFIG_FILE = ROOT_DIR / "scripts" / "search-words.json"
 MODULES_DIR = ROOT_DIR / "modules"
 
 # Structural baseline -- always skipped, not user-configurable. Mirrors

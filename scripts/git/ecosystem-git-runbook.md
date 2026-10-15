@@ -1,13 +1,13 @@
 # Ecosystem Git runbook
 
-`scripts/ecosystem-git.py` plans branch publication, PR creation, and cleanup.
+`scripts/git/ecosystem-git.py` plans branch publication, PR creation, and cleanup.
 It does not perform automatic rollback or merge production PRs.
 
 ## Safe workflow
 
 ```bash
-python3 scripts/ecosystem-git.py --fetch --json > /tmp/pf-git-plan.json
-python3 scripts/ecosystem-git.py --fetch --apply-all \
+python3 scripts/git/ecosystem-git.py --fetch --json > /tmp/pf-git-plan.json
+python3 scripts/git/ecosystem-git.py --fetch --apply-all \
   --create-pr --journal /tmp/pf-git-actions.json
 ```
 
@@ -69,14 +69,14 @@ changes may require a dedicated forward migration or an approved restore procedu
 The journal records successful and failed mutations:
 
 ```bash
-python3 scripts/ecosystem-git.py --apply-all \
+python3 scripts/git/ecosystem-git.py --apply-all \
   --journal /tmp/pf-git-actions.json
 ```
 
 Resume only after reviewing the partial run:
 
 ```bash
-python3 scripts/ecosystem-git.py --apply-all \
+python3 scripts/git/ecosystem-git.py --apply-all \
   --resume /tmp/pf-git-actions.json \
   --journal /tmp/pf-git-actions.json
 ```
