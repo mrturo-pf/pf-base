@@ -19,7 +19,7 @@
 # ============================================================================
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 PF_DB_DIR="$ROOT_DIR/modules/pf-db"
 PF_RATES_DIR="$ROOT_DIR/modules/pf-rates"
 PF_PAYROLL_DIR="$ROOT_DIR/modules/pf-payroll"
