@@ -26,15 +26,15 @@ according to each repository's settings.
 | --- | --- | --- |
 | [`pf-db`](modules/pf-db/README.md) | Single source of truth for the PostgreSQL schema (DDL + Alembic migrations + seeds). No application code. | [README](modules/pf-db/README.md) · [AGENTS](modules/pf-db/AGENTS.md) |
 | [`pf-rates`](modules/pf-rates/README.md) | FastAPI microservice for financial reference data: exchange rates (USD/EUR), indices (UF/UTM/CPI), income tax brackets. | [README](modules/pf-rates/README.md) · [AGENTS](modules/pf-rates/AGENTS.md) |
-| [`pf-payroll`](modules/pf-payroll/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, and dashboard. | [README](modules/pf-payroll/README.md) · [AGENTS](modules/pf-payroll/AGENTS.md) |
-| [`pf-common`](modules/pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-rates` and `pf-payroll`. **Not** used by `pf-db`. | [README](modules/pf-common/README.md) |
+| [`pf-svc-income`](modules/pf-svc-income/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, and dashboard. | [README](modules/pf-svc-income/README.md) · [AGENTS](modules/pf-svc-income/AGENTS.md) |
+| [`pf-common`](modules/pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-rates` and `pf-svc-income`. **Not** used by `pf-db`. | [README](modules/pf-common/README.md) |
 | [`pf-sheets`](modules/pf-sheets/README.md) | Google Apps Script (bound to a Sheet) that syncs `pf-rates` exchange rates into a spreadsheet. Versioned in Git, deployed via `clasp`. | [README](modules/pf-sheets/README.md) · [AGENTS](modules/pf-sheets/AGENTS.md) |
 
 ## Repository structure
 
 This root directory is itself a git repo (`pf-base`) that tracks only ecosystem-level
 files — this `README.md`, `AGENTS.md`, `docs/`, and `architecture/`. Each subproject folder
-(`pf-db`, `pf-rates`, `pf-payroll`, `pf-common`, `pf-sheets`) lives under `modules/` and
+(`pf-db`, `pf-rates`, `pf-svc-income`, `pf-common`, `pf-sheets`) lives under `modules/` and
 is a **separate, independent git repo**
 with its own remote and commit history; root's `.gitignore` excludes the whole
 `modules/` folder on purpose so they never show up as untracked files here. Clone,
@@ -46,16 +46,16 @@ there is no submodule wiring between them.
 ```
 pf-rates  ──┐
             ├── PostgreSQL (schema/migrations in pf-db)
-pf-payroll ─┘
+pf-svc-income ─┘
 
-pf-rates, pf-payroll ──> share Makefiles/scripts from pf-common
+pf-rates, pf-svc-income ──> share Makefiles/scripts from pf-common
 
 pf-sheets ──> HTTP: triggers pf-rates export ──> Google Sheets/Drive (Apps Script APIs)
 ```
 
-- `pf-db` owns the schema; `pf-rates` and `pf-payroll` each keep their own ORM
+- `pf-db` owns the schema; `pf-rates` and `pf-svc-income` each keep their own ORM
   models/repositories but connect to the same Postgres instance.
-- `pf-payroll` consumes `pf-rates` over HTTP for exchange rates and tax brackets.
+- `pf-svc-income` consumes `pf-rates` over HTTP for exchange rates and tax brackets.
 - `pf-common` provides reusable `make install/test/lint/check/...` targets for FastAPI services.
 - `pf-sheets` is a Google Apps Script macro: it triggers a `pf-rates` export over HTTP,
   then reads the resulting CSV from Google Drive and upserts it into a Sheet.
@@ -70,7 +70,7 @@ instance, the schema owner, the shared build tooling, and the Apps Script integr
 it in a browser for pan/zoom, theme toggle, and relationship tracing — it's the visual
 companion to the "How they relate" section above, not a replacement for the per-subproject
 docs. Each subproject also has its own detailed diagram (internal layers for
-`pf-payroll`/`pf-rates`/`pf-sheets`, table ownership for `pf-db`) — see
+`pf-svc-income`/`pf-rates`/`pf-sheets`, table ownership for `pf-db`) — see
 [`architecture/README.md`](architecture/README.md) for the full breakdown.
 
 The diagram source (`architecture/base.json`) and the regeneration script
@@ -99,7 +99,7 @@ synchronizes the collection and environments to the Postman workspace.
 
 1. Bring up the database: follow the quick start in [`pf-db`](modules/pf-db/docs/getting-started.md).
 2. Bring up `pf-rates`: [`pf-rates/docs/getting-started.md`](modules/pf-rates/docs/getting-started.md).
-3. Bring up `pf-payroll`: [`pf-payroll/docs/getting-started.md`](modules/pf-payroll/docs/getting-started.md).
+3. Bring up `pf-svc-income`: [`pf-svc-income/docs/getting-started.md`](modules/pf-svc-income/docs/getting-started.md).
 4. Set up `pf-sheets`: [`pf-sheets/docs/getting-started.md`](modules/pf-sheets/docs/getting-started.md).
 
 ## Scripts
@@ -125,9 +125,9 @@ Fully detailed in each subproject's `AGENTS.md`, in short:
 
 - Code/docs language: English (except official Chilean regulatory terms).
 - `Decimal`/`NUMERIC`, never `float`/`FLOAT` for amounts and rates.
-- Hexagonal architecture (ports and adapters) in `pf-rates` and `pf-payroll`.
+- Hexagonal architecture (ports and adapters) in `pf-rates` and `pf-svc-income`.
 - SemVer + Conventional Commits.
 - **Cloud cost is always the priority for cloud decisions**: cheapest viable option first
   (scale-to-zero, free/cheaper equivalents, on-demand over always-on). See
   [`AGENTS.md`](AGENTS.md#shared-rules) and each subproject's
-  `docs/deployment.md` (pf-rates/pf-payroll) or `docs/ci.md` (pf-db).
+  `docs/deployment.md` (pf-rates/pf-svc-income) or `docs/ci.md` (pf-db).

@@ -43,7 +43,7 @@ change and prevents the root from becoming a duplicate implementation manual.
 | --- | --- | --- |
 | [`pf-db`](modules/pf-db) | PostgreSQL schema, DDL, seeds, and Alembic migrations | [`modules/pf-db/AGENTS.md`](modules/pf-db/AGENTS.md) |
 | [`pf-rates`](modules/pf-rates) | Financial reference data and HTTP API | [`modules/pf-rates/AGENTS.md`](modules/pf-rates/AGENTS.md) |
-| [`pf-payroll`](modules/pf-payroll) | Payroll, tax, and employer domain plus HTTP API | [`modules/pf-payroll/AGENTS.md`](modules/pf-payroll/AGENTS.md) |
+| [`pf-svc-income`](modules/pf-svc-income) | Payroll, tax, and employer domain plus HTTP API | [`modules/pf-svc-income/AGENTS.md`](modules/pf-svc-income/AGENTS.md) |
 | [`pf-sheets`](modules/pf-sheets) | Google Apps Script, Sheets integration, and Web App | [`modules/pf-sheets/AGENTS.md`](modules/pf-sheets/AGENTS.md) |
 | `pf-common` | Shared infrastructure and Make targets; no local `AGENTS.md` | [`modules/pf-common/README.md`](modules/pf-common/README.md) |
 
@@ -58,9 +58,9 @@ affect.
 
 | Responsibility | Owner | Consumers |
 | --- | --- | --- |
-| PostgreSQL schema, DDL, migrations, and schema seeds | `pf-db` | `pf-rates`, `pf-payroll` |
-| Financial reference-data domain and service behavior | `pf-rates` | `pf-payroll`, `pf-sheets` |
-| Payroll and tax domain and service behavior | `pf-payroll` | ecosystem clients |
+| PostgreSQL schema, DDL, migrations, and schema seeds | `pf-db` | `pf-rates`, `pf-svc-income` |
+| Financial reference-data domain and service behavior | `pf-rates` | `pf-svc-income`, `pf-sheets` |
+| Payroll and tax domain and service behavior | `pf-svc-income` | ecosystem clients |
 | Spreadsheet synchronization and Apps Script Web App | `pf-sheets` | Google Sheets and service clients |
 | Shared development/build infrastructure | `pf-common` | ecosystem repositories |
 
@@ -106,7 +106,7 @@ reviewed migration in `pf-db`.
 4. Update all known consumers and validate the complete workflow.
 
 The ecosystem's HTTP surface includes FastAPI endpoints from `pf-rates` and
-`pf-payroll`, and Google Apps Script Web App endpoints from `pf-sheets`. These are
+`pf-svc-income`, and Google Apps Script Web App endpoints from `pf-sheets`. These are
 HTTP contracts, but they do not share the same runtime, framework, or deployment
 model.
 
@@ -157,7 +157,7 @@ These files describe public or cross-repository behavior and must stay synchroni
 with implementation:
 
 - `modules/pf-rates/docs/api.md`
-- `modules/pf-payroll/docs/api.md`
+- `modules/pf-svc-income/docs/api.md`
 - `modules/pf-sheets/docs/api.md`
 The canonical Postman collection and environments live in the independent
 [`pf-postman`](https://github.com/mrturo-pf/pf-postman) repository. Update that
