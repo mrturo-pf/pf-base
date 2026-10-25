@@ -1,8 +1,37 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "name": "pf",
+      "path": "."
+    },
+    {
+      "name": "improvements",
+      "path": "improvements"
+    },
+    {
+      "name": "pf-common",
+      "path": "modules/pf-common"
+    },
+    {
+      "name": "pf-db",
+      "path": "modules/pf-db"
+    },
+    {
+      "name": "pf-rates",
+      "path": "modules/pf-rates"
+    },
+    {
+      "name": "pf-sheets",
+      "path": "modules/pf-sheets"
+    },
+    {
+      "name": "pf-svc-income",
+      "path": "modules/pf-svc-income"
+    },
+    {
+      "name": "postman",
+      "path": "postman"
+    }
+  ],
+  "settings": {}
 }

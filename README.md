@@ -118,6 +118,7 @@ workflow for each repository.
 | Script | Purpose |
 | --- | --- |
 | [`scripts/quality/find-docs.sh`](scripts/quality/find-docs.sh) | Recursively lists `*.md`, `*.txt`, and `*.sh` files, skipping noise dirs (`.venv`, `.git`, `node_modules`, etc.). Supports `-d DIR` to scope the search and `-i FILE1,FILE2` to exclude filenames. Run `./scripts/quality/find-docs.sh --help` for details. |
+| [`scripts/update-workspace.py`](scripts/update-workspace.py) | Discovers nested local Git checkouts and synchronizes `pf.code-workspace`; it does not create a repository index. |
 
 ## Global conventions
 

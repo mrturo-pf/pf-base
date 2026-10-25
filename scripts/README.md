@@ -10,3 +10,22 @@ Repository utilities are grouped by responsibility:
 - `cloudshell/` — runtime-only Cloud Shell scripts and archives.
 
 Run scripts from the repository root unless their README says otherwise.
+
+## Workspace synchronization
+
+[`update-workspace.py`](update-workspace.py) discovers every nested local Git
+checkout and synchronizes only the VS Code workspace file:
+
+```bash
+python3 scripts/update-workspace.py
+```
+
+Use `--check` in validation or CI to fail when `pf.code-workspace` is stale:
+
+```bash
+python3 scripts/update-workspace.py --check
+```
+
+The script does not create or read a repository index. The workspace file is the
+single generated artifact and repository paths are discovered directly from the
+local checkout layout.
