@@ -66,6 +66,10 @@ TECHNOLOGY_MARKERS: tuple[tuple[str, str], ...] = (
     ("go.mod", "Go"),
     ("Cargo.toml", "Rust"),
 )
+TECHNOLOGY_EXTENSIONS: dict[str, str] = {
+    ".py": "Python",
+    ".sh": "Shell",
+}
 
 DEFAULT_WORKSPACE_NAME = "pf.code-workspace"
 MODULES_DIRECTORY = "modules"
@@ -217,6 +221,13 @@ def repository_metadata(root: Path, repository: Path) -> dict[str, Any]:
         technology for pattern, technology in TECHNOLOGY_MARKERS
         if any(fnmatch.fnmatch(file.name, pattern) for file in files)
     }
+    technologies.update(
+        TECHNOLOGY_EXTENSIONS[file.suffix.lower()]
+        for file in files
+        if file.suffix.lower() in TECHNOLOGY_EXTENSIONS
+    )
+    if any(file.name == "Makefile" for file in files):
+        technologies.add("Make")
     for file in (file for file in files if file.name in {"package.json", "pyproject.toml"}):
         content = file.read_text(encoding="utf-8", errors="ignore").lower()
         if file.name == "package.json" and "react" in content:
