@@ -45,7 +45,7 @@ change and prevents the root from becoming a duplicate implementation manual.
 | [`pf-rates`](modules/pf-rates) | Financial reference data and HTTP API | [`modules/pf-rates/AGENTS.md`](modules/pf-rates/AGENTS.md) |
 | [`pf-svc-income`](modules/pf-svc-income) | Payroll, tax, and employer domain plus HTTP API | [`modules/pf-svc-income/AGENTS.md`](modules/pf-svc-income/AGENTS.md) |
 | [`pf-sheets`](modules/pf-sheets) | Google Apps Script, Sheets integration, and Web App | [`modules/pf-sheets/AGENTS.md`](modules/pf-sheets/AGENTS.md) |
-| `pf-common` | Shared infrastructure and Make targets; no local `AGENTS.md` | [`modules/pf-common/README.md`](modules/pf-common/README.md) |
+| `pf-common` | Shared infrastructure and Make targets | [`modules/pf-common/README.md`](modules/pf-common/README.md) · [`modules/pf-common/AGENTS.md`](modules/pf-common/AGENTS.md) |
 
 The root repository (`pf-base`) contains ecosystem-level documentation, architecture
 descriptions, and coordination rules. The Postman collection and environments are
@@ -53,6 +53,41 @@ owned by the independent [`pf-postman`](https://github.com/mrturo-pf/pf-postman)
 repository. Each directory under `modules/` is an independent Git repository with
 its own history, remote, and working tree. Run Git commands from the repository they
 affect.
+
+The generated [`modules/INDEX.json`](modules/INDEX.json) is the metadata catalog for
+module checkouts. It is maintained by [`scripts/update-workspace.py`](scripts/update-workspace.py)
+and is intentionally limited to real Git repositories directly under `modules/`;
+repositories in `improvements/`, `postman/`, or other locations are not included.
+Symlinked aliases are excluded so one checkout cannot appear twice.
+
+Each index entry has this structure:
+
+```json
+{
+  "name": "repository directory name",
+  "path": "modules/repository-name",
+  "technologies": [],
+  "languages": [],
+  "ci": [],
+  "documentation": [],
+  "buildSystems": [],
+  "currentBranch": "branch or null",
+  "workingTreeClean": true,
+  "lastCommit": {"hash": "...", "date": "...", "subject": "..."},
+  "tracking": {"branch": "origin/main", "ahead": 0, "behind": 0},
+  "url": "https://github.com/example/repository.git"
+}
+```
+
+The technology, language, CI, documentation, and build fields are inferred from
+local files. Git fields describe the local checkout and may be absent when Git
+cannot provide the corresponding value. Remote URLs are sanitized before writing;
+embedded credentials are never stored. Regenerate the index after changing module
+checkouts with:
+
+```bash
+python3 scripts/update-workspace.py
+```
 
 ## Ownership boundaries
 

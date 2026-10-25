@@ -14,7 +14,7 @@ Run scripts from the repository root unless their README says otherwise.
 ## Workspace synchronization
 
 [`update-workspace.py`](update-workspace.py) discovers every nested local Git
-checkout and synchronizes only the VS Code workspace file:
+checkout, synchronizes the VS Code workspace file, and refreshes the local module index:
 
 ```bash
 python3 scripts/update-workspace.py
@@ -26,6 +26,7 @@ Use `--check` in validation or CI to fail when `pf.code-workspace` is stale:
 python3 scripts/update-workspace.py --check
 ```
 
-The script does not create or read a repository index. The workspace file is the
-single generated artifact and repository paths are discovered directly from the
-local checkout layout.
+The script also generates the Git-ignored local file `modules/INDEX.json` with metadata for repositories
+found only under `modules/`. It never includes `improvements`, `postman`, or any
+other checkout outside that directory. Repository paths are always discovered
+directly from the local checkout layout.
