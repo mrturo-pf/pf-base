@@ -5,7 +5,7 @@
 # Manages the three services of the local dev environment:
 #   1. pf-db      - PostgreSQL container (via pf-db's Makefile)
 #   2. pf-rates   - FastAPI microservice on :8001
-#   3. pf-payroll - FastAPI microservice on :8000
+#   3. pf-svc-income - FastAPI microservice on :8000
 #
 # Usage:
 #   scripts/local/pf-services.sh start
@@ -14,7 +14,7 @@
 #
 # Notes:
 #   - Does NOT touch any .env file — services run with whatever config
-#     is already in modules/pf-rates/.env and modules/pf-payroll/.env.
+#     is already in modules/pf-rates/.env and modules/pf-svc-income/.env.
 #   - Logs go to scripts/local/logs/<service>.log (gitignored)
 # ============================================================================
 set -euo pipefail
@@ -22,15 +22,15 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 PF_DB_DIR="$ROOT_DIR/modules/pf-db"
 PF_RATES_DIR="$ROOT_DIR/modules/pf-rates"
-PF_PAYROLL_DIR="$ROOT_DIR/modules/pf-payroll"
+PF_SVC_INCOME_DIR="$ROOT_DIR/modules/pf-svc-income"
 
 LOG_DIR="$ROOT_DIR/scripts/local/logs"
 mkdir -p "$LOG_DIR"
 
 RATES_PORT=8001
-PAYROLL_PORT=8000
+SVC_INCOME_PORT=8000
 RATES_MODULE="rates.interfaces.api.main:app"
-PAYROLL_MODULE="payroll.interfaces.api.main:app"
+SVC_INCOME_MODULE="payroll.interfaces.api.main:app"
 DB_HOST="localhost"
 DB_PORT=5432
 
@@ -38,7 +38,7 @@ DB_PORT=5432
 # (plain vars, not an associative array — macOS ships bash 3.2, no declare -A)
 STATUS_DB=""
 STATUS_RATES=""
-STATUS_PAYROLL=""
+STATUS_SVC_INCOME=""
 
 # ----------------------------------------------------------------------------
 # Helpers
@@ -214,22 +214,22 @@ print_summary() {
   local overall=0
   printf '  %-12s %s\n' "pf-db" "${STATUS_DB:-UNKNOWN}"
   printf '  %-12s %s\n' "pf-rates" "${STATUS_RATES:-UNKNOWN}"
-  printf '  %-12s %s\n' "pf-payroll" "${STATUS_PAYROLL:-UNKNOWN}"
-  [ "$STATUS_DB" = "OK" ] && [ "$STATUS_RATES" = "OK" ] && [ "$STATUS_PAYROLL" = "OK" ] || overall=1
+  printf '  %-12s %s\n' "pf-svc-income" "${STATUS_SVC_INCOME:-UNKNOWN}"
+  [ "$STATUS_DB" = "OK" ] && [ "$STATUS_RATES" = "OK" ] && [ "$STATUS_SVC_INCOME" = "OK" ] || overall=1
   return "$overall"
 }
 
 cmd_start() {
   start_db
   start_uvicorn "pf-rates" "$PF_RATES_DIR" "$RATES_MODULE" "$RATES_PORT" STATUS_RATES
-  start_uvicorn "pf-payroll" "$PF_PAYROLL_DIR" "$PAYROLL_MODULE" "$PAYROLL_PORT" STATUS_PAYROLL
+  start_uvicorn "pf-svc-income" "$PF_SVC_INCOME_DIR" "$SVC_INCOME_MODULE" "$SVC_INCOME_PORT" STATUS_SVC_INCOME
   echo ""
   echo "Tail logs with: tail -f $LOG_DIR/*.log"
   print_summary
 }
 
 cmd_stop() {
-  stop_uvicorn "pf-payroll" "$PAYROLL_MODULE" STATUS_PAYROLL
+  stop_uvicorn "pf-svc-income" "$SVC_INCOME_MODULE" STATUS_SVC_INCOME
   stop_uvicorn "pf-rates" "$RATES_MODULE" STATUS_RATES
   stop_db STATUS_DB
   echo ""
@@ -245,8 +245,8 @@ usage() {
   cat <<EOF
 Usage: $(basename "$0") {start|stop|restart}
 
-  start    Start pf-db (local Postgres), pf-rates and pf-payroll
-  stop     Stop pf-payroll, pf-rates and pf-db (in that order)
+  start    Start pf-db (local Postgres), pf-rates and pf-svc-income
+  stop     Stop pf-svc-income, pf-rates and pf-db (in that order)
   restart  stop, then start (reuses the same routines above)
 EOF
   exit 1
