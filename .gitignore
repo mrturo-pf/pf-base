@@ -15,6 +15,7 @@
 
 # Common local-only stuff, in case anything ever lands directly at root
 node_modules/
+/generated/
 .env
 .env.*
 venv/
