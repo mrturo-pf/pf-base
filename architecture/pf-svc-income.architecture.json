@@ -2,12 +2,12 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "pf-payroll — Internal Architecture",
+    "title": "pf-svc-income — Internal Architecture",
     "subtitle": "Hexagonal (Ports & Adapters): interfaces -> application -> domain, infrastructure -> application",
-    "output": "pf-payroll.html",
+    "output": "pf-svc-income.html",
     "quality_profile": "showcase",
     "repository": {
-      "url": "https://github.com/mrturo-pf/pf-payroll",
+      "url": "https://github.com/mrturo-pf/pf-svc-income",
       "provider": "github",
       "link_mode": "local-only",
       "revision": "021aac7aaaa1ae619c850506297fffbef5141962"

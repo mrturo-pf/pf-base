@@ -47,7 +47,7 @@ Clone, pull, and push each subproject from inside its own folder
 [`scripts/update-workspace.py`](scripts/update-workspace.py). It contains one
 object per real Git checkout found directly under `modules/`; it does not include
 `improvements`, `postman`, or other repositories outside that directory. Symlinked
-aliases such as `modules/pf-payroll` are not treated as independent repositories.
+aliases such as `modules/pf-svc-income` are not treated as independent repositories.
 
 Each entry records the repository `name` and workspace-relative `path`, plus
 locally detected `technologies`, `languages`, `ci` providers, `documentation`

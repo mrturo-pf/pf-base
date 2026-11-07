@@ -8,9 +8,9 @@
       "validation_endpoint_url": "https://REPLACE_WITH_PF_RATES_URL/monetary-units",
       "validation_api_key": "REPLACE_WITH_PF_RATES_API_KEY"
     },
-    "pf-payroll": {
-      "validation_endpoint_url": "https://REPLACE_WITH_PF_PAYROLL_URL/reference-data/health-institutions",
-      "validation_api_key": "REPLACE_WITH_PF_PAYROLL_API_KEY"
+    "pf-svc-income": {
+      "validation_endpoint_url": "https://REPLACE_WITH_PF_SVC_INCOME_URL/reference-data/health-institutions",
+      "validation_api_key": "REPLACE_WITH_PF_INCOME_API_KEY"
     }
   },
   "validation_duration_seconds": 30,

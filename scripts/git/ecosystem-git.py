@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REPOSITORIES = {
     "pf-base": ".", "pf-postman": "postman", "pf-improvements": "improvements",
     "pf-db": "modules/pf-db", "pf-rates": "modules/pf-rates",
-    "pf-payroll": "modules/pf-payroll", "pf-common": "modules/pf-common",
+    "pf-svc-income": "modules/pf-svc-income", "pf-common": "modules/pf-common",
     "pf-sheets": "modules/pf-sheets",
 }
 PROTECTED = {"main", "master", "develop"}

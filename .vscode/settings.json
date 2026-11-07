@@ -10,7 +10,7 @@
   "git.scanRepositories": [
     "modules/pf-sheets",
     "modules/pf-rates",
-    "modules/pf-payroll",
+    "modules/pf-svc-income",
     "modules/pf-db",
     "modules/pf-common"
   ]

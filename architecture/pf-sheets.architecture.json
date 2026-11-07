@@ -54,7 +54,7 @@
   ],
   "cards": [
     { "dot": "cyan", "title": "Two independent entry-point flows", "items": ["Bound Macro: human-triggered from the Sheet's custom menu", "Web App + Library: machine-triggered HTTP, called by other spreadsheets", "Both funnel through the same Infrastructure + Domain core"] },
-    { "dot": "emerald", "title": "No real module system", "items": ["Apps Script flattens every file into one global scope", "domain/infrastructure/interfaces is a convention, not enforced by the runtime", "No ports/Protocol layer like pf-payroll/pf-rates -- infra functions take globals as explicit params instead"] },
+    { "dot": "emerald", "title": "No real module system", "items": ["Apps Script flattens every file into one global scope", "domain/infrastructure/interfaces is a convention, not enforced by the runtime", "No ports/Protocol layer like pf-svc-income/pf-rates -- infra functions take globals as explicit params instead"] },
     { "dot": "violet", "title": "Cross-realm instanceof gotcha", "items": ["Each Apps Script project runs in its own V8 realm", "A Date built in Payroll fails instanceof Date inside this Library", "isDateValue_() uses Object.prototype.toString.call(...) instead -- see docs/design-notes.md"] },
     { "dot": "amber", "title": "Secrets", "items": ["API keys and file IDs come from PropertiesService.getScriptProperties()", "Never hardcoded in source, set once manually per Apps Script project"] }
   ]

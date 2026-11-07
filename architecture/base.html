@@ -5160,10 +5160,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="PF Ecosystem" x="290" y="10" width="500" height="354" rx="12" class="c-region" stroke-width="1"/>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="pf_common" data-edge-to="pf_payroll" data-edge-label="shared make targets" data-edge-key="0" data-edge-id="common-to-payroll" data-composition-points="200,65;320,65" d="M 200 65 L 320 65" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="pf_common" data-edge-to="pf_svc_income" data-edge-label="shared make targets" data-edge-key="0" data-edge-id="common-to-payroll" data-composition-points="200,65;320,65" d="M 200 65 L 320 65" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="pf_common" data-edge-to="pf_rates" data-edge-label="shared make targets" data-edge-key="1" data-edge-id="common-to-rates" data-composition-points="200,79;260,79;260,312;320,312" d="M 200 79 L 252 79 Q 260 79 260 87 L 260 304 Q 260 312 268 312 L 320 312" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="pf_payroll" data-edge-to="pf_rates" data-edge-label="HTTP: rates, tax brackets" data-edge-key="2" data-edge-id="payroll-to-rates" data-composition-points="400,104;400,280" d="M 400 104 L 400 280" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_payroll" data-edge-to="postgres" data-edge-label="SQL (payroll tables)" data-edge-key="3" data-edge-id="payroll-to-db" data-composition-points="480,72;540,72;540,250;680,250;680,280" d="M 480 72 L 532 72 Q 540 72 540 80 L 540 242 Q 540 250 548 250 L 672 250 Q 680 250 680 258 L 680 280" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_income" data-edge-to="pf_rates" data-edge-label="HTTP: rates, tax brackets" data-edge-key="2" data-edge-id="payroll-to-rates" data-composition-points="400,104;400,280" d="M 400 104 L 400 280" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_income" data-edge-to="postgres" data-edge-label="SQL (payroll tables)" data-edge-key="3" data-edge-id="payroll-to-db" data-composition-points="480,72;540,72;540,250;680,250;680,280" d="M 480 72 L 532 72 Q 540 72 540 80 L 540 242 Q 540 250 548 250 L 672 250 Q 680 250 680 258 L 680 280" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_rates" data-edge-to="postgres" data-edge-label="SQL (rates tables)" data-edge-key="4" data-edge-id="rates-to-db" data-composition-points="480,312;600,312" d="M 480 312 L 600 312" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_db" data-edge-to="postgres" data-edge-label="alembic upgrade head" data-edge-key="5" data-edge-id="pfdb-to-db" data-composition-points="680,104;680,280" d="M 680 104 L 680 280" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="pf_sheets" data-edge-to="pf_rates" data-edge-label="HTTP: triggers export" data-edge-key="6" data-edge-id="sheets-to-rates" data-composition-points="200,312;320,312" d="M 200 312 L 320 312" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
@@ -5206,14 +5206,14 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="120" y="506" class="t-muted" font-size="9" text-anchor="middle">Apps Script APIs</text>
         </g>
 
-        <g id="node-pf_payroll" data-node-id="pf_payroll" data-node-label="pf-payroll" tabindex="0" role="button" aria-label="Focus pf-payroll, FastAPI :8001, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="FastAPI :8001" data-node-context="PF Ecosystem">
-          <title>pf-payroll · FastAPI :8001 · PF Ecosystem</title>
+        <g id="node-pf_svc_income" data-node-id="pf_svc_income" data-node-label="pf-svc-income" tabindex="0" role="button" aria-label="Focus pf-svc-income, FastAPI :8001, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="FastAPI :8001" data-node-context="PF Ecosystem">
+          <title>pf-svc-income · FastAPI :8001 · PF Ecosystem</title>
           <rect x="320" y="40" width="160" height="64" rx="6" class="c-mask"/>
           <rect x="320" y="40" width="160" height="64" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(326 46) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="400" y="70" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">pf-payroll</text>
+          <text data-node-label="" data-detail-anchor="" x="400" y="70" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">pf-svc-income</text>
         <text data-detail="context" x="400" y="86" class="t-muted" font-size="9" text-anchor="middle">FastAPI :8001</text>
         </g>
 
@@ -5252,7 +5252,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="pf_common" data-edge-to="pf_payroll" data-edge-label="shared make targets" data-edge-key="0" data-edge-id="common-to-payroll">
+        <g data-detail="context" data-edge-from="pf_common" data-edge-to="pf_svc_income" data-edge-label="shared make targets" data-edge-key="0" data-edge-id="common-to-payroll">
           <rect x="209.4" y="45" width="101.2" height="14" rx="3" class="c-mask"/>
           <text x="260" y="55" class="t-messagebus" font-size="8" text-anchor="middle">shared make targets</text>
         </g>
@@ -5260,11 +5260,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="209.4" y="175.5" width="101.2" height="14" rx="3" class="c-mask"/>
           <text x="260" y="185.5" class="t-messagebus" font-size="8" text-anchor="middle">shared make targets</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_payroll" data-edge-to="pf_rates" data-edge-label="HTTP: rates, tax brackets" data-edge-key="2" data-edge-id="payroll-to-rates">
+        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="pf_rates" data-edge-label="HTTP: rates, tax brackets" data-edge-key="2" data-edge-id="payroll-to-rates">
           <rect x="335" y="108" width="130" height="14" rx="3" class="c-mask"/>
           <text x="400" y="118" class="t-muted" font-size="8" text-anchor="middle">HTTP: rates, tax brackets</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_payroll" data-edge-to="postgres" data-edge-label="SQL (payroll tables)" data-edge-key="3" data-edge-id="payroll-to-db">
+        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="postgres" data-edge-label="SQL (payroll tables)" data-edge-key="3" data-edge-id="payroll-to-db">
           <rect x="487" y="141" width="106" height="14" rx="3" class="c-mask"/>
           <text x="540" y="151" class="t-muted" font-size="8" text-anchor="middle">SQL (payroll tables)</text>
         </g>
@@ -5499,7 +5499,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>Runtime</h3>
         </div>
         <ul>
-          <li>&bull; pf-payroll and pf-rates are independent FastAPI microservices</li>
+          <li>&bull; pf-svc-income and pf-rates are independent FastAPI microservices</li>
           <li>&bull; Both connect to the same PostgreSQL instance</li>
         </ul>
       </div>
@@ -5512,7 +5512,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <ul>
           <li>&bull; pf-db is the single source of truth for DDL and migrations</li>
           <li>&bull; pf-rates owns currencies, exchange_rates, economic_indices, income_tax_brackets</li>
-          <li>&bull; pf-payroll owns all other payroll tables</li>
+          <li>&bull; pf-svc-income owns all other payroll tables</li>
         </ul>
       </div>
 
@@ -5522,7 +5522,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>Shared tooling</h3>
         </div>
         <ul>
-          <li>&bull; pf-common provides reusable Make targets used by pf-payroll and pf-rates</li>
+          <li>&bull; pf-common provides reusable Make targets used by pf-svc-income and pf-rates</li>
           <li>&bull; Not used by pf-db</li>
         </ul>
       </div>
@@ -5547,7 +5547,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <ul>
           <li>&bull; This is the shallow, system-context view -- each box hides real internal layers</li>
           <li>&bull; Open architecture/index.html for a linked list of all diagrams</li>
-          <li>&bull; Or directly: pf-payroll.html, pf-rates.html, pf-sheets.html (hexagonal/internal layers), pf-db.html (table ownership)</li>
+          <li>&bull; Or directly: pf-svc-income.html, pf-rates.html, pf-sheets.html (hexagonal/internal layers), pf-db.html (table ownership)</li>
         </ul>
       </div>
     </div>

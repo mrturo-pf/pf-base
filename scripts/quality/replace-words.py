@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """replace-words.py - case-sensitive, case-PRESERVING find & replace across
-the whole pf ecosystem (this repo + modules/pf-db, pf-rates, pf-payroll,
+the whole pf ecosystem (this repo + modules/pf-db, pf-rates, pf-svc-income,
 pf-common, pf-sheets).
 
 Companion to scripts/quality/search-words.sh: reads replacement pairs from the same

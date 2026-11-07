@@ -75,7 +75,7 @@ load_runtime_keys() {
     . "$RUNTIME_KEYS_FILE"
     set +a
     PF_RATES_API_KEY="${PF_RATES_API_KEY:-${LOCAL_PF_RATES_API_KEY:-}}"
-    PF_INCOME_API_KEY="${PF_INCOME_API_KEY:-${LOCAL_PF_PAYROLL_API_KEY:-}}"
+    PF_INCOME_API_KEY="${PF_INCOME_API_KEY:-${LOCAL_PF_INCOME_API_KEY:-}}"
     export PF_RATES_API_KEY PF_INCOME_API_KEY
     printf 'Loaded local API keys from %s\n' "$RUNTIME_KEYS_FILE"
   fi

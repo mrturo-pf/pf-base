@@ -12,7 +12,7 @@ replacement for each subproject's own docs.
 | `index.html` | Hand-written (not generated) landing page with clickable links to every diagram below. Open this first if you don't know where to start. |
 | `base.json` | Ecosystem-wide Archify spec (source of truth): the 5 subprojects, boundaries, connections and side cards. Hand-edited. |
 | `base.html` | Self-contained, generated HTML output of `base.json`. Do not edit by hand — regenerate it instead. |
-| `pf-payroll.architecture.json` / `.html` | Zoomed-in spec + output of `pf-payroll`'s internal hexagonal layers, with **repository evidence** (see below). |
+| `pf-svc-income.architecture.json` / `.html` | Zoomed-in spec + output of `pf-svc-income`'s internal hexagonal layers, with **repository evidence** (see below). |
 | `pf-rates.architecture.json` / `.html` | Same idea for `pf-rates` (single FastAPI interface, plus its rate-provider/Google Drive infrastructure adapters). |
 | `pf-sheets.architecture.json` / `.html` | Same idea for `pf-sheets` — note its shape differs (see below), since it's Apps Script, not a hexagonal Python service. |
 | `pf-db.architecture.json` / `.html` | Not a layered-architecture diagram — a **table-ownership** diagram: which of the 20 tables and one materialized view each service owns/writes, and the actual read access pattern. |
@@ -41,10 +41,10 @@ and turn it into noise.
 
 Instead, each subproject that needs a deeper view gets **its own spec + its own HTML**,
 following the naming convention `<subproject>.architecture.json` -> `<subproject>.html`
-(see `pf-payroll.architecture.json` as the reference example for a hexagonal Python
+(see `pf-svc-income.architecture.json` as the reference example for a hexagonal Python
 service, and `pf-sheets.architecture.json` for a differently-shaped one — it has no
 application/ports layer since Apps Script has no DI, just `domain` / `infrastructure` /
-three separate `interfaces` entry points). `pf-payroll` and `pf-rates` zoom into the
+three separate `interfaces` entry points). `pf-svc-income` and `pf-rates` zoom into the
 hexagonal layers (`interfaces -> application -> domain`, `infrastructure ->
 application`) described in their own `AGENTS.md`. `pf-db` gets a different kind of
 diagram entirely — see below — since it's pure DDL/migrations with no layering to zoom
@@ -60,19 +60,19 @@ automatically, see below), Archify verifies every path against real git blobs at
 commit — it fails closed if a reference doesn't exist, so the diagram can't silently drift
 from the code it claims to describe.
 
-To add a new per-app diagram, copy the pattern in `pf-payroll.architecture.json`: pick the
+To add a new per-app diagram, copy the pattern in `pf-svc-income.architecture.json`: pick the
 subproject's real commit SHA (`git rev-parse HEAD` inside `modules/<name>`, only after it's
 pushed), reference real files per layer (no line ranges needed — whole-file references are
 simpler and still verified), and run `./generate.sh <name>`.
 
 ## What's on the ecosystem diagram (`base.json`)
 
-- **Components:** `pf-payroll` and `pf-rates` (FastAPI services), `pf-db` (Alembic
+- **Components:** `pf-svc-income` and `pf-rates` (FastAPI services), `pf-db` (Alembic
   migrations), the shared `PostgreSQL` instance, `pf-common` (shared Make targets), and
   `pf-sheets` (Apps Script macro) with its external dependency `Google Sheets/Drive`.
-- **Connections:** `pf-payroll` → `pf-rates` over HTTP (exchange rates, tax brackets);
+- **Connections:** `pf-svc-income` → `pf-rates` over HTTP (exchange rates, tax brackets);
   both services → `PostgreSQL` over SQL; `pf-db` → `PostgreSQL` via `alembic upgrade
-  head`; `pf-common` → `pf-payroll`/`pf-rates` via shared Make targets (dashed);
+  head`; `pf-common` → `pf-svc-income`/`pf-rates` via shared Make targets (dashed);
   `pf-sheets` → `pf-rates` over HTTP (triggers the export) and `pf-sheets` →
   `Google Sheets/Drive` (reads the CSV, upserts rows — dashed).
 - **Cards:** runtime notes, schema ownership (who owns which tables), shared tooling,
@@ -84,7 +84,7 @@ topology changes (new service, new dependency, table ownership moves), update
 
 ## What's on each per-app diagram
 
-- **`pf-payroll`:** the four hexagonal layers — `Interfaces` (FastAPI HTTP API),
+- **`pf-svc-income`:** the four hexagonal layers — `Interfaces` (FastAPI HTTP API),
   `Application` (use cases/services + `Protocol` ports), `Domain` (pure logic,
   zero I/O), `Infrastructure` (SQLAlchemy repositories, HTTP clients, importers/reporting)
   — plus its two externals, `PostgreSQL` and `pf-rates`.
@@ -96,9 +96,9 @@ topology changes (new service, new dependency, table ownership moves), update
   separate `Interfaces` entry points (a human-triggered bound macro, an HTTP Web App, and
   an Apps Script Library consumed by other spreadsheets like Payroll/MedicalRefund).
 - **`pf-db`:** not a layered diagram — a **table-ownership** diagram. Shows the two table
-  clusters (`RAT_*`, 5 tables, owned by `pf-rates`; `PAY_*`, 15 tables, plus
-  `PAY_MV_SUMARY` (materialized view), owned by `pf-payroll`), which service writes to which, `pf-db` as the DDL source for both, and the
-  one access-pattern nuance worth diagramming: `pf-payroll` never reads `RAT_*` tables via
+  clusters (`RAT_*`, 5 tables, owned by `pf-rates`; `INC_*`, 15 tables, plus
+  `INC_MV_PAY_SUMMARY` (materialized view), owned by `pf-svc-income`), which service writes to which, `pf-db` as the DDL source for both, and the
+  one access-pattern nuance worth diagramming: `pf-svc-income` never reads `RAT_*` tables via
   direct SQL even though the DB would technically allow it — it always goes through
   `pf-rates`' HTTP API instead.
 
@@ -122,8 +122,8 @@ sibling checkout at `../../archify/archify/bin/archify.mjs` by default:
 cd architecture
 ./generate.sh                    # ecosystem: base.json -> base.html
 ./generate.sh --open             # same, then open the result in the default browser
-./generate.sh pf-payroll         # per-app: pf-payroll.architecture.json -> pf-payroll.html
-./generate.sh pf-payroll --open  # same, then open the result
+./generate.sh pf-svc-income         # per-app: pf-svc-income.architecture.json -> pf-svc-income.html
+./generate.sh pf-svc-income --open  # same, then open the result
 ./generate.sh pf-rates           # same idea for pf-rates
 ./generate.sh pf-sheets          # same idea for pf-sheets
 ./generate.sh pf-db              # table-ownership diagram for pf-db

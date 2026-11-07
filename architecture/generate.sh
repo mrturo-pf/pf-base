@@ -3,8 +3,8 @@
 #
 # Usage:
 #   ./generate.sh                    # ecosystem: base.json -> base.html
-#   ./generate.sh pf-payroll         # per-app:    pf-payroll.architecture.json -> pf-payroll.html
-#   ./generate.sh pf-payroll --open  # same, then open the result in the default browser
+#   ./generate.sh pf-svc-income         # per-app:    pf-svc-income.architecture.json -> pf-svc-income.html
+#   ./generate.sh pf-svc-income --open  # same, then open the result in the default browser
 #
 # Per-app diagrams carry `meta.repository` (Archify's repository-evidence
 # feature): every component `sources` entry is verified against real git

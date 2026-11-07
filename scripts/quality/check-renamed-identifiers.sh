@@ -3,7 +3,7 @@
 #
 # Usage:
 #   scripts/quality/check-renamed-identifiers.sh
-#   scripts/quality/check-renamed-identifiers.sh period_year period_month PAY_PERIOD
+#   scripts/quality/check-renamed-identifiers.sh period_year period_month INC_PAYROLL
 #
 # Exit status:
 #   0: no legacy identifier was found
