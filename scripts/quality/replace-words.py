@@ -99,6 +99,12 @@ ROOT_DIR = SCRIPT_DIR.parent.parent
 CONFIG_FILE = ROOT_DIR / "scripts" / "search-words.json"
 MODULES_DIR = ROOT_DIR / "modules"
 
+# Replacement words inside absolute paths are local machine metadata, not
+# prose. Keep them unchanged (for example, /Users/<name>/Documents/...).
+PATH_TOKEN_RE = re.compile(
+    r'''(?:^|[\s"'`([{])(?P<path>(?:/|~[/\\]|[A-Za-z]:[\\/])[^"'`\s)\]}]*)'''
+)
+
 # Structural baseline -- always skipped, not user-configurable. Mirrors
 # search-words.sh's own self-exclusion (this script's config legitimately
 # stores the exact words being searched/replaced, so it would otherwise
@@ -197,16 +203,22 @@ def build_variants(pairs: list[tuple[str, str]]):
 def process_line(line: str, regex, variants: dict, ignore_matches: list[str],
                   protect_patterns: list[re.Pattern]):
     if any(pat.search(line) for pat in protect_patterns):
-        return line, [], [], True
+        return line, [], [], True, []
     lower_line = line.lower()
     if any(pat.lower() in lower_line for pat in ignore_matches):
-        return line, [], [], False
+        return line, [], [], False, []
     if regex is None:
-        return line, [], [], False
-    replaced, ambiguous = [], []
+        return line, [], [], False, []
+    replaced, ambiguous, path_protected = [], [], []
 
     def _sub(match: re.Match) -> str:
         text = match.group(0)
+        if any(
+            candidate.start("path") <= match.start() < candidate.end("path")
+            for candidate in PATH_TOKEN_RE.finditer(line)
+        ):
+            path_protected.append(text)
+            return text
         if text in variants:
             replaced.append(text)
             return variants[text]
@@ -214,7 +226,7 @@ def process_line(line: str, regex, variants: dict, ignore_matches: list[str],
         return text
 
     new_line = regex.sub(_sub, line)
-    return new_line, replaced, ambiguous, False
+    return new_line, replaced, ambiguous, False, path_protected
 
 
 def process_file(path: Path, regex, variants: dict, ignore_matches: list[str],
@@ -227,12 +239,14 @@ def process_file(path: Path, regex, variants: dict, ignore_matches: list[str],
     changes = []        # (line_no, old_line, new_line)
     ambiguous = []       # (line_no, matched_text)
     protected = []       # (line_no, line_content)
+    path_protected = []  # (line_no, matched_text)
     new_lines = []
     for i, line in enumerate(lines, start=1):
-        new_line, _replaced, amb, was_protected = process_line(
+        new_line, _replaced, amb, was_protected, path_matches = process_line(
             line, regex, variants, ignore_matches, protect_patterns)
         if was_protected and regex is not None and regex.search(line):
             protected.append((i, line.rstrip("\n")))
+        path_protected.extend((i, m) for m in path_matches)
         ambiguous.extend((i, m) for m in amb)
         if new_line != line:
             changes.append((i, line.rstrip("\n"), new_line.rstrip("\n")))
@@ -241,6 +255,7 @@ def process_file(path: Path, regex, variants: dict, ignore_matches: list[str],
         "changes": changes,
         "ambiguous": ambiguous,
         "protected": protected,
+        "path_protected": path_protected,
         "new_text": "".join(new_lines) if changes else None,
     }
 
@@ -311,12 +326,18 @@ def main() -> int:
     file_results = {}  # Path -> result dict
     for path in iter_target_files(exclude_dirs, exclude_files):
         result = process_file(path, regex, variants, ignore_matches, protect_patterns)
-        if result and (result["changes"] or result["ambiguous"] or result["protected"]):
+        if result and (
+            result["changes"]
+            or result["ambiguous"]
+            or result["protected"]
+            or result["path_protected"]
+        ):
             file_results[path] = result
 
     total_changes = sum(len(r["changes"]) for r in file_results.values())
     total_ambiguous = sum(len(r["ambiguous"]) for r in file_results.values())
     total_protected = sum(len(r["protected"]) for r in file_results.values())
+    total_path_protected = sum(len(r["path_protected"]) for r in file_results.values())
 
     for path, result in sorted(file_results.items()):
         if result["changes"]:
@@ -332,13 +353,19 @@ def main() -> int:
             print(f"\n== {path} (PROTECTED LINE -- left untouched) ==")
             for line_no, text in result["protected"]:
                 print(f"  {line_no}: {text.strip()}")
+        if result["path_protected"]:
+            print(f"\n== {path} (PATH MATCH -- left untouched) ==")
+            for line_no, text in result["path_protected"]:
+                print(f"  {line_no}: {text!r}")
 
     print("\n== Summary ==")
     print(f"  {total_changes} replacement(s) across {len(file_results)} file(s)")
     if total_ambiguous:
         print(f"  {total_ambiguous} ambiguous match(es) need manual review (see above)")
     if total_protected:
-        print(f"  {total_protected} match(es) skipped by protect_lines (functional code, not prose)")
+        print(f"  {total_protected} line(s) skipped by protect_lines (functional code, not prose)")
+    if total_path_protected:
+        print(f"  {total_path_protected} match(es) skipped because they occur inside a path")
 
     if not args.apply:
         if total_changes or total_ambiguous:
