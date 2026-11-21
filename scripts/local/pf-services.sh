@@ -3,9 +3,9 @@
 # pf-services.sh - start/stop/restart the local PF stack
 #
 # Manages the three services of the local dev environment:
-#   1. pf-db      - PostgreSQL container (via pf-db's Makefile)
-#   2. pf-rates   - FastAPI microservice on :8001
-#   3. pf-svc-income - FastAPI microservice on :8000
+#   1. pf-db                   - PostgreSQL container (via pf-db's Makefile)
+#   2. pf-svc-reference   - FastAPI microservice on :8001
+#   3. pf-svc-income           - FastAPI microservice on :8000
 #
 # Usage:
 #   scripts/local/pf-services.sh start
@@ -122,9 +122,9 @@ verify_db_seed() {
   fi
   local count
   count=$(PGPASSWORD=pf_db psql -h "$DB_HOST" -p "$DB_PORT" -U pf_db -d pf_db \
-    -tAc 'SELECT count(*) FROM "RAT_CURRENCY";' 2>/dev/null || true)
+    -tAc 'SELECT count(*) FROM "REF_RATE_UNIT";' 2>/dev/null || true)
   if [[ "$count" =~ ^[0-9]+$ ]] && [ "$count" -gt 0 ]; then
-    log "seed data present ($count rows in RAT_CURRENCY)"
+    log "seed data present ($count rows in REF_RATE_UNIT)"
     return 0
   fi
   log "WARNING: could not confirm seed data via psql"
@@ -213,7 +213,7 @@ print_summary() {
   section "Summary"
   local overall=0
   printf '  %-12s %s\n' "pf-db" "${STATUS_DB:-UNKNOWN}"
-  printf '  %-12s %s\n' "pf-rates" "${STATUS_RATES:-UNKNOWN}"
+  printf '  %-12s %s\n' "pf-svc-reference" "${STATUS_RATES:-UNKNOWN}"
   printf '  %-12s %s\n' "pf-svc-income" "${STATUS_SVC_INCOME:-UNKNOWN}"
   [ "$STATUS_DB" = "OK" ] && [ "$STATUS_RATES" = "OK" ] && [ "$STATUS_SVC_INCOME" = "OK" ] || overall=1
   return "$overall"
@@ -221,7 +221,7 @@ print_summary() {
 
 cmd_start() {
   start_db
-  start_uvicorn "pf-rates" "$PF_RATES_DIR" "$RATES_MODULE" "$RATES_PORT" STATUS_RATES
+  start_uvicorn "pf-svc-reference" "$PF_RATES_DIR" "$RATES_MODULE" "$RATES_PORT" STATUS_RATES
   start_uvicorn "pf-svc-income" "$PF_SVC_INCOME_DIR" "$SVC_INCOME_MODULE" "$SVC_INCOME_PORT" STATUS_SVC_INCOME
   echo ""
   echo "Tail logs with: tail -f $LOG_DIR/*.log"
@@ -230,7 +230,7 @@ cmd_start() {
 
 cmd_stop() {
   stop_uvicorn "pf-svc-income" "$SVC_INCOME_MODULE" STATUS_SVC_INCOME
-  stop_uvicorn "pf-rates" "$RATES_MODULE" STATUS_RATES
+  stop_uvicorn "pf-svc-reference" "$RATES_MODULE" STATUS_RATES
   stop_db STATUS_DB
   echo ""
   print_summary
@@ -245,8 +245,8 @@ usage() {
   cat <<EOF
 Usage: $(basename "$0") {start|stop|restart}
 
-  start    Start pf-db (local Postgres), pf-rates and pf-svc-income
-  stop     Stop pf-svc-income, pf-rates and pf-db (in that order)
+  start    Start pf-db (local Postgres), pf-svc-reference and pf-svc-income
+  stop     Stop pf-svc-income, pf-svc-reference and pf-db (in that order)
   restart  stop, then start (reuses the same routines above)
 EOF
   exit 1
