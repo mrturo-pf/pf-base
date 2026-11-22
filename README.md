@@ -27,6 +27,7 @@ according to each repository's settings.
 | [`pf-db`](modules/pf-db/README.md) | Single source of truth for the PostgreSQL schema (DDL + Alembic migrations + seeds). No application code. | [README](modules/pf-db/README.md) · [AGENTS](modules/pf-db/AGENTS.md) |
 | [`pf-svc-reference`](modules/pf-svc-reference/README.md) | FastAPI microservice for financial reference data: exchange rates (USD/EUR), indices (UF/UTM/CPI), income tax brackets. | [README](modules/pf-svc-reference/README.md) · [AGENTS](modules/pf-svc-reference/AGENTS.md) |
 | [`pf-svc-income`](modules/pf-svc-income/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, and dashboard. | [README](modules/pf-svc-income/README.md) · [AGENTS](modules/pf-svc-income/AGENTS.md) |
+| [`pf-gateway-proxy`](modules/pf-gateway-proxy/README.md) | Scale-to-zero FastAPI routing facade behind the GCP API Gateway for `pf-svc-reference` and `pf-svc-income`. | [README](modules/pf-gateway-proxy/README.md) · [AGENTS](modules/pf-gateway-proxy/AGENTS.md) |
 | [`pf-common`](modules/pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-svc-reference` and `pf-svc-income`. **Not** used by `pf-db`. | [README](modules/pf-common/README.md) |
 | [`pf-sheets`](modules/pf-sheets/README.md) | Google Apps Script (bound to a Sheet) that syncs `pf-svc-reference` exchange rates into a spreadsheet. Versioned in Git, deployed via `clasp`. | [README](modules/pf-sheets/README.md) · [AGENTS](modules/pf-sheets/AGENTS.md) |
 
@@ -66,6 +67,9 @@ python3 scripts/update-workspace.py
     pf-svc-reference ──┐
                ├── PostgreSQL (schema/migrations in pf-db)
 pf-svc-income ─┘
+
+GCP API Gateway (`pf-backend-gateway-poc-88uq0qjn.uc.gateway.dev`)
+  └─> pf-gateway-proxy ──> pf-svc-reference / pf-svc-income
 
 pf-svc-reference, pf-svc-income ──> share Makefiles/scripts from pf-common
 
