@@ -183,6 +183,11 @@ supported by each repository's settings.
 - Behavioral changes must follow the applicable test policy in the local repository.
   Cross-repository changes should begin with an observable contract or acceptance test
   and must validate compatibility at the integration boundary.
+- Every HTTP request handled by a `pf-svc-*` backend must have an effective
+  `X-Request-ID`: preserve a valid canonical UUIDv4 supplied by the caller, generate
+  one when absent, reject malformed/oversized/duplicate values with `400`, echo the
+  effective ID in the response, and propagate it unchanged across backend calls and
+  retries. New backend services and clients must adopt this contract before release.
 - Documentation-only, formatting-only, mechanical refactors, and generated files do
   not require artificial tests, but applicable validation still has to run.
 
@@ -194,6 +199,8 @@ with implementation:
 - `modules/pf-svc-reference/docs/api.md`
 - `modules/pf-svc-income/docs/api.md`
 - `modules/pf-sheets/docs/api.md`
+- Backend request correlation contract: `X-Request-ID`, canonical UUIDv4 validation,
+  `request_id` structured logging, response echoing, and downstream propagation.
 The canonical Postman collection and environments live in the independent
 [`pf-postman`](https://github.com/mrturo-pf/pf-postman) repository. Update that
 repository for Postman contract catalog changes; do not recreate Postman assets in
