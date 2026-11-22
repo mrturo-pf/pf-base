@@ -189,6 +189,11 @@ supported by each repository's settings.
   one when absent, reject malformed/oversized/duplicate values with `400`, echo the
   effective ID in the response, and propagate it unchanged across backend calls and
   retries. New backend services and clients must adopt this contract before release.
+- The GCP API Gateway is the only approved production entry point for `pf-svc-*`
+  traffic. External callers and backend-to-backend calls must use the gateway facade;
+  direct Cloud Run URLs are restricted to the gateway/proxy path, controlled rollback,
+  and explicitly authorized operator diagnostics. A direct income-to-reference call is
+  transitional only and must not be treated as the final architecture.
 - Documentation-only, formatting-only, mechanical refactors, and generated files do
   not require artificial tests, but applicable validation still has to run.
 
