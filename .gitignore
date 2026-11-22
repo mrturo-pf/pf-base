@@ -13,6 +13,9 @@
 # to scripts/search-words.json and edit locally, never committed.
 /scripts/search-words.json
 
+# Cloud Shell runtime scripts and archives are generated locally and never committed.
+/scripts/cloudshell/
+
 # Common local-only stuff, in case anything ever lands directly at root
 node_modules/
 /generated/
