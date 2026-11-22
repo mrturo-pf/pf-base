@@ -22,8 +22,8 @@ mutating integration workflow. The external `pf-sheets` folder is excluded becau
 it has no local service. It resets the local database and stops services on exit.
 
 The script is intentionally LOCAL-only. It loads the local keys automatically from
-`secrets/pf-runtime-api-keys.env` using `LOCAL_PF_RATES_API_KEY` and
-`LOCAL_PF_INCOME_API_KEY`. Explicit `PF_RATES_API_KEY` and `PF_INCOME_API_KEY`
+`secrets/pf-runtime-api-keys.env` using `LOCAL_PF_REFERENCE_API_KEY` and
+`LOCAL_PF_INCOME_API_KEY`. Explicit `PF_REFERENCE_API_KEY` and `PF_INCOME_API_KEY`
 environment variables take precedence when provided:
 
 ```bash

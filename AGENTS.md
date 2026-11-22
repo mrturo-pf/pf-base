@@ -42,7 +42,7 @@ change and prevents the root from becoming a duplicate implementation manual.
 | Repository | Responsibility | Local instructions |
 | --- | --- | --- |
 | [`pf-db`](modules/pf-db) | PostgreSQL schema, DDL, seeds, and Alembic migrations | [`modules/pf-db/AGENTS.md`](modules/pf-db/AGENTS.md) |
-| [`pf-rates`](modules/pf-rates) | Financial reference data and HTTP API | [`modules/pf-rates/AGENTS.md`](modules/pf-rates/AGENTS.md) |
+| [`pf-svc-reference`](modules/pf-svc-reference) | Financial reference data and HTTP API | [`modules/pf-svc-reference/AGENTS.md`](modules/pf-svc-reference/AGENTS.md) |
 | [`pf-svc-income`](modules/pf-svc-income) | Payroll, tax, and employer domain plus HTTP API | [`modules/pf-svc-income/AGENTS.md`](modules/pf-svc-income/AGENTS.md) |
 | [`pf-sheets`](modules/pf-sheets) | Google Apps Script, Sheets integration, and Web App | [`modules/pf-sheets/AGENTS.md`](modules/pf-sheets/AGENTS.md) |
 | `pf-common` | Shared infrastructure and Make targets | [`modules/pf-common/README.md`](modules/pf-common/README.md) · [`modules/pf-common/AGENTS.md`](modules/pf-common/AGENTS.md) |
@@ -93,8 +93,8 @@ python3 scripts/update-workspace.py
 
 | Responsibility | Owner | Consumers |
 | --- | --- | --- |
-| PostgreSQL schema, DDL, migrations, and schema seeds | `pf-db` | `pf-rates`, `pf-svc-income` |
-| Financial reference-data domain and service behavior | `pf-rates` | `pf-svc-income`, `pf-sheets` |
+| PostgreSQL schema, DDL, migrations, and schema seeds | `pf-db` | `pf-svc-reference`, `pf-svc-income` |
+| Financial reference-data domain and service behavior | `pf-svc-reference` | `pf-svc-income`, `pf-sheets` |
 | Payroll and tax domain and service behavior | `pf-svc-income` | ecosystem clients |
 | Spreadsheet synchronization and Apps Script Web App | `pf-sheets` | Google Sheets and service clients |
 | Shared development/build infrastructure | `pf-common` | ecosystem repositories |
@@ -140,7 +140,7 @@ reviewed migration in `pf-db`.
 3. Update the shared Postman collection and environments when applicable.
 4. Update all known consumers and validate the complete workflow.
 
-The ecosystem's HTTP surface includes FastAPI endpoints from `pf-rates` and
+The ecosystem's HTTP surface includes FastAPI endpoints from `pf-svc-reference` and
 `pf-svc-income`, and Google Apps Script Web App endpoints from `pf-sheets`. These are
 HTTP contracts, but they do not share the same runtime, framework, or deployment
 model.
@@ -191,7 +191,7 @@ supported by each repository's settings.
 These files describe public or cross-repository behavior and must stay synchronized
 with implementation:
 
-- `modules/pf-rates/docs/api.md`
+- `modules/pf-svc-reference/docs/api.md`
 - `modules/pf-svc-income/docs/api.md`
 - `modules/pf-sheets/docs/api.md`
 The canonical Postman collection and environments live in the independent

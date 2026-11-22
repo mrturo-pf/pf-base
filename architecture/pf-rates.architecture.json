@@ -2,12 +2,12 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "pf-rates — Internal Architecture",
+    "title": "pf-svc-reference — Internal Architecture",
     "subtitle": "Hexagonal (Ports & Adapters): interfaces -> application -> domain, infrastructure -> application",
-    "output": "pf-rates.html",
+    "output": "pf-svc-reference.html",
     "quality_profile": "showcase",
     "repository": {
-      "url": "https://github.com/mrturo-pf/pf-rates",
+      "url": "https://github.com/mrturo-pf/pf-svc-reference",
       "provider": "github",
       "link_mode": "local-only",
       "revision": "784b5ec74a531eaab31593b75bb57a829e995d66"

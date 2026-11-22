@@ -14,14 +14,14 @@
 #
 # Notes:
 #   - Does NOT touch any .env file — services run with whatever config
-#     is already in modules/pf-rates/.env and modules/pf-svc-income/.env.
+#     is already in modules/pf-svc-reference/.env and modules/pf-svc-income/.env.
 #   - Logs go to scripts/local/logs/<service>.log (gitignored)
 # ============================================================================
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 PF_DB_DIR="$ROOT_DIR/modules/pf-db"
-PF_RATES_DIR="$ROOT_DIR/modules/pf-rates"
+PF_REFERENCE_DIR="$ROOT_DIR/modules/pf-svc-reference"
 PF_SVC_INCOME_DIR="$ROOT_DIR/modules/pf-svc-income"
 
 LOG_DIR="$ROOT_DIR/scripts/local/logs"
@@ -221,7 +221,7 @@ print_summary() {
 
 cmd_start() {
   start_db
-  start_uvicorn "pf-svc-reference" "$PF_RATES_DIR" "$RATES_MODULE" "$RATES_PORT" STATUS_RATES
+  start_uvicorn "pf-svc-reference" "$PF_REFERENCE_DIR" "$RATES_MODULE" "$RATES_PORT" STATUS_RATES
   start_uvicorn "pf-svc-income" "$PF_SVC_INCOME_DIR" "$SVC_INCOME_MODULE" "$SVC_INCOME_PORT" STATUS_SVC_INCOME
   echo ""
   echo "Tail logs with: tail -f $LOG_DIR/*.log"

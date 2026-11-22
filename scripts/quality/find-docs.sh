@@ -11,7 +11,7 @@
 #
 # Examples:
 #   ./scripts/quality/find-docs.sh
-#   ./scripts/quality/find-docs.sh -d modules/pf-rates
+#   ./scripts/quality/find-docs.sh -d modules/pf-svc-reference
 #   ./scripts/quality/find-docs.sh -i AGENTS.md,README.md
 #   ./scripts/quality/find-docs.sh -d modules/pf-svc-income -i README.md
 

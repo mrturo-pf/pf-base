@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================================
 # search-words.sh - case-insensitive word search across the whole pf
-#                    ecosystem (this repo + modules/pf-db, pf-rates,
+#                    ecosystem (this repo + modules/pf-db, pf-svc-reference,
 #                    pf-svc-income, pf-common, pf-sheets), in code and
 #                    comments alike.
 #
@@ -66,12 +66,12 @@
 #
 # Automatic .gitignore awareness:
 #   Beyond the excludes above, this script asks `git` what each MODULE
-#   ignores (modules/pf-db, pf-rates, pf-svc-income, pf-common, pf-sheets --
+#   ignores (modules/pf-db, pf-svc-reference, pf-svc-income, pf-common, pf-sheets --
 #   each its own git repo with its own .gitignore) and skips those too
 #   (.venv, __pycache__, node_modules, coverage, etc.) -- no need to
 #   hand-maintain that list, it can never drift out of sync. The ROOT
 #   repo's own .gitignore is deliberately NOT consulted: it declares
-#   /modules/pf-rates, /modules/pf-svc-income, etc. as ignored (so `git
+#   /modules/pf-svc-reference, /modules/pf-svc-income, etc. as ignored (so `git
 #   status` here stays clean) -- exactly the directories this script
 #   exists to search. Respecting it would gut the whole tool.
 #

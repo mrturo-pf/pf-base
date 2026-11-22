@@ -74,22 +74,22 @@ load_runtime_keys() {
     # shellcheck disable=SC1090
     . "$RUNTIME_KEYS_FILE"
     set +a
-    PF_RATES_API_KEY="${PF_RATES_API_KEY:-${LOCAL_PF_RATES_API_KEY:-}}"
+    PF_REFERENCE_API_KEY="${PF_REFERENCE_API_KEY:-${LOCAL_PF_REFERENCE_API_KEY:-}}"
     PF_INCOME_API_KEY="${PF_INCOME_API_KEY:-${LOCAL_PF_INCOME_API_KEY:-}}"
-    export PF_RATES_API_KEY PF_INCOME_API_KEY
+    export PF_REFERENCE_API_KEY PF_INCOME_API_KEY
     printf 'Loaded local API keys from %s\n' "$RUNTIME_KEYS_FILE"
   fi
   # The running local services read their ignored .env files. Prefer those
   # values when present so the test client cannot drift from the service.
-  local rates_env="$ROOT_DIR/modules/pf-rates/.env"
+  local rates_env="$ROOT_DIR/modules/pf-svc-reference/.env"
   local income_env="$ROOT_DIR/modules/pf-svc-income/.env"
   if [ -f "$rates_env" ]; then
-    PF_RATES_API_KEY="$(sed -n 's/^PF_RATES_API_KEY=//p' "$rates_env" | head -n 1)"
+    PF_REFERENCE_API_KEY="$(sed -n 's/^PF_REFERENCE_API_KEY=//p' "$rates_env" | head -n 1)"
   fi
   if [ -f "$income_env" ]; then
     PF_INCOME_API_KEY="$(sed -n 's/^PF_INCOME_API_KEY=//p' "$income_env" | head -n 1)"
   fi
-  export PF_RATES_API_KEY PF_INCOME_API_KEY
+  export PF_REFERENCE_API_KEY PF_INCOME_API_KEY
 }
 
 ensure_newman() {
@@ -140,7 +140,7 @@ ensure_newman
 [ -x "$SERVICES_SCRIPT" ] || { printf 'ERROR: not executable: %s\n' "$SERVICES_SCRIPT" >&2; exit 2; }
 [ -d "$POSTMAN_DIR" ] || { printf 'ERROR: missing postman checkout: %s\n' "$POSTMAN_DIR" >&2; exit 2; }
 
-: "${PF_RATES_API_KEY:?Set PF_RATES_API_KEY to the local pf-rates API key}"
+: "${PF_REFERENCE_API_KEY:?Set PF_REFERENCE_API_KEY to the local pf-svc-reference API key}"
 : "${PF_INCOME_API_KEY:?Set PF_INCOME_API_KEY to the local pf-svc-income API key}"
 
 mkdir -p "$REPORT_DIR"
@@ -192,7 +192,7 @@ run_step "Prepare dynamic pf-svc-income fixtures" \
 
 # Materialize secrets and file paths only under /tmp. Committed Postman JSON is
 # never modified and never receives API-key values.
-python3 - "$POSTMAN_DIR/pf-ecosystem.postman_environment.local.json" "$ENVIRONMENT" "$COLLECTION" "$FULL_COLLECTION" "$PDF_FIXTURE" "$XLSX_FIXTURE" "$FIXTURES" "$PF_RATES_API_KEY" "$PF_INCOME_API_KEY" <<'PY'
+python3 - "$POSTMAN_DIR/pf-ecosystem.postman_environment.local.json" "$ENVIRONMENT" "$COLLECTION" "$FULL_COLLECTION" "$PDF_FIXTURE" "$XLSX_FIXTURE" "$FIXTURES" "$PF_REFERENCE_API_KEY" "$PF_INCOME_API_KEY" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -206,7 +206,7 @@ fixtures = json.loads(fixtures_file.read_text(encoding="utf-8"))
 
 environment = json.loads(source_env.read_text(encoding="utf-8"))
 secrets = {
-    "pf-rates-api-key": rates_secret,
+    "pf-svc-reference-api-key": rates_secret,
     "pf-svc-income-api-key": income_secret,
 }
 for variable in environment["values"]:
@@ -233,7 +233,7 @@ EXCLUDED_LOCAL_REQUESTS = {
 FOLDER_ORDER = {
     "pf-svc-income": 0, "Employer": 0, "Payroll": 1, "Preview": 0,
     "Import": 1, "Queries": 2, "Delete": 3, "Export": 4,
-    "Templates": 5, "Reference data": 6, "pf-rates": 10,
+    "Templates": 5, "Reference data": 6, "pf-svc-reference": 10,
 }
 
 REQUESTS_TO_RELOCATE = {"Update a template", "Deactivate a template", "Delete one period", "Delete payroll (atomic batch)", "Delete contracts", "Delete employers"}
@@ -336,9 +336,9 @@ run_step "Generate synthetic PDF" \
 run_step "Generate synthetic XLSX" \
   "$PYTHON_BIN" "$POSTMAN_DIR/scripts/generate-synthetic-payroll-xlsx.py" --output "$XLSX_FIXTURE"
 
-curl -fsS http://localhost:8001/openapi.json >"$TEMP_DIR/pf-rates-openapi.json"
+curl -fsS http://localhost:8001/openapi.json >"$TEMP_DIR/pf-svc-reference-openapi.json"
 rates_openapi_status=$?
-pass_or_fail "Fetch pf-rates OpenAPI" "$rates_openapi_status"
+pass_or_fail "Fetch pf-svc-reference OpenAPI" "$rates_openapi_status"
 curl -fsS http://localhost:8000/openapi.json >"$TEMP_DIR/pf-svc-income-openapi.json"
 income_openapi_status=$?
 pass_or_fail "Fetch pf-svc-income OpenAPI" "$income_openapi_status"
@@ -347,12 +347,12 @@ if [ "$rates_openapi_status" -eq 0 ] && [ "$income_openapi_status" -eq 0 ]; then
   run_step "Check OpenAPI/Postman coverage" \
     python3 "$POSTMAN_DIR/scripts/check-api-coverage.py" \
       --collection "$COLLECTION" \
-      --openapi "pf-rates=$TEMP_DIR/pf-rates-openapi.json" \
+      --openapi "pf-svc-reference=$TEMP_DIR/pf-svc-reference-openapi.json" \
       --openapi "pf-svc-income=$TEMP_DIR/pf-svc-income-openapi.json"
 fi
 
 run_step "Check expected local error contracts" \
-  env PF_RATES_API_KEY="$PF_RATES_API_KEY" PF_INCOME_API_KEY="$PF_INCOME_API_KEY" \
+  env PF_REFERENCE_API_KEY="$PF_REFERENCE_API_KEY" PF_INCOME_API_KEY="$PF_INCOME_API_KEY" \
   python3 "$POSTMAN_DIR/scripts/check-local-error-contracts.py"
 
 run_step "Run read-only Newman smoke subset" \

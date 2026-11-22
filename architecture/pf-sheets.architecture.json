@@ -33,7 +33,7 @@
       { "path": "src/infrastructure/index.js", "label": "Adapters over Apps Script globals" }
     ] },
 
-    { "id": "pf_rates", "type": "external", "label": "pf-rates", "sublabel": "FastAPI microservice", "pos": [960, 140], "size": [170, 64] },
+    { "id": "pf_reference", "type": "external", "label": "pf-svc-reference", "sublabel": "FastAPI microservice", "pos": [960, 140], "size": [170, 64] },
     { "id": "google_drive", "type": "external", "label": "Google Drive", "sublabel": "exported combined CSV", "pos": [960, 360], "size": [170, 64] },
     { "id": "google_sheet", "type": "external", "label": "Google Sheet", "sublabel": "VALUES tab (bound spreadsheet)", "pos": [960, 580], "size": [170, 64] }
   ],
@@ -48,13 +48,13 @@
     { "id": "webapp-to-infra", "from": "webapp", "to": "infrastructure", "label": "delegates Sheet/cache access", "labelAt": [545, 296] },
     { "id": "macro-to-infra", "from": "macro", "to": "infrastructure", "label": "orchestrates sync" },
     { "id": "infra-to-domain", "from": "infrastructure", "to": "domain", "label": "pure computation", "fromSide": "top", "toSide": "bottom", "labelAt": [745, 130] },
-    { "id": "infra-to-pfrates", "from": "infrastructure", "to": "pf_rates", "label": "HTTP POST /exports/financial-data", "labelAt": [910, 246] },
+    { "id": "infra-to-pfrates", "from": "infrastructure", "to": "pf_reference", "label": "HTTP POST /exports/financial-data", "labelAt": [910, 246] },
     { "id": "infra-to-drive", "from": "infrastructure", "to": "google_drive", "label": "reads exported CSV", "labelAt": [1000, 300] },
     { "id": "infra-to-sheet", "from": "infrastructure", "to": "google_sheet", "label": "reads/writes VALUES tab", "labelAt": [850, 560] }
   ],
   "cards": [
     { "dot": "cyan", "title": "Two independent entry-point flows", "items": ["Bound Macro: human-triggered from the Sheet's custom menu", "Web App + Library: machine-triggered HTTP, called by other spreadsheets", "Both funnel through the same Infrastructure + Domain core"] },
-    { "dot": "emerald", "title": "No real module system", "items": ["Apps Script flattens every file into one global scope", "domain/infrastructure/interfaces is a convention, not enforced by the runtime", "No ports/Protocol layer like pf-svc-income/pf-rates -- infra functions take globals as explicit params instead"] },
+    { "dot": "emerald", "title": "No real module system", "items": ["Apps Script flattens every file into one global scope", "domain/infrastructure/interfaces is a convention, not enforced by the runtime", "No ports/Protocol layer like pf-svc-income/pf-svc-reference -- infra functions take globals as explicit params instead"] },
     { "dot": "violet", "title": "Cross-realm instanceof gotcha", "items": ["Each Apps Script project runs in its own V8 realm", "A Date built in Payroll fails instanceof Date inside this Library", "isDateValue_() uses Object.prototype.toString.call(...) instead -- see docs/design-notes.md"] },
     { "dot": "amber", "title": "Secrets", "items": ["API keys and file IDs come from PropertiesService.getScriptProperties()", "Never hardcoded in source, set once manually per Apps Script project"] }
   ]
