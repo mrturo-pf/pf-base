@@ -98,13 +98,19 @@ PY
   printf '%s\n%s\n' "$key_id" "$key_value"
 }
 
+request_status() {
+  local output
+  output=$(curl --noproxy '*' --silent --show-error --output /dev/null \
+    --write-out '%{http_code}' --max-time 45 "$@")
+  printf '%s' "$output"
+}
+
 assert_status() {
   local label="$1"
   local expected="$2"
   shift 2
   local actual
-  actual=$(curl --noproxy '*' --silent --show-error --output /dev/null \
-    --write-out '%{http_code}' --max-time 45 "$@")
+  actual=$(request_status "$@")
   printf '%-38s HTTP %s\n' "$label" "$actual"
   case ",$expected," in
     *",$actual,"*) ;;
@@ -113,6 +119,22 @@ assert_status() {
       exit 1
       ;;
   esac
+}
+
+assert_eventual_rejection() {
+  local label="$1"
+  shift
+  local attempt status
+  for attempt in 1 2 3 4 5 6; do
+    status=$(request_status "$@")
+    printf '%-38s attempt=%s HTTP %s\n' "$label" "$attempt" "$status"
+    case "$status" in
+      400|401|403) return 0 ;;
+    esac
+    sleep 15
+  done
+  printf 'Revoked key was still accepted after the propagation window.\n' >&2
+  exit 1
 }
 
 printf 'Testing gateway: https://%s%s\n' "$GATEWAY_HOST" "$BUSINESS_PATH"
@@ -128,8 +150,8 @@ assert_status "enabled test key" "200" \
 # API Keys v2 has no disable flag in gcloud; deletion is the supported
 # revocation/deactivation operation. The deleted key must then be rejected.
 gcloud services api-keys delete "$revoked_id" \
-  --project="$PROJECT_ID" --quiet >/dev/null
-assert_status "revoked test key" "400,401,403" \
+  --project="$PROJECT_ID" --quiet >/dev/null 2>&1
+assert_eventual_rejection "revoked test key" \
   -H "X-API-Key: $revoked_key" \
   "https://$GATEWAY_HOST$BUSINESS_PATH"
 
