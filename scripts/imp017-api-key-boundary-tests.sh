@@ -2,7 +2,7 @@
 # Run IMP-017 API-key boundary tests from the local machine.
 #
 # The script creates short-lived test keys, never prints their values, validates
-# enabled/disabled/wrong-API behavior, and deletes every test key on exit.
+# enabled/revoked/wrong-API behavior, and deletes every test key on exit.
 # It must be run from an approved GCP/VPC Service Controls path.
 
 set -euo pipefail
@@ -17,10 +17,12 @@ CREATED_KEYS=()
 cleanup() {
   local key_id
   set +e
-  for key_id in "${CREATED_KEYS[@]}"; do
-    gcloud services api-keys delete "$key_id" \
-      --project="$PROJECT_ID" --quiet >/dev/null 2>&1
-  done
+  if ((${#CREATED_KEYS[@]})); then
+    for key_id in "${CREATED_KEYS[@]}"; do
+      gcloud services api-keys delete "$key_id" \
+        --project="$PROJECT_ID" --quiet >/dev/null 2>&1
+    done
+  fi
   rm -rf "$WORK_DIR"
 }
 trap cleanup EXIT
@@ -116,17 +118,19 @@ assert_status() {
 printf 'Testing gateway: https://%s%s\n' "$GATEWAY_HOST" "$BUSINESS_PATH"
 printf 'Managed service: %s\n\n' "$MANAGED_SERVICE"
 
-read -r disabled_id disabled_key < <(
-  create_key "IMP-017 disabled-key test" "$MANAGED_SERVICE"
+read -r revoked_id revoked_key < <(
+  create_key "IMP-017 revoked-key test" "$MANAGED_SERVICE"
 )
 assert_status "enabled test key" "200" \
-  -H "X-API-Key: $disabled_key" \
+  -H "X-API-Key: $revoked_key" \
   "https://$GATEWAY_HOST$BUSINESS_PATH"
 
-gcloud services api-keys update "$disabled_id" \
-  --project="$PROJECT_ID" --disable --quiet >/dev/null
-assert_status "disabled test key" "400,401,403" \
-  -H "X-API-Key: $disabled_key" \
+# API Keys v2 has no disable flag in gcloud; deletion is the supported
+# revocation/deactivation operation. The deleted key must then be rejected.
+gcloud services api-keys delete "$revoked_id" \
+  --project="$PROJECT_ID" --quiet >/dev/null
+assert_status "revoked test key" "400,401,403" \
+  -H "X-API-Key: $revoked_key" \
   "https://$GATEWAY_HOST$BUSINESS_PATH"
 
 read -r wrong_api_id wrong_api_key < <(
