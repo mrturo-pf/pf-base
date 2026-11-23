@@ -94,7 +94,6 @@ PY
     exit 1
   fi
 
-  CREATED_KEYS+=("$key_id")
   printf '%s\n%s\n' "$key_id" "$key_value"
 }
 
@@ -145,6 +144,7 @@ printf 'Managed service: %s\n\n' "$MANAGED_SERVICE"
 read -r revoked_id revoked_key < <(
   create_key "IMP-017 revoked-key test" "$MANAGED_SERVICE"
 )
+CREATED_KEYS+=("$revoked_id")
 assert_status "enabled test key" "200" \
   -H "X-API-Key: $revoked_key" \
   "https://$GATEWAY_HOST$BUSINESS_PATH"
@@ -164,6 +164,7 @@ fi
 read -r wrong_api_id wrong_api_key < <(
   create_key "IMP-017 wrong-api test" "storage.googleapis.com"
 )
+CREATED_KEYS+=("$wrong_api_id")
 assert_status "key restricted to another API" "400,401,403" \
   -H "X-API-Key: $wrong_api_key" \
   "https://$GATEWAY_HOST$BUSINESS_PATH"
