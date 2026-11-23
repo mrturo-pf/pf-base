@@ -17,6 +17,10 @@
       "path": "modules/pf-db"
     },
     {
+      "name": "pf-gateway-proxy",
+      "path": "modules/pf-gateway-proxy"
+    },
+    {
       "name": "pf-sheets",
       "path": "modules/pf-sheets"
     },
