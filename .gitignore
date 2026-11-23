@@ -16,6 +16,9 @@
 # Cloud Shell runtime scripts and archives are generated locally and never committed.
 /scripts/cloudshell/
 
+# Local operational evidence is rollback material, not repository content.
+.local-evidence/
+
 # Common local-only stuff, in case anything ever lands directly at root
 node_modules/
 /generated/
