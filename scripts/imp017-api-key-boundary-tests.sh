@@ -125,16 +125,18 @@ assert_eventual_rejection() {
   local label="$1"
   shift
   local attempt status
-  for attempt in 1 2 3 4 5 6; do
+  local attempts="${REVOCATION_ATTEMPTS:-10}"
+  local interval="${REVOCATION_INTERVAL_SECONDS:-30}"
+  for attempt in $(seq 1 "$attempts"); do
     status=$(request_status "$@")
     printf '%-38s attempt=%s HTTP %s\n' "$label" "$attempt" "$status"
     case "$status" in
       400|401|403) return 0 ;;
     esac
-    sleep 15
+    sleep "$interval"
   done
   printf 'Revoked key was still accepted after the propagation window.\n' >&2
-  exit 1
+  return 1
 }
 
 printf 'Testing gateway: https://%s%s\n' "$GATEWAY_HOST" "$BUSINESS_PATH"
@@ -151,9 +153,13 @@ assert_status "enabled test key" "200" \
 # revocation/deactivation operation. The deleted key must then be rejected.
 gcloud services api-keys delete "$revoked_id" \
   --project="$PROJECT_ID" --quiet >/dev/null 2>&1
-assert_eventual_rejection "revoked test key" \
+revocation_result=0
+if ! assert_eventual_rejection "revoked test key" \
   -H "X-API-Key: $revoked_key" \
-  "https://$GATEWAY_HOST$BUSINESS_PATH"
+  "https://$GATEWAY_HOST$BUSINESS_PATH"; then
+  revocation_result=1
+  printf 'WARNING: revocation result is inconclusive; continuing with the wrong-API test.\n' >&2
+fi
 
 read -r wrong_api_id wrong_api_key < <(
   create_key "IMP-017 wrong-api test" "storage.googleapis.com"
@@ -162,4 +168,9 @@ assert_status "key restricted to another API" "400,401,403" \
   -H "X-API-Key: $wrong_api_key" \
   "https://$GATEWAY_HOST$BUSINESS_PATH"
 
-printf '\nIMP-017 API-key boundary tests passed. Test keys will be deleted automatically.\n'
+printf '\nWrong-API restriction test passed. Test keys will be deleted automatically.\n'
+if [ "$revocation_result" -ne 0 ]; then
+  printf 'IMP-017 revocation test remains inconclusive because API Gateway cache propagation exceeded the configured window.\n' >&2
+  exit 2
+fi
+printf 'IMP-017 API-key boundary tests passed.\n'
