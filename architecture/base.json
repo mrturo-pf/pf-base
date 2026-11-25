@@ -15,7 +15,7 @@
       "sublabel": "shared Make targets",
       "pos": [
         40,
-        40
+        500
       ],
       "size": [
         160,
@@ -28,8 +28,8 @@
       "label": "pf-sheets",
       "sublabel": "Apps Script (clasp)",
       "pos": [
-        40,
-        280
+        300,
+        500
       ],
       "size": [
         160,
@@ -42,8 +42,8 @@
       "label": "Google Sheets/Drive",
       "sublabel": "Apps Script APIs",
       "pos": [
-        40,
-        460
+        560,
+        500
       ],
       "size": [
         160,
@@ -56,7 +56,7 @@
       "label": "pf-svc-income",
       "sublabel": "FastAPI :8001",
       "pos": [
-        320,
+        560,
         40
       ],
       "size": [
@@ -70,8 +70,8 @@
       "label": "pf-svc-reference",
       "sublabel": "FastAPI :8000",
       "pos": [
-        320,
-        280
+        300,
+        240
       ],
       "size": [
         160,
@@ -84,7 +84,7 @@
       "label": "pf-db",
       "sublabel": "Alembic migrations",
       "pos": [
-        600,
+        820,
         40
       ],
       "size": [
@@ -98,8 +98,8 @@
       "label": "PostgreSQL",
       "sublabel": "shared instance :5432",
       "pos": [
-        600,
-        280
+        820,
+        240
       ],
       "size": [
         160,
@@ -113,7 +113,7 @@
       "sublabel": "public HTTPS ingress",
       "pos": [
         40,
-        700
+        40
       ],
       "size": [
         180,
@@ -126,8 +126,8 @@
       "label": "pf-gateway-proxy",
       "sublabel": "scale-to-zero routing facade",
       "pos": [
-        320,
-        700
+        300,
+        40
       ],
       "size": [
         190,
@@ -157,96 +157,105 @@
       "fromSide": "right",
       "toSide": "left",
       "labelAt": [
-        265,
-        680
+        220,
+        20
       ]
     },
     {
-      "id": "common-to-payroll",
-      "from": "pf_common",
+      "id": "proxy-to-income",
+      "from": "pf_gateway_proxy",
       "to": "pf_svc_income",
-      "label": "shared make targets",
-      "variant": "dashed"
+      "label": "identity token: /income/*",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelAt": [
+        430,
+        20
+      ]
     },
     {
-      "id": "common-to-rates",
-      "from": "pf_common",
+      "id": "proxy-to-reference",
+      "from": "pf_gateway_proxy",
       "to": "pf_svc_reference",
-      "label": "shared make targets",
-      "variant": "dashed"
+      "label": "identity token: /reference/*",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        260,
+        150
+      ]
     },
     {
-      "id": "payroll-to-rates",
+      "id": "income-to-reference",
       "from": "pf_svc_income",
       "to": "pf_svc_reference",
       "label": "HTTP: rates, tax brackets",
+      "fromSide": "bottom",
+      "toSide": "right",
+      "via": [
+        [
+          640,
+          104
+        ],
+        [
+          640,
+          272
+        ],
+        [
+          490,
+          272
+        ]
+      ],
       "labelAt": [
-        400,
-        118
+        650,
+        180
       ]
     },
     {
-      "id": "payroll-to-db",
+      "id": "income-to-db",
       "from": "pf_svc_income",
       "to": "postgres",
-      "label": "SQL (payroll tables)",
+      "label": "SQL: payroll tables",
       "fromSide": "right",
-      "toSide": "top",
+      "toSide": "left",
       "via": [
         [
-          540,
+          760,
           72
         ],
         [
-          540,
-          250
-        ],
-        [
-          680,
-          250
+          760,
+          272
         ]
+      ],
+      "labelAt": [
+        760,
+        130
       ]
     },
     {
-      "id": "rates-to-db",
+      "id": "reference-to-db",
       "from": "pf_svc_reference",
       "to": "postgres",
-      "label": "SQL (rates tables)"
+      "label": "SQL: rates tables",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelAt": [
+        560,
+        260
+      ]
     },
     {
-      "id": "pfdb-to-db",
+      "id": "db-migrations",
       "from": "pf_db",
       "to": "postgres",
       "label": "alembic upgrade head",
       "variant": "dashed",
-      "labelAt": [
-        680,
-        118
-      ]
-    },
-    {
-      "id": "sheets-to-rates",
-      "from": "pf_sheets",
-      "to": "pf_svc_reference",
-      "label": "HTTP: triggers export",
-      "fromSide": "right",
-      "toSide": "left",
-      "labelAt": [
-        260,
-        340
-      ]
-    },
-    {
-      "id": "sheets-to-google",
-      "from": "pf_sheets",
-      "to": "google_workspace",
-      "label": "read CSV, upsert rows",
-      "variant": "dashed",
       "fromSide": "bottom",
       "toSide": "top",
       "labelAt": [
-        150,
-        400
+        880,
+        150
       ]
     }
   ],
