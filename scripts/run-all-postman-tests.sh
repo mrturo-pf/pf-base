@@ -74,9 +74,9 @@ load_runtime_keys() {
     # shellcheck disable=SC1090
     . "$RUNTIME_KEYS_FILE"
     set +a
-    PF_REFERENCE_API_KEY="${PF_REFERENCE_API_KEY:-${LOCAL_PF_REFERENCE_API_KEY:-}}"
-    PF_INCOME_API_KEY="${PF_INCOME_API_KEY:-${LOCAL_PF_INCOME_API_KEY:-}}"
-    export PF_REFERENCE_API_KEY PF_INCOME_API_KEY
+    PF_SVC_REFERENCE_API_KEY="${PF_SVC_REFERENCE_API_KEY:-${LOCAL_PF_SVC_REFERENCE_API_KEY:-}}"
+    PF_SVC_INCOME_API_KEY="${PF_SVC_INCOME_API_KEY:-${LOCAL_PF_SVC_INCOME_API_KEY:-}}"
+    export PF_SVC_REFERENCE_API_KEY PF_SVC_INCOME_API_KEY
     printf 'Loaded local API keys from %s\n' "$RUNTIME_KEYS_FILE"
   fi
   # The running local services read their ignored .env files. Prefer those
@@ -84,12 +84,12 @@ load_runtime_keys() {
   local rates_env="$ROOT_DIR/modules/pf-svc-reference/.env"
   local income_env="$ROOT_DIR/modules/pf-svc-income/.env"
   if [ -f "$rates_env" ]; then
-    PF_REFERENCE_API_KEY="$(sed -n 's/^PF_REFERENCE_API_KEY=//p' "$rates_env" | head -n 1)"
+    PF_SVC_REFERENCE_API_KEY="$(sed -n 's/^PF_SVC_REFERENCE_API_KEY=//p' "$rates_env" | head -n 1)"
   fi
   if [ -f "$income_env" ]; then
-    PF_INCOME_API_KEY="$(sed -n 's/^PF_INCOME_API_KEY=//p' "$income_env" | head -n 1)"
+    PF_SVC_INCOME_API_KEY="$(sed -n 's/^PF_SVC_INCOME_API_KEY=//p' "$income_env" | head -n 1)"
   fi
-  export PF_REFERENCE_API_KEY PF_INCOME_API_KEY
+  export PF_SVC_REFERENCE_API_KEY PF_SVC_INCOME_API_KEY
 }
 
 ensure_newman() {
@@ -140,8 +140,8 @@ ensure_newman
 [ -x "$SERVICES_SCRIPT" ] || { printf 'ERROR: not executable: %s\n' "$SERVICES_SCRIPT" >&2; exit 2; }
 [ -d "$POSTMAN_DIR" ] || { printf 'ERROR: missing postman checkout: %s\n' "$POSTMAN_DIR" >&2; exit 2; }
 
-: "${PF_REFERENCE_API_KEY:?Set PF_REFERENCE_API_KEY to the local pf-svc-reference API key}"
-: "${PF_INCOME_API_KEY:?Set PF_INCOME_API_KEY to the local pf-svc-income API key}"
+: "${PF_SVC_REFERENCE_API_KEY:?Set PF_SVC_REFERENCE_API_KEY to the local pf-svc-reference API key}"
+: "${PF_SVC_INCOME_API_KEY:?Set PF_SVC_INCOME_API_KEY to the local pf-svc-income API key}"
 
 mkdir -p "$REPORT_DIR"
 
@@ -187,12 +187,12 @@ fi
 
 run_step "Prepare dynamic pf-svc-income fixtures" \
   python3 "$ROOT_DIR/scripts/local/prepare-pf-svc-income-fixtures.py" \
-    --api-key "$PF_INCOME_API_KEY" \
+    --api-key "$PF_SVC_INCOME_API_KEY" \
     --output "$FIXTURES"
 
 # Materialize secrets and file paths only under /tmp. Committed Postman JSON is
 # never modified and never receives API-key values.
-python3 - "$POSTMAN_DIR/pf-ecosystem.postman_environment.local.json" "$ENVIRONMENT" "$COLLECTION" "$FULL_COLLECTION" "$PDF_FIXTURE" "$XLSX_FIXTURE" "$FIXTURES" "$PF_REFERENCE_API_KEY" "$PF_INCOME_API_KEY" <<'PY'
+python3 - "$POSTMAN_DIR/pf-ecosystem.postman_environment.local.json" "$ENVIRONMENT" "$COLLECTION" "$FULL_COLLECTION" "$PDF_FIXTURE" "$XLSX_FIXTURE" "$FIXTURES" "$PF_SVC_REFERENCE_API_KEY" "$PF_SVC_INCOME_API_KEY" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -352,7 +352,7 @@ if [ "$rates_openapi_status" -eq 0 ] && [ "$income_openapi_status" -eq 0 ]; then
 fi
 
 run_step "Check expected local error contracts" \
-  env PF_REFERENCE_API_KEY="$PF_REFERENCE_API_KEY" PF_INCOME_API_KEY="$PF_INCOME_API_KEY" \
+  env PF_SVC_REFERENCE_API_KEY="$PF_SVC_REFERENCE_API_KEY" PF_SVC_INCOME_API_KEY="$PF_SVC_INCOME_API_KEY" \
   python3 "$POSTMAN_DIR/scripts/check-local-error-contracts.py"
 
 run_step "Run read-only Newman smoke subset" \
@@ -383,10 +383,10 @@ run_step "Run synthetic PDF/XLSX validation contracts" \
 
 run_step "Run dynamic pf-svc-income mutation lifecycle" \
   python3 "$ROOT_DIR/scripts/local/run-pf-svc-income-mutations.py" \
-    --api-key "$PF_INCOME_API_KEY"
+    --api-key "$PF_SVC_INCOME_API_KEY"
 
 run_step "Run synthetic mutating integration workflow" \
-  env PF_INCOME_API_KEY="$PF_INCOME_API_KEY" \
+  env PF_SVC_INCOME_API_KEY="$PF_SVC_INCOME_API_KEY" \
   python3 "$POSTMAN_DIR/scripts/run-postman-integration.py" \
     --base-url http://localhost:8000
 

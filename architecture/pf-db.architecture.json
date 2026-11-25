@@ -16,7 +16,7 @@
   "components": [
     { "id": "pf_sheets", "type": "external", "label": "pf-sheets", "sublabel": "Apps Script macro", "pos": [40, 300], "size": [170, 64] },
     { "id": "pf_svc_income", "type": "external", "label": "pf-svc-income", "sublabel": "FastAPI service", "pos": [300, 140], "size": [180, 64] },
-    { "id": "pf_reference", "type": "external", "label": "pf-svc-reference", "sublabel": "FastAPI service", "pos": [300, 460], "size": [180, 64] },
+    { "id": "pf_svc_reference", "type": "external", "label": "pf-svc-reference", "sublabel": "FastAPI service", "pos": [300, 460], "size": [180, 64] },
 
     { "id": "payroll_tables", "type": "database", "label": "INC_* tables", "sublabel": "13 tables \u00b7 pf-svc-income", "pos": [700, 140], "size": [180, 64], "sources": [
       { "path": "alembic/versions/0002_payroll_schema.py", "label": "creates all INC_* tables" },
@@ -38,11 +38,11 @@
     { "kind": "region", "label": "PostgreSQL (pf-db managed, shared instance)", "wraps": ["payroll_tables", "payroll_analytics", "rates_tables"] }
   ],
   "connections": [
-    { "id": "sheets-to-rates", "from": "pf_sheets", "to": "pf_reference", "label": "HTTP: GET_CLP, financial-data export" },
-    { "id": "payroll-to-rates", "from": "pf_svc_income", "to": "pf_reference", "label": "HTTP only -- never direct SQL", "variant": "dashed", "labelAt": [390, 218] },
+    { "id": "sheets-to-rates", "from": "pf_sheets", "to": "pf_svc_reference", "label": "HTTP: GET_CLP, financial-data export" },
+    { "id": "payroll-to-rates", "from": "pf_svc_income", "to": "pf_svc_reference", "label": "HTTP only -- never direct SQL", "variant": "dashed", "labelAt": [390, 218] },
     { "id": "payroll-to-paytables", "from": "pf_svc_income", "to": "payroll_tables", "label": "writes (owns)" },
     { "id": "payroll-to-analytics", "from": "pf_svc_income", "to": "payroll_analytics", "label": "REFRESH MATERIALIZED VIEW" },
-    { "id": "rates-to-rattables", "from": "pf_reference", "to": "rates_tables", "label": "writes (owns)" },
+    { "id": "rates-to-rattables", "from": "pf_svc_reference", "to": "rates_tables", "label": "writes (owns)" },
     { "id": "db-to-paytables", "from": "pf_db", "to": "payroll_tables", "label": "DDL for all 20 tables and one materialized view (migrations 0001-0004)", "variant": "dashed", "labelAt": [910, 218] }
   ],
   "cards": [

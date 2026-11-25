@@ -5169,7 +5169,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="webapp" data-edge-to="infrastructure" data-edge-label="delegates Sheet/cache access" data-edge-key="2" data-edge-id="webapp-to-infra" data-composition-points="530,332;650,332" d="M 530 332 L 650 332" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="macro" data-edge-to="infrastructure" data-edge-label="orchestrates sync" data-edge-key="3" data-edge-id="macro-to-infra" data-composition-points="530,592;590,592;590,332;650,332" d="M 530 592 L 582 592 Q 590 592 590 584 L 590 340 Q 590 332 598 332 L 650 332" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="infrastructure" data-edge-to="domain" data-edge-label="pure computation" data-edge-key="4" data-edge-id="infra-to-domain" data-composition-points="745,300;745,104" d="M 745 300 L 745 104" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="infrastructure" data-edge-to="pf_reference" data-edge-label="HTTP POST /exports/financial-data" data-edge-key="5" data-edge-id="infra-to-pfrates" data-composition-points="840,332;900,332;900,172;960,172" d="M 840 332 L 892 332 Q 900 332 900 324 L 900 180 Q 900 172 908 172 L 960 172" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="infrastructure" data-edge-to="pf_svc_reference" data-edge-label="HTTP POST /exports/financial-data" data-edge-key="5" data-edge-id="infra-to-pfsvcreference" data-composition-points="840,332;900,332;900,172;960,172" d="M 840 332 L 892 332 Q 900 332 900 324 L 900 180 Q 900 172 908 172 L 960 172" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="infrastructure" data-edge-to="google_drive" data-edge-label="reads exported CSV" data-edge-key="6" data-edge-id="infra-to-drive" data-composition-points="840,332;900,332;900,392;960,392" d="M 840 332 L 892 332 Q 900 332 900 340 L 900 384 Q 900 392 908 392 L 960 392" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="infrastructure" data-edge-to="google_sheet" data-edge-label="reads/writes VALUES tab" data-edge-key="7" data-edge-id="infra-to-sheet" data-composition-points="840,332;900,332;900,612;960,612" d="M 840 332 L 892 332 Q 900 332 900 340 L 900 604 Q 900 612 908 612 L 960 612" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
@@ -5251,7 +5251,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="745" y="346" class="t-muted" font-size="9" text-anchor="middle">Apps Script global adapters</text>
         </g>
 
-        <g id="node-pf_reference" data-node-id="pf_reference" data-node-label="pf-svc-reference" tabindex="0" role="button" aria-label="Focus pf-svc-reference, FastAPI microservice, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="FastAPI microservice" data-node-context="Architecture component">
+        <g id="node-pf_svc_reference" data-node-id="pf_svc_reference" data-node-label="pf-svc-reference" tabindex="0" role="button" aria-label="Focus pf-svc-reference, FastAPI microservice, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="FastAPI microservice" data-node-context="Architecture component">
           <title>pf-svc-reference · FastAPI microservice · Architecture component</title>
           <rect x="960" y="140" width="170" height="64" rx="6" class="c-mask"/>
           <rect x="960" y="140" width="170" height="64" rx="6" class="c-external" stroke-width="1.5"/>
@@ -5308,7 +5308,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="701.6" y="120" width="86.8" height="14" rx="3" class="c-mask"/>
           <text x="745" y="130" class="t-muted" font-size="8" text-anchor="middle">pure computation</text>
         </g>
-        <g data-detail="context" data-edge-from="infrastructure" data-edge-to="pf_reference" data-edge-label="HTTP POST /exports/financial-data" data-edge-key="5" data-edge-id="infra-to-pfrates">
+        <g data-detail="context" data-edge-from="infrastructure" data-edge-to="pf_svc_reference" data-edge-label="HTTP POST /exports/financial-data" data-edge-key="5" data-edge-id="infra-to-pfsvcreference">
           <rect x="825.8" y="236" width="168.4" height="14" rx="3" class="c-mask"/>
           <text x="910" y="246" class="t-muted" font-size="8" text-anchor="middle">HTTP POST /exports/financial-data</text>
         </g>

@@ -12,21 +12,21 @@
     { "id": "pf_sheets", "type": "external", "label": "pf-sheets", "sublabel": "Apps Script (clasp)", "pos": [40, 280], "size": [160, 64] },
     { "id": "google_workspace", "type": "external", "label": "Google Sheets/Drive", "sublabel": "Apps Script APIs", "pos": [40, 460], "size": [160, 64] },
     { "id": "pf_svc_income", "type": "backend", "label": "pf-svc-income", "sublabel": "FastAPI :8001", "pos": [320, 40], "size": [160, 64] },
-    { "id": "pf_reference", "type": "backend", "label": "pf-svc-reference", "sublabel": "FastAPI :8000", "pos": [320, 280], "size": [160, 64] },
+    { "id": "pf_svc_reference", "type": "backend", "label": "pf-svc-reference", "sublabel": "FastAPI :8000", "pos": [320, 280], "size": [160, 64] },
     { "id": "pf_db", "type": "backend", "label": "pf-db", "sublabel": "Alembic migrations", "pos": [600, 40], "size": [160, 64] },
     { "id": "postgres", "type": "database", "label": "PostgreSQL", "sublabel": "shared instance :5432", "pos": [600, 280], "size": [160, 64] }
   ],
   "boundaries": [
-    { "kind": "region", "label": "PF Ecosystem", "wraps": ["pf_svc_income", "pf_reference", "pf_db", "postgres"] }
+    { "kind": "region", "label": "PF Ecosystem", "wraps": ["pf_svc_income", "pf_svc_reference", "pf_db", "postgres"] }
   ],
   "connections": [
     { "id": "common-to-payroll", "from": "pf_common", "to": "pf_svc_income", "label": "shared make targets", "variant": "dashed" },
-    { "id": "common-to-rates", "from": "pf_common", "to": "pf_reference", "label": "shared make targets", "variant": "dashed" },
-    { "id": "payroll-to-rates", "from": "pf_svc_income", "to": "pf_reference", "label": "HTTP: rates, tax brackets", "labelAt": [400, 118] },
+    { "id": "common-to-rates", "from": "pf_common", "to": "pf_svc_reference", "label": "shared make targets", "variant": "dashed" },
+    { "id": "payroll-to-rates", "from": "pf_svc_income", "to": "pf_svc_reference", "label": "HTTP: rates, tax brackets", "labelAt": [400, 118] },
     { "id": "payroll-to-db", "from": "pf_svc_income", "to": "postgres", "label": "SQL (payroll tables)", "fromSide": "right", "toSide": "top", "via": [[540, 72], [540, 250], [680, 250]] },
-    { "id": "rates-to-db", "from": "pf_reference", "to": "postgres", "label": "SQL (rates tables)" },
+    { "id": "rates-to-db", "from": "pf_svc_reference", "to": "postgres", "label": "SQL (rates tables)" },
     { "id": "pfdb-to-db", "from": "pf_db", "to": "postgres", "label": "alembic upgrade head", "variant": "dashed", "labelAt": [680, 118] },
-    { "id": "sheets-to-rates", "from": "pf_sheets", "to": "pf_reference", "label": "HTTP: triggers export", "fromSide": "right", "toSide": "left", "labelAt": [260, 340] },
+    { "id": "sheets-to-rates", "from": "pf_sheets", "to": "pf_svc_reference", "label": "HTTP: triggers export", "fromSide": "right", "toSide": "left", "labelAt": [260, 340] },
     { "id": "sheets-to-google", "from": "pf_sheets", "to": "google_workspace", "label": "read CSV, upsert rows", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelAt": [150, 400] }
   ],
   "cards": [

@@ -5161,12 +5161,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
         <!-- Connection paths (before components for correct z-order) -->
         <path data-edge-from="pf_common" data-edge-to="pf_svc_income" data-edge-label="shared make targets" data-edge-key="0" data-edge-id="common-to-payroll" data-composition-points="200,65;320,65" d="M 200 65 L 320 65" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="pf_common" data-edge-to="pf_reference" data-edge-label="shared make targets" data-edge-key="1" data-edge-id="common-to-rates" data-composition-points="200,79;260,79;260,312;320,312" d="M 200 79 L 252 79 Q 260 79 260 87 L 260 304 Q 260 312 268 312 L 320 312" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="pf_svc_income" data-edge-to="pf_reference" data-edge-label="HTTP: rates, tax brackets" data-edge-key="2" data-edge-id="payroll-to-rates" data-composition-points="400,104;400,280" d="M 400 104 L 400 280" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_common" data-edge-to="pf_svc_reference" data-edge-label="shared make targets" data-edge-key="1" data-edge-id="common-to-rates" data-composition-points="200,79;260,79;260,312;320,312" d="M 200 79 L 252 79 Q 260 79 260 87 L 260 304 Q 260 312 268 312 L 320 312" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="pf_svc_income" data-edge-to="pf_svc_reference" data-edge-label="HTTP: rates, tax brackets" data-edge-key="2" data-edge-id="payroll-to-rates" data-composition-points="400,104;400,280" d="M 400 104 L 400 280" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_svc_income" data-edge-to="postgres" data-edge-label="SQL (payroll tables)" data-edge-key="3" data-edge-id="payroll-to-db" data-composition-points="480,72;540,72;540,250;680,250;680,280" d="M 480 72 L 532 72 Q 540 72 540 80 L 540 242 Q 540 250 548 250 L 672 250 Q 680 250 680 258 L 680 280" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_reference" data-edge-to="postgres" data-edge-label="SQL (rates tables)" data-edge-key="4" data-edge-id="rates-to-db" data-composition-points="480,312;600,312" d="M 480 312 L 600 312" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_reference" data-edge-to="postgres" data-edge-label="SQL (rates tables)" data-edge-key="4" data-edge-id="rates-to-db" data-composition-points="480,312;600,312" d="M 480 312 L 600 312" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_db" data-edge-to="postgres" data-edge-label="alembic upgrade head" data-edge-key="5" data-edge-id="pfdb-to-db" data-composition-points="680,104;680,280" d="M 680 104 L 680 280" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="pf_sheets" data-edge-to="pf_reference" data-edge-label="HTTP: triggers export" data-edge-key="6" data-edge-id="sheets-to-rates" data-composition-points="200,312;320,312" d="M 200 312 L 320 312" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_sheets" data-edge-to="pf_svc_reference" data-edge-label="HTTP: triggers export" data-edge-key="6" data-edge-id="sheets-to-rates" data-composition-points="200,312;320,312" d="M 200 312 L 320 312" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_sheets" data-edge-to="google_workspace" data-edge-label="read CSV, upsert rows" data-edge-key="7" data-edge-id="sheets-to-google" data-composition-points="120,344;120,460" d="M 120 344 L 120 460" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
@@ -5217,7 +5217,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="400" y="86" class="t-muted" font-size="9" text-anchor="middle">FastAPI :8001</text>
         </g>
 
-        <g id="node-pf_reference" data-node-id="pf_reference" data-node-label="pf-svc-reference" tabindex="0" role="button" aria-label="Focus pf-svc-reference, FastAPI :8000, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="FastAPI :8000" data-node-context="PF Ecosystem">
+        <g id="node-pf_svc_reference" data-node-id="pf_svc_reference" data-node-label="pf-svc-reference" tabindex="0" role="button" aria-label="Focus pf-svc-reference, FastAPI :8000, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="FastAPI :8000" data-node-context="PF Ecosystem">
           <title>pf-svc-reference · FastAPI :8000 · PF Ecosystem</title>
           <rect x="320" y="280" width="160" height="64" rx="6" class="c-mask"/>
           <rect x="320" y="280" width="160" height="64" rx="6" class="c-backend" stroke-width="1.5"/>
@@ -5256,11 +5256,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="209.4" y="45" width="101.2" height="14" rx="3" class="c-mask"/>
           <text x="260" y="55" class="t-messagebus" font-size="8" text-anchor="middle">shared make targets</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_common" data-edge-to="pf_reference" data-edge-label="shared make targets" data-edge-key="1" data-edge-id="common-to-rates">
+        <g data-detail="context" data-edge-from="pf_common" data-edge-to="pf_svc_reference" data-edge-label="shared make targets" data-edge-key="1" data-edge-id="common-to-rates">
           <rect x="209.4" y="175.5" width="101.2" height="14" rx="3" class="c-mask"/>
           <text x="260" y="185.5" class="t-messagebus" font-size="8" text-anchor="middle">shared make targets</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="pf_reference" data-edge-label="HTTP: rates, tax brackets" data-edge-key="2" data-edge-id="payroll-to-rates">
+        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="pf_svc_reference" data-edge-label="HTTP: rates, tax brackets" data-edge-key="2" data-edge-id="payroll-to-rates">
           <rect x="335" y="108" width="130" height="14" rx="3" class="c-mask"/>
           <text x="400" y="118" class="t-muted" font-size="8" text-anchor="middle">HTTP: rates, tax brackets</text>
         </g>
@@ -5268,7 +5268,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="487" y="141" width="106" height="14" rx="3" class="c-mask"/>
           <text x="540" y="151" class="t-muted" font-size="8" text-anchor="middle">SQL (payroll tables)</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_reference" data-edge-to="postgres" data-edge-label="SQL (rates tables)" data-edge-key="4" data-edge-id="rates-to-db">
+        <g data-detail="context" data-edge-from="pf_svc_reference" data-edge-to="postgres" data-edge-label="SQL (rates tables)" data-edge-key="4" data-edge-id="rates-to-db">
           <rect x="491.8" y="292" width="96.39999999999999" height="14" rx="3" class="c-mask"/>
           <text x="540" y="302" class="t-muted" font-size="8" text-anchor="middle">SQL (rates tables)</text>
         </g>
@@ -5276,7 +5276,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="627" y="108" width="106" height="14" rx="3" class="c-mask"/>
           <text x="680" y="118" class="t-messagebus" font-size="8" text-anchor="middle">alembic upgrade head</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_sheets" data-edge-to="pf_reference" data-edge-label="HTTP: triggers export" data-edge-key="6" data-edge-id="sheets-to-rates">
+        <g data-detail="context" data-edge-from="pf_sheets" data-edge-to="pf_svc_reference" data-edge-label="HTTP: triggers export" data-edge-key="6" data-edge-id="sheets-to-rates">
           <rect x="204.6" y="330" width="110.8" height="14" rx="3" class="c-mask"/>
           <text x="260" y="340" class="t-muted" font-size="8" text-anchor="middle">HTTP: triggers export</text>
         </g>

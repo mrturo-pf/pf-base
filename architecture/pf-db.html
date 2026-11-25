@@ -5160,11 +5160,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="PostgreSQL (pf-db managed, shared instance)" x="670" y="110" width="240" height="434" rx="12" class="c-region" stroke-width="1"/>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="pf_sheets" data-edge-to="pf_reference" data-edge-label="HTTP: GET_CLP, financial-data export" data-edge-key="0" data-edge-id="sheets-to-rates" data-composition-points="210,332;255,332;255,492;300,492" d="M 210 332 L 247 332 Q 255 332 255 340 L 255 484 Q 255 492 263 492 L 300 492" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_svc_income" data-edge-to="pf_reference" data-edge-label="HTTP only -- never direct SQL" data-edge-key="1" data-edge-id="payroll-to-rates" data-composition-points="390,204;390,460" d="M 390 204 L 390 460" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="pf_sheets" data-edge-to="pf_svc_reference" data-edge-label="HTTP: GET_CLP, financial-data export" data-edge-key="0" data-edge-id="sheets-to-rates" data-composition-points="210,332;255,332;255,492;300,492" d="M 210 332 L 247 332 Q 255 332 255 340 L 255 484 Q 255 492 263 492 L 300 492" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_income" data-edge-to="pf_svc_reference" data-edge-label="HTTP only -- never direct SQL" data-edge-key="1" data-edge-id="payroll-to-rates" data-composition-points="390,204;390,460" d="M 390 204 L 390 460" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="pf_svc_income" data-edge-to="payroll_tables" data-edge-label="writes (owns)" data-edge-key="2" data-edge-id="payroll-to-paytables" data-composition-points="480,165;700,165" d="M 480 165 L 700 165" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_svc_income" data-edge-to="payroll_analytics" data-edge-label="REFRESH MATERIALIZED VIEW" data-edge-key="3" data-edge-id="payroll-to-analytics" data-composition-points="480,179;590,179;590,332;700,332" d="M 480 179 L 582 179 Q 590 179 590 187 L 590 324 Q 590 332 598 332 L 700 332" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_reference" data-edge-to="rates_tables" data-edge-label="writes (owns)" data-edge-key="4" data-edge-id="rates-to-rattables" data-composition-points="480,492;700,492" d="M 480 492 L 700 492" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_reference" data-edge-to="rates_tables" data-edge-label="writes (owns)" data-edge-key="4" data-edge-id="rates-to-rattables" data-composition-points="480,492;700,492" d="M 480 492 L 700 492" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_db" data-edge-to="payroll_tables" data-edge-label="DDL for all 20 tables and one materialized view (migrations 0001-0004)" data-edge-key="5" data-edge-id="db-to-paytables" data-composition-points="940,172;880,172" d="M 940 172 L 880 172" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
@@ -5192,7 +5192,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="390" y="186" class="t-muted" font-size="9" text-anchor="middle">FastAPI service</text>
         </g>
 
-        <g id="node-pf_reference" data-node-id="pf_reference" data-node-label="pf-svc-reference" tabindex="0" role="button" aria-label="Focus pf-svc-reference, FastAPI service, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="FastAPI service" data-node-context="Architecture component">
+        <g id="node-pf_svc_reference" data-node-id="pf_svc_reference" data-node-label="pf-svc-reference" tabindex="0" role="button" aria-label="Focus pf-svc-reference, FastAPI service, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="FastAPI service" data-node-context="Architecture component">
           <title>pf-svc-reference · FastAPI service · Architecture component</title>
           <rect x="300" y="460" width="180" height="64" rx="6" class="c-mask"/>
           <rect x="300" y="460" width="180" height="64" rx="6" class="c-external" stroke-width="1.5"/>
@@ -5252,11 +5252,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="pf_sheets" data-edge-to="pf_reference" data-edge-label="HTTP: GET_CLP, financial-data export" data-edge-key="0" data-edge-id="sheets-to-rates">
+        <g data-detail="context" data-edge-from="pf_sheets" data-edge-to="pf_svc_reference" data-edge-label="HTTP: GET_CLP, financial-data export" data-edge-key="0" data-edge-id="sheets-to-rates">
           <rect x="163.60000000000002" y="392" width="182.79999999999998" height="14" rx="3" class="c-mask"/>
           <text x="255" y="402" class="t-muted" font-size="8" text-anchor="middle">HTTP: GET_CLP, financial-data export</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="pf_reference" data-edge-label="HTTP only -- never direct SQL" data-edge-key="1" data-edge-id="payroll-to-rates">
+        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="pf_svc_reference" data-edge-label="HTTP only -- never direct SQL" data-edge-key="1" data-edge-id="payroll-to-rates">
           <rect x="315.4" y="208" width="149.2" height="14" rx="3" class="c-mask"/>
           <text x="390" y="218" class="t-messagebus" font-size="8" text-anchor="middle">HTTP only -- never direct SQL</text>
         </g>
@@ -5268,7 +5268,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="525" y="235.5" width="130" height="14" rx="3" class="c-mask"/>
           <text x="590" y="245.5" class="t-muted" font-size="8" text-anchor="middle">REFRESH MATERIALIZED VIEW</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_reference" data-edge-to="rates_tables" data-edge-label="writes (owns)" data-edge-key="4" data-edge-id="rates-to-rattables">
+        <g data-detail="context" data-edge-from="pf_svc_reference" data-edge-to="rates_tables" data-edge-label="writes (owns)" data-edge-key="4" data-edge-id="rates-to-rattables">
           <rect x="553.8" y="472" width="72.4" height="14" rx="3" class="c-mask"/>
           <text x="590" y="482" class="t-muted" font-size="8" text-anchor="middle">writes (owns)</text>
         </g>

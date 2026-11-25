@@ -42,7 +42,7 @@
       { "path": "src/payroll/infrastructure/db/models/payroll.py", "label": "ORM models" }
     ] },
     { "id": "infra_http", "type": "backend", "label": "HTTP Clients", "sublabel": "infrastructure/http", "pos": [650, 540], "size": [190, 64], "sources": [
-      { "path": "src/payroll/infrastructure/http/pf_reference_client.py", "label": "pf-svc-reference adapter" },
+      { "path": "src/payroll/infrastructure/http/pf_svc_reference_client.py", "label": "pf-svc-reference adapter" },
       { "path": "src/payroll/infrastructure/http/income_tax_bracket_client.py", "label": "Tax bracket adapter" }
     ] },
     { "id": "infra_io", "type": "backend", "label": "Importers & Reporting", "sublabel": "infrastructure/importers, reporting", "pos": [650, 800], "size": [190, 64], "sources": [
@@ -51,7 +51,7 @@
     ] },
 
     { "id": "postgres", "type": "database", "label": "PostgreSQL", "sublabel": "shared instance (pf-db owns DDL)", "pos": [960, 280], "size": [170, 64] },
-    { "id": "pf_reference", "type": "external", "label": "pf-svc-reference", "sublabel": "FastAPI microservice", "pos": [960, 540], "size": [170, 64] }
+    { "id": "pf_svc_reference", "type": "external", "label": "pf-svc-reference", "sublabel": "FastAPI microservice", "pos": [960, 540], "size": [170, 64] }
   ],
   "boundaries": [
     { "kind": "region", "label": "Interfaces (adapters in)", "wraps": ["api"] },
@@ -67,7 +67,7 @@
     { "id": "infrahttp-implements-ports", "from": "infra_http", "to": "ports", "label": "implements: Market/TaxBracket ports", "variant": "dashed", "labelAt": [760, 700] },
     { "id": "infraio-implements-ports", "from": "infra_io", "to": "ports", "label": "implements: Importer/ReportRenderer", "variant": "dashed", "labelAt": [590, 878] },
     { "id": "infradb-to-postgres", "from": "infra_db", "to": "postgres", "label": "SQL (asyncpg)" },
-    { "id": "infrahttp-to-pfrates", "from": "infra_http", "to": "pf_reference", "label": "HTTP: rates, tax brackets", "labelAt": [900, 618] }
+    { "id": "infrahttp-to-pfsvcreference", "from": "infra_http", "to": "pf_svc_reference", "label": "HTTP: rates, tax brackets", "labelAt": [900, 618] }
   ],
   "cards": [
     { "dot": "cyan", "title": "Dependency rule", "items": ["Interfaces -> Application -> Domain", "Infrastructure -> Application (never Domain)", "Domain has zero external dependencies -- pure Python only"] },

@@ -21,7 +21,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 PF_DB_DIR="$ROOT_DIR/modules/pf-db"
-PF_REFERENCE_DIR="$ROOT_DIR/modules/pf-svc-reference"
+PF_SVC_REFERENCE_DIR="$ROOT_DIR/modules/pf-svc-reference"
 PF_SVC_INCOME_DIR="$ROOT_DIR/modules/pf-svc-income"
 
 LOG_DIR="$ROOT_DIR/scripts/local/logs"
@@ -221,7 +221,7 @@ print_summary() {
 
 cmd_start() {
   start_db
-  start_uvicorn "pf-svc-reference" "$PF_REFERENCE_DIR" "$RATES_MODULE" "$RATES_PORT" STATUS_RATES
+  start_uvicorn "pf-svc-reference" "$PF_SVC_REFERENCE_DIR" "$RATES_MODULE" "$RATES_PORT" STATUS_RATES
   start_uvicorn "pf-svc-income" "$PF_SVC_INCOME_DIR" "$SVC_INCOME_MODULE" "$SVC_INCOME_PORT" STATUS_SVC_INCOME
   echo ""
   echo "Tail logs with: tail -f $LOG_DIR/*.log"
