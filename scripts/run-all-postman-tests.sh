@@ -105,8 +105,12 @@ ensure_newman() {
 
   require_command npm
   local newman_dir="$TEMP_DIR/newman"
+  local npm_registry="${NPM_CONFIG_REGISTRY:-$(sed -n 's/^registry=//p' \"$POSTMAN_DIR/.npmrc\" | head -n 1)}"
+  npm_registry="${npm_registry:-$(npm config get registry)}"
   printf 'Newman not found; installing it temporarily under %s\n' "$newman_dir"
+  printf 'Using npm registry: %s\n' "$npm_registry"
   npm install \
+    --registry "$npm_registry" \
     --prefix "$newman_dir" \
     --no-save \
     --no-package-lock \
