@@ -8,32 +8,300 @@
     "quality_profile": "showcase"
   },
   "components": [
-    { "id": "pf_common", "type": "external", "label": "pf-common", "sublabel": "shared Make targets", "pos": [40, 40], "size": [160, 64] },
-    { "id": "pf_sheets", "type": "external", "label": "pf-sheets", "sublabel": "Apps Script (clasp)", "pos": [40, 280], "size": [160, 64] },
-    { "id": "google_workspace", "type": "external", "label": "Google Sheets/Drive", "sublabel": "Apps Script APIs", "pos": [40, 460], "size": [160, 64] },
-    { "id": "pf_svc_income", "type": "backend", "label": "pf-svc-income", "sublabel": "FastAPI :8001", "pos": [320, 40], "size": [160, 64] },
-    { "id": "pf_svc_reference", "type": "backend", "label": "pf-svc-reference", "sublabel": "FastAPI :8000", "pos": [320, 280], "size": [160, 64] },
-    { "id": "pf_db", "type": "backend", "label": "pf-db", "sublabel": "Alembic migrations", "pos": [600, 40], "size": [160, 64] },
-    { "id": "postgres", "type": "database", "label": "PostgreSQL", "sublabel": "shared instance :5432", "pos": [600, 280], "size": [160, 64] }
+    {
+      "id": "pf_common",
+      "type": "external",
+      "label": "pf-common",
+      "sublabel": "shared Make targets",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "pf_sheets",
+      "type": "external",
+      "label": "pf-sheets",
+      "sublabel": "Apps Script (clasp)",
+      "pos": [
+        40,
+        280
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "google_workspace",
+      "type": "external",
+      "label": "Google Sheets/Drive",
+      "sublabel": "Apps Script APIs",
+      "pos": [
+        40,
+        460
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "pf_svc_income",
+      "type": "backend",
+      "label": "pf-svc-income",
+      "sublabel": "FastAPI :8001",
+      "pos": [
+        320,
+        40
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "pf_svc_reference",
+      "type": "backend",
+      "label": "pf-svc-reference",
+      "sublabel": "FastAPI :8000",
+      "pos": [
+        320,
+        280
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "pf_db",
+      "type": "backend",
+      "label": "pf-db",
+      "sublabel": "Alembic migrations",
+      "pos": [
+        600,
+        40
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "postgres",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "shared instance :5432",
+      "pos": [
+        600,
+        280
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "api_gateway",
+      "type": "external",
+      "label": "API Gateway",
+      "sublabel": "public HTTPS ingress",
+      "pos": [
+        40,
+        700
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "pf_gateway_proxy",
+      "type": "backend",
+      "label": "pf-gateway-proxy",
+      "sublabel": "scale-to-zero routing facade",
+      "pos": [
+        320,
+        700
+      ],
+      "size": [
+        190,
+        64
+      ]
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "PF Ecosystem", "wraps": ["pf_svc_income", "pf_svc_reference", "pf_db", "postgres"] }
+    {
+      "kind": "region",
+      "label": "PF Ecosystem",
+      "wraps": [
+        "pf_gateway_proxy",
+        "pf_svc_income",
+        "pf_svc_reference",
+        "pf_db",
+        "postgres"
+      ]
+    }
   ],
   "connections": [
-    { "id": "common-to-payroll", "from": "pf_common", "to": "pf_svc_income", "label": "shared make targets", "variant": "dashed" },
-    { "id": "common-to-rates", "from": "pf_common", "to": "pf_svc_reference", "label": "shared make targets", "variant": "dashed" },
-    { "id": "payroll-to-rates", "from": "pf_svc_income", "to": "pf_svc_reference", "label": "HTTP: rates, tax brackets", "labelAt": [400, 118] },
-    { "id": "payroll-to-db", "from": "pf_svc_income", "to": "postgres", "label": "SQL (payroll tables)", "fromSide": "right", "toSide": "top", "via": [[540, 72], [540, 250], [680, 250]] },
-    { "id": "rates-to-db", "from": "pf_svc_reference", "to": "postgres", "label": "SQL (rates tables)" },
-    { "id": "pfdb-to-db", "from": "pf_db", "to": "postgres", "label": "alembic upgrade head", "variant": "dashed", "labelAt": [680, 118] },
-    { "id": "sheets-to-rates", "from": "pf_sheets", "to": "pf_svc_reference", "label": "HTTP: triggers export", "fromSide": "right", "toSide": "left", "labelAt": [260, 340] },
-    { "id": "sheets-to-google", "from": "pf_sheets", "to": "google_workspace", "label": "read CSV, upsert rows", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelAt": [150, 400] }
+    {
+      "id": "gateway-to-proxy",
+      "from": "api_gateway",
+      "to": "pf_gateway_proxy",
+      "label": "HTTPS: public routes",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelAt": [
+        265,
+        680
+      ]
+    },
+    {
+      "id": "common-to-payroll",
+      "from": "pf_common",
+      "to": "pf_svc_income",
+      "label": "shared make targets",
+      "variant": "dashed"
+    },
+    {
+      "id": "common-to-rates",
+      "from": "pf_common",
+      "to": "pf_svc_reference",
+      "label": "shared make targets",
+      "variant": "dashed"
+    },
+    {
+      "id": "payroll-to-rates",
+      "from": "pf_svc_income",
+      "to": "pf_svc_reference",
+      "label": "HTTP: rates, tax brackets",
+      "labelAt": [
+        400,
+        118
+      ]
+    },
+    {
+      "id": "payroll-to-db",
+      "from": "pf_svc_income",
+      "to": "postgres",
+      "label": "SQL (payroll tables)",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          540,
+          72
+        ],
+        [
+          540,
+          250
+        ],
+        [
+          680,
+          250
+        ]
+      ]
+    },
+    {
+      "id": "rates-to-db",
+      "from": "pf_svc_reference",
+      "to": "postgres",
+      "label": "SQL (rates tables)"
+    },
+    {
+      "id": "pfdb-to-db",
+      "from": "pf_db",
+      "to": "postgres",
+      "label": "alembic upgrade head",
+      "variant": "dashed",
+      "labelAt": [
+        680,
+        118
+      ]
+    },
+    {
+      "id": "sheets-to-rates",
+      "from": "pf_sheets",
+      "to": "pf_svc_reference",
+      "label": "HTTP: triggers export",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelAt": [
+        260,
+        340
+      ]
+    },
+    {
+      "id": "sheets-to-google",
+      "from": "pf_sheets",
+      "to": "google_workspace",
+      "label": "read CSV, upsert rows",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        150,
+        400
+      ]
+    }
   ],
   "cards": [
-    { "dot": "cyan", "title": "Runtime", "items": ["pf-svc-income and pf-svc-reference are independent FastAPI microservices", "Both connect to the same PostgreSQL instance"] },
-    { "dot": "emerald", "title": "Schema ownership", "items": ["pf-db is the single source of truth for DDL and migrations", "pf-svc-reference owns currencies, exchange_rates, economic_indices, income_tax_brackets", "pf-svc-income owns all other payroll tables"] },
-    { "dot": "violet", "title": "Shared tooling", "items": ["pf-common provides reusable Make targets used by pf-svc-income and pf-svc-reference", "Not used by pf-db"] },
-    { "dot": "amber", "title": "Sheets integration", "items": ["pf-sheets is a Google Apps Script macro, deployed via clasp", "Triggers a pf-svc-reference export over HTTP, then reads the CSV from Drive and upserts it into a Sheet", "Does not touch PostgreSQL directly"] },
-    { "dot": "slate", "title": "Want more detail?", "items": ["This is the shallow, system-context view -- each box hides real internal layers", "Open architecture/index.html for a linked list of all diagrams", "Or directly: pf-svc-income.html, pf-svc-reference.html, pf-sheets.html (hexagonal/internal layers), pf-db.html (table ownership)"] }
+    {
+      "dot": "rose",
+      "title": "Public ingress",
+      "items": [
+        "GCP API Gateway is the public API-key enforcement point",
+        "pf-gateway-proxy routes public income/reference paths with workload identity tokens",
+        "Direct Cloud Run URLs are not the consumer path"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Runtime",
+      "items": [
+        "pf-svc-income and pf-svc-reference are independent FastAPI microservices",
+        "Both connect to the same PostgreSQL instance"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Schema ownership",
+      "items": [
+        "pf-db is the single source of truth for DDL and migrations",
+        "pf-svc-reference owns currencies, exchange_rates, economic_indices, income_tax_brackets",
+        "pf-svc-income owns all other payroll tables"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Shared tooling",
+      "items": [
+        "pf-common provides reusable Make targets used by pf-svc-income and pf-svc-reference",
+        "Not used by pf-db"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Sheets integration",
+      "items": [
+        "pf-sheets is a Google Apps Script macro, deployed via clasp",
+        "Triggers a pf-svc-reference export over HTTP, then reads the CSV from Drive and upserts it into a Sheet",
+        "Does not touch PostgreSQL directly"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Want more detail?",
+      "items": [
+        "This is the shallow, system-context view -- each box hides real internal layers",
+        "Open architecture/index.html for a linked list of all diagrams",
+        "Or directly: pf-svc-income.html, pf-svc-reference.html, pf-sheets.html (hexagonal/internal layers), pf-db.html (table ownership)"
+      ]
+    }
   ]
 }

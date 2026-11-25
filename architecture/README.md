@@ -67,12 +67,15 @@ simpler and still verified), and run `./generate.sh <name>`.
 
 ## What's on the ecosystem diagram (`base.json`)
 
-- **Components:** `pf-svc-income` and `pf-svc-reference` (FastAPI services), `pf-db` (Alembic
-  migrations), the shared `PostgreSQL` instance, `pf-common` (shared Make targets), and
-  `pf-sheets` (Apps Script macro) with its external dependency `Google Sheets/Drive`.
-- **Connections:** `pf-svc-income` → `pf-svc-reference` over HTTP (exchange rates, tax brackets);
-  both services → `PostgreSQL` over SQL; `pf-db` → `PostgreSQL` via `alembic upgrade
-  head`; `pf-common` → `pf-svc-income`/`pf-svc-reference` via shared Make targets (dashed);
+- **Components:** GCP API Gateway and `pf-gateway-proxy` as the public ingress boundary;
+  `pf-svc-income` and `pf-svc-reference` (FastAPI services), `pf-db` (Alembic migrations),
+  the shared `PostgreSQL` instance, `pf-common` (shared Make targets), and `pf-sheets`
+  (Apps Script macro) with its external dependency `Google Sheets/Drive`.
+- **Connections:** API Gateway → `pf-gateway-proxy` over public HTTPS; the proxy routes
+  public income/reference paths to the services using workload identity; `pf-svc-income`
+  → `pf-svc-reference` over HTTP (exchange rates, tax brackets); both services →
+  `PostgreSQL` over SQL; `pf-db` → `PostgreSQL` via `alembic upgrade head`; `pf-common`
+  → `pf-svc-income`/`pf-svc-reference` via shared Make targets (dashed);
   `pf-sheets` → `pf-svc-reference` over HTTP (triggers the export) and `pf-sheets` →
   `Google Sheets/Drive` (reads the CSV, upserts rows — dashed).
 - **Cards:** runtime notes, schema ownership (who owns which tables), shared tooling,
