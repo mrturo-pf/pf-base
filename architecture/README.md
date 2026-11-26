@@ -72,8 +72,9 @@ simpler and still verified), and run `./generate.sh <name>`.
   the shared `PostgreSQL` instance, `pf-common` (shared Make targets), and `pf-sheets`
   (Apps Script macro) with its external dependency `Google Sheets/Drive`.
 - **Connections:** API Gateway → `pf-gateway-proxy` over public HTTPS; the proxy routes
-  public income/reference paths to the services using workload identity; `pf-svc-income`
-  → `pf-svc-reference` over HTTP (exchange rates, tax brackets); both services →
+  every external and service-to-service income/reference request to the services using
+  workload identity; `pf-svc-income` reaches `pf-svc-reference` through the proxy (never
+  directly); both services →
   `PostgreSQL` over SQL; `pf-db` → `PostgreSQL` via `alembic upgrade head`; `pf-common`
   → `pf-svc-income`/`pf-svc-reference` via shared Make targets (dashed);
   `pf-sheets` → `pf-svc-reference` over HTTP (triggers the export) and `pf-sheets` →

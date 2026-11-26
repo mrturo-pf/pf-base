@@ -71,6 +71,9 @@ pf-svc-income ─┘
 GCP API Gateway (`pf-backend-gateway-poc-88uq0qjn.uc.gateway.dev`)
   └─> pf-gateway-proxy ──> pf-svc-reference / pf-svc-income
 
+All external and service-to-service requests to `pf-svc-*` pass through
+`pf-gateway-proxy`; services never call each other through direct Cloud Run URLs.
+
 pf-svc-reference, pf-svc-income ──> share Makefiles/scripts from pf-common
 
 pf-sheets ──> HTTP: triggers pf-svc-reference export ──> Google Sheets/Drive (Apps Script APIs)
@@ -78,7 +81,7 @@ pf-sheets ──> HTTP: triggers pf-svc-reference export ──> Google Sheets/D
 
 - `pf-db` owns the schema; `pf-svc-reference` and `pf-svc-income` each keep their own ORM
   models/repositories but connect to the same Postgres instance.
-- `pf-svc-income` consumes `pf-svc-reference` over HTTP for exchange rates and tax brackets.
+- `pf-svc-income` consumes `pf-svc-reference` over HTTP through `pf-gateway-proxy` for exchange rates and tax brackets.
 - `pf-common` provides reusable `make install/test/lint/check/...` targets for FastAPI services.
 - `pf-sheets` is a Google Apps Script macro: it triggers a `pf-svc-reference` export over HTTP,
   then reads the resulting CSV from Google Drive and upserts it into a Sheet.

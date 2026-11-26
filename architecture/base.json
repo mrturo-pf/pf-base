@@ -10,12 +10,12 @@
   "components": [
     {
       "id": "pf_common",
-      "type": "external",
+      "type": "backend",
       "label": "pf-common",
       "sublabel": "shared Make targets",
       "pos": [
         40,
-        500
+        240
       ],
       "size": [
         160,
@@ -24,12 +24,12 @@
     },
     {
       "id": "pf_sheets",
-      "type": "external",
+      "type": "backend",
       "label": "pf-sheets",
       "sublabel": "Apps Script (clasp)",
       "pos": [
         300,
-        500
+        360
       ],
       "size": [
         160,
@@ -42,8 +42,8 @@
       "label": "Google Sheets/Drive",
       "sublabel": "Apps Script APIs",
       "pos": [
-        560,
-        500
+        1020,
+        360
       ],
       "size": [
         160,
@@ -108,7 +108,7 @@
     },
     {
       "id": "api_gateway",
-      "type": "external",
+      "type": "cloud",
       "label": "API Gateway",
       "sublabel": "public HTTPS ingress",
       "pos": [
@@ -140,9 +140,11 @@
       "kind": "region",
       "label": "PF Ecosystem",
       "wraps": [
+        "pf_common",
         "pf_gateway_proxy",
         "pf_svc_income",
         "pf_svc_reference",
+        "pf_sheets",
         "pf_db",
         "postgres"
       ]
@@ -158,7 +160,7 @@
       "toSide": "left",
       "labelAt": [
         220,
-        20
+        120
       ]
     },
     {
@@ -169,46 +171,116 @@
       "fromSide": "right",
       "toSide": "left",
       "labelAt": [
-        430,
-        20
+        520,
+        180
       ]
     },
     {
       "id": "proxy-to-reference",
       "from": "pf_gateway_proxy",
       "to": "pf_svc_reference",
-      "label": "identity token: /reference/*",
+      "label": "HTTP: /reference/* (identity token)",
       "fromSide": "bottom",
       "toSide": "top",
       "labelAt": [
-        260,
+        520,
         150
       ]
     },
     {
-      "id": "income-to-reference",
+      "id": "income-to-proxy",
       "from": "pf_svc_income",
-      "to": "pf_svc_reference",
-      "label": "HTTP: rates, tax brackets",
-      "fromSide": "bottom",
-      "toSide": "right",
+      "to": "pf_gateway_proxy",
+      "label": "HTTP: internal /reference/* request",
+      "fromSide": "top",
+      "toSide": "top",
       "via": [
         [
           640,
-          104
+          0
         ],
         [
-          640,
-          272
-        ],
-        [
-          490,
-          272
+          395,
+          0
         ]
       ],
       "labelAt": [
-        650,
-        180
+        520,
+        10
+      ]
+    },
+    {
+      "id": "common-to-income",
+      "from": "pf_common",
+      "to": "pf_svc_income",
+      "label": "shared Make targets",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "top",
+      "via": [
+        [
+          20,
+          272
+        ],
+        [
+          20,
+          20
+        ],
+        [
+          640,
+          20
+        ]
+      ],
+      "labelAt": [
+        300,
+        330
+      ]
+    },
+    {
+      "id": "common-to-reference",
+      "from": "pf_common",
+      "to": "pf_svc_reference",
+      "label": "shared Make targets",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelAt": [
+        250,
+        260
+      ]
+    },
+    {
+      "id": "reference-to-sheets",
+      "from": "pf_svc_reference",
+      "to": "pf_sheets",
+      "label": "HTTP: CSV export",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        390,
+        330
+      ]
+    },
+    {
+      "id": "sheets-to-google-workspace",
+      "from": "pf_sheets",
+      "to": "google_workspace",
+      "label": "Apps Script APIs: CSV + upsert",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          520,
+          392
+        ],
+        [
+          840,
+          392
+        ]
+      ],
+      "labelAt": [
+        680,
+        440
       ]
     },
     {
@@ -265,7 +337,7 @@
       "title": "Public ingress",
       "items": [
         "GCP API Gateway is the public API-key enforcement point",
-        "pf-gateway-proxy routes public income/reference paths with workload identity tokens",
+        "pf-gateway-proxy routes every external and service-to-service income/reference request with workload identity tokens",
         "Direct Cloud Run URLs are not the consumer path"
       ]
     },
@@ -274,6 +346,7 @@
       "title": "Runtime",
       "items": [
         "pf-svc-income and pf-svc-reference are independent FastAPI microservices",
+        "pf-svc-income reaches pf-svc-reference through pf-gateway-proxy (never directly)",
         "Both connect to the same PostgreSQL instance"
       ]
     },

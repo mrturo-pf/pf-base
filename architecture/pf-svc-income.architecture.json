@@ -331,7 +331,7 @@
       "id": "infrahttp-to-pfsvcreference",
       "from": "infra_http",
       "to": "pf_svc_reference",
-      "label": "HTTP: rates, tax brackets",
+      "label": "HTTP via pf-gateway-proxy: rates, tax brackets",
       "labelAt": [
         900,
         618
