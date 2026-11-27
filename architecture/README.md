@@ -100,9 +100,9 @@ topology changes (new service, new dependency, table ownership moves), update
   separate `Interfaces` entry points (a human-triggered bound macro, an HTTP Web App, and
   an Apps Script Library consumed by other spreadsheets like Payroll/MedicalRefund).
 - **`pf-db`:** not a layered diagram — a **table-ownership** diagram. Shows the two table
-  clusters (`RAT_*`, 5 tables, owned by `pf-svc-reference`; `INC_*`, 15 tables, plus
+  clusters (`REF_*`, 5 tables, owned by `pf-svc-reference`; `INC_*`, 15 tables, plus
   `INC_MV_PAY_SUMMARY` (materialized view), owned by `pf-svc-income`), which service writes to which, `pf-db` as the DDL source for both, and the
-  one access-pattern nuance worth diagramming: `pf-svc-income` never reads `RAT_*` tables via
+  one access-pattern nuance worth diagramming: `pf-svc-income` never reads `REF_*` tables via
   direct SQL even though the DB would technically allow it — it always goes through
   `pf-svc-reference`' HTTP API instead.
 

@@ -287,7 +287,7 @@
       "id": "income-to-db",
       "from": "pf_svc_income",
       "to": "postgres",
-      "label": "SQL: payroll tables",
+      "label": "SQL: income tables",
       "fromSide": "right",
       "toSide": "left",
       "via": [
@@ -309,7 +309,7 @@
       "id": "reference-to-db",
       "from": "pf_svc_reference",
       "to": "postgres",
-      "label": "SQL: rates tables",
+      "label": "SQL: reference tables",
       "fromSide": "right",
       "toSide": "left",
       "labelAt": [
@@ -355,8 +355,8 @@
       "title": "Schema ownership",
       "items": [
         "pf-db is the single source of truth for DDL and migrations",
-        "pf-svc-reference owns currencies, exchange_rates, economic_indices, income_tax_brackets",
-        "pf-svc-income owns all other payroll tables"
+        "pf-svc-reference owns REF_RATE_UNIT, REF_RATE_VALUE, REF_ECON_INDEX, REF_TAX_BRCKT, and REF_EXPORT_JOB",
+        "pf-svc-income owns all other income tables"
       ]
     },
     {

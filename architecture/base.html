@@ -5168,8 +5168,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="pf_common" data-edge-to="pf_svc_reference" data-edge-label="shared Make targets" data-edge-key="5" data-edge-id="common-to-reference" data-composition-points="200,272;300,272" d="M 200 272 L 300 272" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="pf_svc_reference" data-edge-to="pf_sheets" data-edge-label="HTTP: CSV export" data-edge-key="6" data-edge-id="reference-to-sheets" data-composition-points="380,304;380,360" d="M 380 304 L 380 360" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_sheets" data-edge-to="google_workspace" data-edge-label="Apps Script APIs: CSV + upsert" data-edge-key="7" data-edge-id="sheets-to-google-workspace" data-composition-points="460,392;520,392;840,392;1020,392" d="M 460 392 L 512 392 Q 520 392 528 392 L 832 392 Q 840 392 848 392 L 1020 392" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_svc_income" data-edge-to="postgres" data-edge-label="SQL: payroll tables" data-edge-key="8" data-edge-id="income-to-db" data-composition-points="720,72;760,72;760,272;820,272" d="M 720 72 L 752 72 Q 760 72 760 80 L 760 264 Q 760 272 768 272 L 820 272" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_svc_reference" data-edge-to="postgres" data-edge-label="SQL: rates tables" data-edge-key="9" data-edge-id="reference-to-db" data-composition-points="460,272;820,272" d="M 460 272 L 820 272" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_income" data-edge-to="postgres" data-edge-label="SQL: income tables" data-edge-key="8" data-edge-id="income-to-db" data-composition-points="720,72;760,72;760,272;820,272" d="M 720 72 L 752 72 Q 760 72 760 80 L 760 264 Q 760 272 768 272 L 820 272" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_reference" data-edge-to="postgres" data-edge-label="SQL: reference tables" data-edge-key="9" data-edge-id="reference-to-db" data-composition-points="460,272;820,272" d="M 460 272 L 820 272" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_db" data-edge-to="postgres" data-edge-label="alembic upgrade head" data-edge-key="10" data-edge-id="db-migrations" data-composition-points="900,104;900,240" d="M 900 104 L 900 240" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
@@ -5307,13 +5307,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="603" y="430" width="154" height="14" rx="3" class="c-mask"/>
           <text x="680" y="440" class="t-muted" font-size="8" text-anchor="middle">Apps Script APIs: CSV + upsert</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="postgres" data-edge-label="SQL: payroll tables" data-edge-key="8" data-edge-id="income-to-db">
-          <rect x="709.4" y="120" width="101.2" height="14" rx="3" class="c-mask"/>
-          <text x="760" y="130" class="t-muted" font-size="8" text-anchor="middle">SQL: payroll tables</text>
+        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="postgres" data-edge-label="SQL: income tables" data-edge-key="8" data-edge-id="income-to-db">
+          <rect x="711.8" y="120" width="96.39999999999999" height="14" rx="3" class="c-mask"/>
+          <text x="760" y="130" class="t-muted" font-size="8" text-anchor="middle">SQL: income tables</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_svc_reference" data-edge-to="postgres" data-edge-label="SQL: rates tables" data-edge-key="9" data-edge-id="reference-to-db">
-          <rect x="514.2" y="250" width="91.6" height="14" rx="3" class="c-mask"/>
-          <text x="560" y="260" class="t-muted" font-size="8" text-anchor="middle">SQL: rates tables</text>
+        <g data-detail="context" data-edge-from="pf_svc_reference" data-edge-to="postgres" data-edge-label="SQL: reference tables" data-edge-key="9" data-edge-id="reference-to-db">
+          <rect x="504.6" y="250" width="110.8" height="14" rx="3" class="c-mask"/>
+          <text x="560" y="260" class="t-muted" font-size="8" text-anchor="middle">SQL: reference tables</text>
         </g>
         <g data-detail="context" data-edge-from="pf_db" data-edge-to="postgres" data-edge-label="alembic upgrade head" data-edge-key="10" data-edge-id="db-migrations">
           <rect x="827" y="140" width="106" height="14" rx="3" class="c-mask"/>
@@ -5563,8 +5563,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; pf-db is the single source of truth for DDL and migrations</li>
-          <li>&bull; pf-svc-reference owns currencies, exchange_rates, economic_indices, income_tax_brackets</li>
-          <li>&bull; pf-svc-income owns all other payroll tables</li>
+          <li>&bull; pf-svc-reference owns REF_RATE_UNIT, REF_RATE_VALUE, REF_ECON_INDEX, REF_TAX_BRCKT, and REF_EXPORT_JOB</li>
+          <li>&bull; pf-svc-income owns all other income tables</li>
         </ul>
       </div>
 

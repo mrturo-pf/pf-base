@@ -10,7 +10,7 @@
       "url": "https://github.com/mrturo-pf/pf-db",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "db1f621aac411167617a36e5a1394f59a3cf8021"
+      "revision": "9f12aad6315b98bb16b263ef27a3fe1887134f04"
     }
   },
   "components": [
@@ -18,16 +18,16 @@
     { "id": "pf_svc_income", "type": "external", "label": "pf-svc-income", "sublabel": "FastAPI service", "pos": [300, 140], "size": [180, 64] },
     { "id": "pf_svc_reference", "type": "external", "label": "pf-svc-reference", "sublabel": "FastAPI service", "pos": [300, 460], "size": [180, 64] },
 
-    { "id": "payroll_tables", "type": "database", "label": "INC_* tables", "sublabel": "13 tables \u00b7 pf-svc-income", "pos": [700, 140], "size": [180, 64], "sources": [
+    { "id": "income_tables", "type": "database", "label": "INC_* tables", "sublabel": "15 tables \u00b7 pf-svc-income", "pos": [700, 140], "size": [180, 64], "sources": [
       { "path": "alembic/versions/0002_payroll_schema.py", "label": "creates all INC_* tables" },
       { "path": "alembic/versions/0003_rename_tables_service_prefix.py", "label": "renames to INC_* prefix" }
     ] },
-    { "id": "payroll_analytics", "type": "database", "label": "INC_MV_PAY_SUMMARY", "sublabel": "materialized view \u00b7 pf-svc-income", "pos": [700, 300], "size": [180, 64], "sources": [
+    { "id": "income_analytics", "type": "database", "label": "INC_MV_PAY_SUMMARY", "sublabel": "materialized view \u00b7 pf-svc-income", "pos": [700, 300], "size": [180, 64], "sources": [
       { "path": "alembic/versions/0002_payroll_schema.py", "label": "defines the materialized view" }
     ] },
-    { "id": "rates_tables", "type": "database", "label": "RAT_* tables", "sublabel": "5 tables \u00b7 pf-svc-reference", "pos": [700, 460], "size": [180, 64], "sources": [
-      { "path": "alembic/versions/0001_rates_schema.py", "label": "creates core rate tables" },
-      { "path": "alembic/versions/0004_export_jobs_table.py", "label": "adds RAT_EXPORT_JOB" }
+    { "id": "reference_tables", "type": "database", "label": "REF_* tables", "sublabel": "5 tables \u00b7 pf-svc-reference", "pos": [700, 460], "size": [180, 64], "sources": [
+      { "path": "alembic/versions/0001_rates_schema.py", "label": "creates core reference tables" },
+      { "path": "alembic/versions/0004_export_jobs_table.py", "label": "adds REF_EXPORT_JOB" }
     ] },
 
     { "id": "pf_db", "type": "backend", "label": "pf-db", "sublabel": "Alembic migrations", "pos": [940, 140], "size": [180, 64], "sources": [
@@ -35,19 +35,19 @@
     ] }
   ],
   "boundaries": [
-    { "kind": "region", "label": "PostgreSQL (pf-db managed, shared instance)", "wraps": ["payroll_tables", "payroll_analytics", "rates_tables"] }
+    { "kind": "region", "label": "PostgreSQL (pf-db managed, shared instance)", "wraps": ["income_tables", "income_analytics", "reference_tables"] }
   ],
   "connections": [
-    { "id": "sheets-to-rates", "from": "pf_sheets", "to": "pf_svc_reference", "label": "HTTP: GET_CLP, financial-data export" },
-    { "id": "payroll-to-rates", "from": "pf_svc_income", "to": "pf_svc_reference", "label": "HTTP only -- never direct SQL", "variant": "dashed", "labelAt": [390, 218] },
-    { "id": "payroll-to-paytables", "from": "pf_svc_income", "to": "payroll_tables", "label": "writes (owns)" },
-    { "id": "payroll-to-analytics", "from": "pf_svc_income", "to": "payroll_analytics", "label": "REFRESH MATERIALIZED VIEW" },
-    { "id": "rates-to-rattables", "from": "pf_svc_reference", "to": "rates_tables", "label": "writes (owns)" },
-    { "id": "db-to-paytables", "from": "pf_db", "to": "payroll_tables", "label": "DDL for all 20 tables and one materialized view (migrations 0001-0004)", "variant": "dashed", "labelAt": [910, 218] }
+    { "id": "sheets-to-reference", "from": "pf_sheets", "to": "pf_svc_reference", "label": "HTTP: GET_CLP, financial-data export" },
+    { "id": "income-to-reference", "from": "pf_svc_income", "to": "pf_svc_reference", "label": "HTTP only -- never direct SQL", "variant": "dashed", "labelAt": [390, 218] },
+    { "id": "income-to-paytables", "from": "pf_svc_income", "to": "income_tables", "label": "writes (owns)" },
+    { "id": "income-to-analytics", "from": "pf_svc_income", "to": "income_analytics", "label": "REFRESH MATERIALIZED VIEW" },
+    { "id": "reference-to-rattables", "from": "pf_svc_reference", "to": "reference_tables", "label": "writes (owns)" },
+    { "id": "db-to-paytables", "from": "pf_db", "to": "income_tables", "label": "DDL for all 20 tables and one materialized view (migrations 0001-0025)", "variant": "dashed", "labelAt": [910, 218] }
   ],
   "cards": [
-    { "dot": "cyan", "title": "20 tables and one materialized view, two owners", "items": ["RAT_CURRENCY, RAT_EXCH_RATE, RAT_ECON_INDEX, RAT_TAX_BRCKT, RAT_EXPORT_JOB -- owned by pf-svc-reference", "15 INC_* tables + INC_MV_PAY_SUMMARY (view) -- owned by pf-svc-income", "Full list with schemas: pf-db/docs/tables.md"] },
-    { "dot": "emerald", "title": "Ownership = write access", "items": ["Only the owning microservice writes to its domain's tables", "The DB itself permits any service to read any table directly", "In practice, pf-svc-income never queries RAT_* tables via SQL -- it calls pf-svc-reference' HTTP API instead"] },
+    { "dot": "cyan", "title": "20 tables and one materialized view, two owners", "items": ["REF_RATE_UNIT, REF_RATE_VALUE, REF_ECON_INDEX, REF_TAX_BRCKT, REF_EXPORT_JOB -- owned by pf-svc-reference", "15 INC_* tables + INC_MV_PAY_SUMMARY (view) -- owned by pf-svc-income", "Full list with schemas: pf-db/docs/tables.md"] },
+    { "dot": "emerald", "title": "Ownership = write access", "items": ["Only the owning microservice writes to its domain's tables", "The DB itself permits any service to read any table directly", "In practice, pf-svc-income never queries REF_* tables via SQL -- it calls pf-svc-reference' HTTP API instead"] },
     { "dot": "violet", "title": "Hand-written migrations", "items": ["target_metadata = None -- no autogenerate, ever", "All DDL is idempotent (IF NOT EXISTS / ON CONFLICT)", "Every migration ships a real downgrade(), never pass"] },
     { "dot": "amber", "title": "INC_MV_PAY_SUMMARY", "items": ["Aggregates payroll periods for analytics", "Refreshed with REFRESH MATERIALIZED VIEW CONCURRENTLY", "Never written to directly by application code"] }
   ]

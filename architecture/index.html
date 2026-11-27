@@ -70,16 +70,22 @@
     <h1>PF Architecture Diagrams</h1>
     <p class="lede">
       Generated with <a href="https://github.com/tt-a1i/archify" style="color: var(--accent)">Archify</a>.
-      The ecosystem diagram is the shallow system-context view; each per-app diagram zooms
-      into that subproject's real internal layers, with repository evidence pinned to a
-      real commit. Hand-written index &mdash; not generated, safe to edit.
+      The ecosystem diagram is the shallow system-context view; the five per-app diagrams zoom
+      into the detailed subprojects' real internals, with repository evidence pinned to a
+      real commit. The ecosystem view also includes pf-gateway-proxy as the ingress facade. Hand-written index &mdash; not generated, safe to edit.
     </p>
 
     <div class="grid">
       <a class="card ecosystem" href="base.html">
         <span class="kind">Ecosystem</span>
         <h2>PF Ecosystem Architecture</h2>
-        <p>How all 5 subprojects relate: pf-svc-income, pf-svc-reference, pf-db, pf-common, pf-sheets, and the shared PostgreSQL instance.</p>
+        <p>How the PF ecosystem relates: pf-gateway-proxy, pf-svc-income, pf-svc-reference, pf-db, pf-common, pf-sheets, and the shared PostgreSQL instance.</p>
+      </a>
+
+      <a class="card" href="base.html">
+        <span class="kind">Ecosystem component &middot; ingress</span>
+        <h2>pf-gateway-proxy</h2>
+        <p>Scale-to-zero routing facade between API Gateway and the PF backend services. Detailed internal diagram not available yet; see it in the ecosystem view.</p>
       </a>
 
       <a class="card" href="pf-svc-income.html">
@@ -103,7 +109,7 @@
       <a class="card" href="pf-db.html">
         <span class="kind">Table ownership</span>
         <h2>pf-db</h2>
-        <p>Not a layered diagram &mdash; who writes to which of the 20 tables and one materialized view, and the HTTP-only cross-service read rule.</p>
+        <p>Not a layered diagram &mdash; REF_* and INC_* ownership across 20 tables plus one materialized view, with the HTTP-only cross-service read rule.</p>
       </a>
     </div>
 
