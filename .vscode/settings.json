@@ -12,6 +12,6 @@
     "modules/pf-svc-reference",
     "modules/pf-svc-income",
     "modules/pf-db",
-    "modules/pf-common"
+    "modules/pf-svc-common"
   ]
 }

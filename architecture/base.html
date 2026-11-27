@@ -5173,14 +5173,14 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="pf_db" data-edge-to="postgres" data-edge-label="alembic upgrade head" data-edge-key="10" data-edge-id="db-migrations" data-composition-points="900,104;900,240" d="M 900 104 L 900 240" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
-        <g id="node-pf_common" data-node-id="pf_common" data-node-label="pf-common" tabindex="0" role="button" aria-label="Focus pf-common, shared Make targets, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="shared Make targets" data-node-context="PF Ecosystem">
-          <title>pf-common · shared Make targets · PF Ecosystem</title>
+        <g id="node-pf_common" data-node-id="pf_common" data-node-label="pf-svc-common" tabindex="0" role="button" aria-label="Focus pf-svc-common, shared Make targets, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="shared Make targets" data-node-context="PF Ecosystem">
+          <title>pf-svc-common · shared Make targets · PF Ecosystem</title>
           <rect x="40" y="240" width="160" height="64" rx="6" class="c-mask"/>
           <rect x="40" y="240" width="160" height="64" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(46 246) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="120" y="270" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">pf-common</text>
+          <text data-node-label="" data-detail-anchor="" x="120" y="270" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">pf-svc-common</text>
         <text data-detail="context" x="120" y="286" class="t-muted" font-size="9" text-anchor="middle">shared Make targets</text>
         </g>
 
@@ -5263,14 +5263,14 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="130" y="86" class="t-muted" font-size="9" text-anchor="middle">public HTTPS ingress</text>
         </g>
 
-        <g id="node-pf_gateway_proxy" data-node-id="pf_gateway_proxy" data-node-label="pf-gateway-proxy" tabindex="0" role="button" aria-label="Focus pf-gateway-proxy, scale-to-zero routing facade, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="scale-to-zero routing facade" data-node-context="PF Ecosystem">
-          <title>pf-gateway-proxy · scale-to-zero routing facade · PF Ecosystem</title>
+        <g id="node-pf_gateway_proxy" data-node-id="pf_gateway_proxy" data-node-label="pf-svc-gateway-proxy" tabindex="0" role="button" aria-label="Focus pf-svc-gateway-proxy, scale-to-zero routing facade, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="scale-to-zero routing facade" data-node-context="PF Ecosystem">
+          <title>pf-svc-gateway-proxy · scale-to-zero routing facade · PF Ecosystem</title>
           <rect x="300" y="40" width="190" height="64" rx="6" class="c-mask"/>
           <rect x="300" y="40" width="190" height="64" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(306 46) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="395" y="70" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">pf-gateway-proxy</text>
+          <text data-node-label="" data-detail-anchor="" x="395" y="70" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">pf-svc-gateway-proxy</text>
         <text data-detail="context" x="395" y="86" class="t-muted" font-size="9" text-anchor="middle">scale-to-zero routing facade</text>
         </g>
 
@@ -5539,7 +5539,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; GCP API Gateway is the public API-key enforcement point</li>
-          <li>&bull; pf-gateway-proxy routes every external and service-to-service income/reference request with workload identity tokens</li>
+          <li>&bull; pf-svc-gateway-proxy routes every external and service-to-service income/reference request with workload identity tokens</li>
           <li>&bull; Direct Cloud Run URLs are not the consumer path</li>
         </ul>
       </div>
@@ -5551,7 +5551,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; pf-svc-income and pf-svc-reference are independent FastAPI microservices</li>
-          <li>&bull; pf-svc-income reaches pf-svc-reference through pf-gateway-proxy (never directly)</li>
+          <li>&bull; pf-svc-income reaches pf-svc-reference through pf-svc-gateway-proxy (never directly)</li>
           <li>&bull; Both connect to the same PostgreSQL instance</li>
         </ul>
       </div>
@@ -5574,7 +5574,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>Shared tooling</h3>
         </div>
         <ul>
-          <li>&bull; pf-common provides reusable Make targets used by pf-svc-income and pf-svc-reference</li>
+          <li>&bull; pf-svc-common provides reusable Make targets used by pf-svc-income and pf-svc-reference</li>
           <li>&bull; Not used by pf-db</li>
         </ul>
       </div>

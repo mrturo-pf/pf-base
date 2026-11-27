@@ -27,15 +27,15 @@ according to each repository's settings.
 | [`pf-db`](modules/pf-db/README.md) | Single source of truth for the PostgreSQL schema (DDL + Alembic migrations + seeds). No application code. | [README](modules/pf-db/README.md) · [AGENTS](modules/pf-db/AGENTS.md) |
 | [`pf-svc-reference`](modules/pf-svc-reference/README.md) | FastAPI microservice for financial reference data: exchange rates (USD/EUR), indices (UF/UTM/CPI), income tax brackets. | [README](modules/pf-svc-reference/README.md) · [AGENTS](modules/pf-svc-reference/AGENTS.md) |
 | [`pf-svc-income`](modules/pf-svc-income/README.md) | FastAPI microservice for Chilean payroll: payslip import, AFP/health/unemployment insurance/tax computation, PDF reports, and dashboard. | [README](modules/pf-svc-income/README.md) · [AGENTS](modules/pf-svc-income/AGENTS.md) |
-| [`pf-gateway-proxy`](modules/pf-gateway-proxy/README.md) | Scale-to-zero FastAPI routing facade behind the GCP API Gateway for `pf-svc-reference` and `pf-svc-income`. | [README](modules/pf-gateway-proxy/README.md) · [AGENTS](modules/pf-gateway-proxy/AGENTS.md) |
-| [`pf-common`](modules/pf-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-svc-reference` and `pf-svc-income`. **Not** used by `pf-db`. | [README](modules/pf-common/README.md) |
+| [`pf-svc-gateway-proxy`](modules/pf-svc-gateway-proxy/README.md) | Scale-to-zero FastAPI routing facade behind the GCP API Gateway for `pf-svc-reference` and `pf-svc-income`. | [README](modules/pf-svc-gateway-proxy/README.md) · [AGENTS](modules/pf-svc-gateway-proxy/AGENTS.md) |
+| [`pf-svc-common`](modules/pf-svc-common/README.md) | Shared infrastructure (Make targets, scripts) consumed by `pf-svc-reference` and `pf-svc-income`. **Not** used by `pf-db`. | [README](modules/pf-svc-common/README.md) |
 | [`pf-sheets`](modules/pf-sheets/README.md) | Google Apps Script (bound to a Sheet) that syncs `pf-svc-reference` exchange rates into a spreadsheet. Versioned in Git, deployed via `clasp`. | [README](modules/pf-sheets/README.md) · [AGENTS](modules/pf-sheets/AGENTS.md) |
 
 ## Repository structure
 
 This root directory is itself a git repo (`pf-base`) that tracks only ecosystem-level
 files — this `README.md`, `AGENTS.md`, `docs/`, and `architecture/`. Each subproject folder
-(`pf-db`, `pf-svc-reference`, `pf-svc-income`, `pf-common`, `pf-sheets`) lives under `modules/` and
+(`pf-db`, `pf-svc-reference`, `pf-svc-income`, `pf-svc-common`, `pf-sheets`) lives under `modules/` and
 is a **separate, independent git repo**
 with its own remote and commit history; root's `.gitignore` excludes the module
 checkouts and the generated local [`modules/INDEX.json`](modules/INDEX.json).
@@ -69,20 +69,20 @@ python3 scripts/update-workspace.py
 pf-svc-income ─┘
 
 GCP API Gateway (`pf-backend-gateway-poc-88uq0qjn.uc.gateway.dev`)
-  └─> pf-gateway-proxy ──> pf-svc-reference / pf-svc-income
+  └─> pf-svc-gateway-proxy ──> pf-svc-reference / pf-svc-income
 
 All external and service-to-service requests to `pf-svc-*` pass through
-`pf-gateway-proxy`; services never call each other through direct Cloud Run URLs.
+`pf-svc-gateway-proxy`; services never call each other through direct Cloud Run URLs.
 
-pf-svc-reference, pf-svc-income ──> share Makefiles/scripts from pf-common
+pf-svc-reference, pf-svc-income ──> share Makefiles/scripts from pf-svc-common
 
 pf-sheets ──> HTTP: triggers pf-svc-reference export ──> Google Sheets/Drive (Apps Script APIs)
 ```
 
 - `pf-db` owns the schema; `pf-svc-reference` and `pf-svc-income` each keep their own ORM
   models/repositories but connect to the same Postgres instance.
-- `pf-svc-income` consumes `pf-svc-reference` over HTTP through `pf-gateway-proxy` for exchange rates and tax brackets.
-- `pf-common` provides reusable `make install/test/lint/check/...` targets for FastAPI services.
+- `pf-svc-income` consumes `pf-svc-reference` over HTTP through `pf-svc-gateway-proxy` for exchange rates and tax brackets.
+- `pf-svc-common` provides reusable `make install/test/lint/check/...` targets for FastAPI services.
 - `pf-sheets` is a Google Apps Script macro: it triggers a `pf-svc-reference` export over HTTP,
   then reads the resulting CSV from Google Drive and upserts it into a Sheet.
 
@@ -131,7 +131,7 @@ synchronizes the collection and environments to the Postman workspace.
 ## Scripts
 
 Utility scripts that operate across the whole ecosystem live in [`scripts/`](scripts/),
-separate from each subproject's own `scripts/` (e.g. `pf-common/scripts/`, which holds
+separate from each subproject's own `scripts/` (e.g. `pf-svc-common/scripts/`, which holds
 service-level tooling instead).
 
 Documentation language is validated by [`scripts/quality/check-language.py`](scripts/quality/check-language.py).

@@ -67,15 +67,15 @@ simpler and still verified), and run `./generate.sh <name>`.
 
 ## What's on the ecosystem diagram (`base.json`)
 
-- **Components:** GCP API Gateway and `pf-gateway-proxy` as the public ingress boundary;
+- **Components:** GCP API Gateway and `pf-svc-gateway-proxy` as the public ingress boundary;
   `pf-svc-income` and `pf-svc-reference` (FastAPI services), `pf-db` (Alembic migrations),
-  the shared `PostgreSQL` instance, `pf-common` (shared Make targets), and `pf-sheets`
+  the shared `PostgreSQL` instance, `pf-svc-common` (shared Make targets), and `pf-sheets`
   (Apps Script macro) with its external dependency `Google Sheets/Drive`.
-- **Connections:** API Gateway → `pf-gateway-proxy` over public HTTPS; the proxy routes
+- **Connections:** API Gateway → `pf-svc-gateway-proxy` over public HTTPS; the proxy routes
   every external and service-to-service income/reference request to the services using
   workload identity; `pf-svc-income` reaches `pf-svc-reference` through the proxy (never
   directly); both services →
-  `PostgreSQL` over SQL; `pf-db` → `PostgreSQL` via `alembic upgrade head`; `pf-common`
+  `PostgreSQL` over SQL; `pf-db` → `PostgreSQL` via `alembic upgrade head`; `pf-svc-common`
   → `pf-svc-income`/`pf-svc-reference` via shared Make targets (dashed);
   `pf-sheets` → `pf-svc-reference` over HTTP (triggers the export) and `pf-sheets` →
   `Google Sheets/Drive` (reads the CSV, upserts rows — dashed).

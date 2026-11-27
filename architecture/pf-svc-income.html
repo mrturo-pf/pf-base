@@ -5173,7 +5173,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="infra_http" data-edge-to="ports" data-edge-label="implements: Market/TaxBracket ports" data-edge-key="4" data-edge-id="infrahttp-implements-ports" data-composition-points="650,572;590,572;590,832;530,832" d="M 650 572 L 598 572 Q 590 572 590 580 L 590 824 Q 590 832 582 832 L 530 832" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="infra_io" data-edge-to="ports" data-edge-label="implements: Importer/ReportRenderer" data-edge-key="5" data-edge-id="infraio-implements-ports" data-composition-points="650,832;530,832" d="M 650 832 L 530 832" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="infra_db" data-edge-to="postgres" data-edge-label="SQL (asyncpg)" data-edge-key="6" data-edge-id="infradb-to-postgres" data-composition-points="840,312;960,312" d="M 840 312 L 960 312" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="infra_http" data-edge-to="pf_svc_reference" data-edge-label="HTTP via pf-gateway-proxy: rates, tax brackets" data-edge-key="7" data-edge-id="infrahttp-to-pfsvcreference" data-composition-points="840,572;960,572" d="M 840 572 L 960 572" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="infra_http" data-edge-to="pf_svc_reference" data-edge-label="HTTP via pf-svc-gateway-proxy: rates, tax brackets" data-edge-key="7" data-edge-id="infrahttp-to-pfsvcreference" data-composition-points="840,572;960,572" d="M 840 572 L 960 572" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
         <!-- Components -->
         <g id="node-api" data-node-id="api" data-node-label="FastAPI" tabindex="0" role="button" aria-label="Focus FastAPI, interfaces/api, Interfaces (adapters in)" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="interfaces/api" data-node-context="Interfaces (adapters in)">
@@ -5310,9 +5310,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="863.8" y="292" width="72.4" height="14" rx="3" class="c-mask"/>
           <text x="900" y="302" class="t-muted" font-size="8" text-anchor="middle">SQL (asyncpg)</text>
         </g>
-        <g data-detail="context" data-edge-from="infra_http" data-edge-to="pf_svc_reference" data-edge-label="HTTP via pf-gateway-proxy: rates, tax brackets" data-edge-key="7" data-edge-id="infrahttp-to-pfsvcreference">
-          <rect x="784.6" y="608" width="230.79999999999998" height="14" rx="3" class="c-mask"/>
-          <text x="900" y="618" class="t-muted" font-size="8" text-anchor="middle">HTTP via pf-gateway-proxy: rates, tax brackets</text>
+        <g data-detail="context" data-edge-from="infra_http" data-edge-to="pf_svc_reference" data-edge-label="HTTP via pf-svc-gateway-proxy: rates, tax brackets" data-edge-key="7" data-edge-id="infrahttp-to-pfsvcreference">
+          <rect x="775" y="608" width="250" height="14" rx="3" class="c-mask"/>
+          <text x="900" y="618" class="t-muted" font-size="8" text-anchor="middle">HTTP via pf-svc-gateway-proxy: rates, tax brackets</text>
         </g>
 
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
@@ -5585,7 +5585,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; make check: lint, dead-code, typecheck, dup-check, test, test-cov</li>
-          <li>&bull; CI enforces --cov-fail-under=100 on every push (pf-common/make/common.mk)</li>
+          <li>&bull; CI enforces --cov-fail-under=100 on every push (pf-svc-common/make/common.mk)</li>
         </ul>
       </div>
     </div>
