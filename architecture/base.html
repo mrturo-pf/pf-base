@@ -5160,12 +5160,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="PF Ecosystem" x="10" y="10" width="1000" height="434" rx="12" class="c-region" stroke-width="1"/>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="api_gateway" data-edge-to="pf_gateway_proxy" data-edge-label="HTTPS: public routes" data-edge-key="0" data-edge-id="gateway-to-proxy" data-composition-points="220,72;300,72" d="M 220 72 L 300 72" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_gateway_proxy" data-edge-to="pf_svc_income" data-edge-label="identity token: /income/*" data-edge-key="1" data-edge-id="proxy-to-income" data-composition-points="490,72;560,72" d="M 490 72 L 560 72" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_gateway_proxy" data-edge-to="pf_svc_reference" data-edge-label="HTTP: /reference/* (identity token)" data-edge-key="2" data-edge-id="proxy-to-reference" data-composition-points="395,104;395,128;411,128;411,216;380,216;380,240" d="M 395 104 L 395 120 Q 395 128 403 128 L 403 128 Q 411 128 411 136 L 411 208 Q 411 216 403 216 L 388 216 Q 380 216 380 224 L 380 240" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_svc_income" data-edge-to="pf_gateway_proxy" data-edge-label="HTTP: internal /reference/* request" data-edge-key="3" data-edge-id="income-to-proxy" data-composition-points="640,40;640,0;395,0;395,40" d="M 640 40 L 640 8 Q 640 0 632 0 L 403 0 Q 395 0 395 8 L 395 40" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="pf_common" data-edge-to="pf_svc_income" data-edge-label="shared Make targets" data-edge-key="4" data-edge-id="common-to-income" data-composition-points="40,272;20,272;20,20;640,20;640,40" d="M 40 272 L 28 272 Q 20 272 20 264 L 20 28 Q 20 20 28 20 L 632 20 Q 640 20 640 28 L 640 40" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="pf_common" data-edge-to="pf_svc_reference" data-edge-label="shared Make targets" data-edge-key="5" data-edge-id="common-to-reference" data-composition-points="200,272;300,272" d="M 200 272 L 300 272" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="api_gateway" data-edge-to="pf_svc_gateway_proxy" data-edge-label="HTTPS: public routes" data-edge-key="0" data-edge-id="gateway-to-proxy" data-composition-points="220,72;300,72" d="M 220 72 L 300 72" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_gateway_proxy" data-edge-to="pf_svc_income" data-edge-label="identity token: /income/*" data-edge-key="1" data-edge-id="proxy-to-income" data-composition-points="490,72;560,72" d="M 490 72 L 560 72" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_gateway_proxy" data-edge-to="pf_svc_reference" data-edge-label="HTTP: /reference/* (identity token)" data-edge-key="2" data-edge-id="proxy-to-reference" data-composition-points="395,104;395,128;411,128;411,216;380,216;380,240" d="M 395 104 L 395 120 Q 395 128 403 128 L 403 128 Q 411 128 411 136 L 411 208 Q 411 216 403 216 L 388 216 Q 380 216 380 224 L 380 240" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_income" data-edge-to="pf_svc_gateway_proxy" data-edge-label="HTTP: internal /reference/* request" data-edge-key="3" data-edge-id="income-to-proxy" data-composition-points="640,40;640,0;395,0;395,40" d="M 640 40 L 640 8 Q 640 0 632 0 L 403 0 Q 395 0 395 8 L 395 40" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="pf_svc_common" data-edge-to="pf_svc_income" data-edge-label="shared Make targets" data-edge-key="4" data-edge-id="common-to-income" data-composition-points="40,272;20,272;20,20;640,20;640,40" d="M 40 272 L 28 272 Q 20 272 20 264 L 20 28 Q 20 20 28 20 L 632 20 Q 640 20 640 28 L 640 40" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="pf_svc_common" data-edge-to="pf_svc_reference" data-edge-label="shared Make targets" data-edge-key="5" data-edge-id="common-to-reference" data-composition-points="200,272;300,272" d="M 200 272 L 300 272" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="pf_svc_reference" data-edge-to="pf_sheets" data-edge-label="HTTP: CSV export" data-edge-key="6" data-edge-id="reference-to-sheets" data-composition-points="380,304;380,360" d="M 380 304 L 380 360" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_sheets" data-edge-to="google_workspace" data-edge-label="Apps Script APIs: CSV + upsert" data-edge-key="7" data-edge-id="sheets-to-google-workspace" data-composition-points="460,392;520,392;840,392;1020,392" d="M 460 392 L 512 392 Q 520 392 528 392 L 832 392 Q 840 392 848 392 L 1020 392" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="pf_svc_income" data-edge-to="postgres" data-edge-label="SQL: income tables" data-edge-key="8" data-edge-id="income-to-db" data-composition-points="720,72;760,72;760,272;820,272" d="M 720 72 L 752 72 Q 760 72 760 80 L 760 264 Q 760 272 768 272 L 820 272" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
@@ -5173,7 +5173,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="pf_db" data-edge-to="postgres" data-edge-label="alembic upgrade head" data-edge-key="10" data-edge-id="db-migrations" data-composition-points="900,104;900,240" d="M 900 104 L 900 240" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
-        <g id="node-pf_common" data-node-id="pf_common" data-node-label="pf-svc-common" tabindex="0" role="button" aria-label="Focus pf-svc-common, shared Make targets, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="shared Make targets" data-node-context="PF Ecosystem">
+        <g id="node-pf_svc_common" data-node-id="pf_svc_common" data-node-label="pf-svc-common" tabindex="0" role="button" aria-label="Focus pf-svc-common, shared Make targets, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="shared Make targets" data-node-context="PF Ecosystem">
           <title>pf-svc-common · shared Make targets · PF Ecosystem</title>
           <rect x="40" y="240" width="160" height="64" rx="6" class="c-mask"/>
           <rect x="40" y="240" width="160" height="64" rx="6" class="c-backend" stroke-width="1.5"/>
@@ -5263,7 +5263,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="130" y="86" class="t-muted" font-size="9" text-anchor="middle">public HTTPS ingress</text>
         </g>
 
-        <g id="node-pf_gateway_proxy" data-node-id="pf_gateway_proxy" data-node-label="pf-svc-gateway-proxy" tabindex="0" role="button" aria-label="Focus pf-svc-gateway-proxy, scale-to-zero routing facade, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="scale-to-zero routing facade" data-node-context="PF Ecosystem">
+        <g id="node-pf_svc_gateway_proxy" data-node-id="pf_svc_gateway_proxy" data-node-label="pf-svc-gateway-proxy" tabindex="0" role="button" aria-label="Focus pf-svc-gateway-proxy, scale-to-zero routing facade, PF Ecosystem" aria-pressed="false" data-node-kind="backend" data-node-sublabel="scale-to-zero routing facade" data-node-context="PF Ecosystem">
           <title>pf-svc-gateway-proxy · scale-to-zero routing facade · PF Ecosystem</title>
           <rect x="300" y="40" width="190" height="64" rx="6" class="c-mask"/>
           <rect x="300" y="40" width="190" height="64" rx="6" class="c-backend" stroke-width="1.5"/>
@@ -5275,27 +5275,27 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="api_gateway" data-edge-to="pf_gateway_proxy" data-edge-label="HTTPS: public routes" data-edge-key="0" data-edge-id="gateway-to-proxy">
+        <g data-detail="context" data-edge-from="api_gateway" data-edge-to="pf_svc_gateway_proxy" data-edge-label="HTTPS: public routes" data-edge-key="0" data-edge-id="gateway-to-proxy">
           <rect x="167" y="110" width="106" height="14" rx="3" class="c-mask"/>
           <text x="220" y="120" class="t-muted" font-size="8" text-anchor="middle">HTTPS: public routes</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_gateway_proxy" data-edge-to="pf_svc_income" data-edge-label="identity token: /income/*" data-edge-key="1" data-edge-id="proxy-to-income">
+        <g data-detail="context" data-edge-from="pf_svc_gateway_proxy" data-edge-to="pf_svc_income" data-edge-label="identity token: /income/*" data-edge-key="1" data-edge-id="proxy-to-income">
           <rect x="455" y="170" width="130" height="14" rx="3" class="c-mask"/>
           <text x="520" y="180" class="t-muted" font-size="8" text-anchor="middle">identity token: /income/*</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_gateway_proxy" data-edge-to="pf_svc_reference" data-edge-label="HTTP: /reference/* (identity token)" data-edge-key="2" data-edge-id="proxy-to-reference">
+        <g data-detail="context" data-edge-from="pf_svc_gateway_proxy" data-edge-to="pf_svc_reference" data-edge-label="HTTP: /reference/* (identity token)" data-edge-key="2" data-edge-id="proxy-to-reference">
           <rect x="431" y="140" width="178" height="14" rx="3" class="c-mask"/>
           <text x="520" y="150" class="t-muted" font-size="8" text-anchor="middle">HTTP: /reference/* (identity token)</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="pf_gateway_proxy" data-edge-label="HTTP: internal /reference/* request" data-edge-key="3" data-edge-id="income-to-proxy">
+        <g data-detail="context" data-edge-from="pf_svc_income" data-edge-to="pf_svc_gateway_proxy" data-edge-label="HTTP: internal /reference/* request" data-edge-key="3" data-edge-id="income-to-proxy">
           <rect x="431" y="0" width="178" height="14" rx="3" class="c-mask"/>
           <text x="520" y="10" class="t-muted" font-size="8" text-anchor="middle">HTTP: internal /reference/* request</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_common" data-edge-to="pf_svc_income" data-edge-label="shared Make targets" data-edge-key="4" data-edge-id="common-to-income">
+        <g data-detail="context" data-edge-from="pf_svc_common" data-edge-to="pf_svc_income" data-edge-label="shared Make targets" data-edge-key="4" data-edge-id="common-to-income">
           <rect x="249.4" y="320" width="101.2" height="14" rx="3" class="c-mask"/>
           <text x="300" y="330" class="t-messagebus" font-size="8" text-anchor="middle">shared Make targets</text>
         </g>
-        <g data-detail="context" data-edge-from="pf_common" data-edge-to="pf_svc_reference" data-edge-label="shared Make targets" data-edge-key="5" data-edge-id="common-to-reference">
+        <g data-detail="context" data-edge-from="pf_svc_common" data-edge-to="pf_svc_reference" data-edge-label="shared Make targets" data-edge-key="5" data-edge-id="common-to-reference">
           <rect x="199.4" y="250" width="101.2" height="14" rx="3" class="c-mask"/>
           <text x="250" y="260" class="t-messagebus" font-size="8" text-anchor="middle">shared Make targets</text>
         </g>

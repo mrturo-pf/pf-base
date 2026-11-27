@@ -9,7 +9,7 @@
   },
   "components": [
     {
-      "id": "pf_common",
+      "id": "pf_svc_common",
       "type": "backend",
       "label": "pf-svc-common",
       "sublabel": "shared Make targets",
@@ -121,7 +121,7 @@
       ]
     },
     {
-      "id": "pf_gateway_proxy",
+      "id": "pf_svc_gateway_proxy",
       "type": "backend",
       "label": "pf-svc-gateway-proxy",
       "sublabel": "scale-to-zero routing facade",
@@ -140,8 +140,8 @@
       "kind": "region",
       "label": "PF Ecosystem",
       "wraps": [
-        "pf_common",
-        "pf_gateway_proxy",
+        "pf_svc_common",
+        "pf_svc_gateway_proxy",
         "pf_svc_income",
         "pf_svc_reference",
         "pf_sheets",
@@ -154,7 +154,7 @@
     {
       "id": "gateway-to-proxy",
       "from": "api_gateway",
-      "to": "pf_gateway_proxy",
+      "to": "pf_svc_gateway_proxy",
       "label": "HTTPS: public routes",
       "fromSide": "right",
       "toSide": "left",
@@ -165,7 +165,7 @@
     },
     {
       "id": "proxy-to-income",
-      "from": "pf_gateway_proxy",
+      "from": "pf_svc_gateway_proxy",
       "to": "pf_svc_income",
       "label": "identity token: /income/*",
       "fromSide": "right",
@@ -177,7 +177,7 @@
     },
     {
       "id": "proxy-to-reference",
-      "from": "pf_gateway_proxy",
+      "from": "pf_svc_gateway_proxy",
       "to": "pf_svc_reference",
       "label": "HTTP: /reference/* (identity token)",
       "fromSide": "bottom",
@@ -190,7 +190,7 @@
     {
       "id": "income-to-proxy",
       "from": "pf_svc_income",
-      "to": "pf_gateway_proxy",
+      "to": "pf_svc_gateway_proxy",
       "label": "HTTP: internal /reference/* request",
       "fromSide": "top",
       "toSide": "top",
@@ -211,7 +211,7 @@
     },
     {
       "id": "common-to-income",
-      "from": "pf_common",
+      "from": "pf_svc_common",
       "to": "pf_svc_income",
       "label": "shared Make targets",
       "variant": "dashed",
@@ -238,7 +238,7 @@
     },
     {
       "id": "common-to-reference",
-      "from": "pf_common",
+      "from": "pf_svc_common",
       "to": "pf_svc_reference",
       "label": "shared Make targets",
       "variant": "dashed",
