@@ -331,7 +331,7 @@
       "id": "infrahttp-to-pfsvcreference",
       "from": "infra_http",
       "to": "pf_svc_reference",
-      "label": "HTTP via pf-gateway-proxy: rates, tax brackets",
+      "label": "HTTP via pf-svc-gateway-proxy: rates, tax brackets",
       "labelAt": [
         900,
         618
@@ -371,7 +371,7 @@
       "title": "Quality gate",
       "items": [
         "make check: lint, dead-code, typecheck, dup-check, test, test-cov",
-        "CI enforces --cov-fail-under=100 on every push (pf-common/make/common.mk)"
+        "CI enforces --cov-fail-under=100 on every push (pf-svc-common/make/common.mk)"
       ]
     }
   ]

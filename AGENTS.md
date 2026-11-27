@@ -44,9 +44,9 @@ change and prevents the root from becoming a duplicate implementation manual.
 | [`pf-db`](modules/pf-db) | PostgreSQL schema, DDL, seeds, and Alembic migrations | [`modules/pf-db/AGENTS.md`](modules/pf-db/AGENTS.md) |
 | [`pf-svc-reference`](modules/pf-svc-reference) | Financial reference data and HTTP API | [`modules/pf-svc-reference/AGENTS.md`](modules/pf-svc-reference/AGENTS.md) |
 | [`pf-svc-income`](modules/pf-svc-income) | Payroll, tax, and employer domain plus HTTP API | [`modules/pf-svc-income/AGENTS.md`](modules/pf-svc-income/AGENTS.md) |
-| [`pf-gateway-proxy`](modules/pf-gateway-proxy) | Scale-to-zero routing facade for API Gateway to PF backends | [`modules/pf-gateway-proxy/AGENTS.md`](modules/pf-gateway-proxy/AGENTS.md) |
+| [`pf-svc-gateway-proxy`](modules/pf-svc-gateway-proxy) | Scale-to-zero routing facade for API Gateway to PF backends | [`modules/pf-svc-gateway-proxy/AGENTS.md`](modules/pf-svc-gateway-proxy/AGENTS.md) |
 | [`pf-sheets`](modules/pf-sheets) | Google Apps Script, Sheets integration, and Web App | [`modules/pf-sheets/AGENTS.md`](modules/pf-sheets/AGENTS.md) |
-| `pf-common` | Shared infrastructure and Make targets | [`modules/pf-common/README.md`](modules/pf-common/README.md) · [`modules/pf-common/AGENTS.md`](modules/pf-common/AGENTS.md) |
+| `pf-svc-common` | Shared infrastructure and Make targets | [`modules/pf-svc-common/README.md`](modules/pf-svc-common/README.md) · [`modules/pf-svc-common/AGENTS.md`](modules/pf-svc-common/AGENTS.md) |
 
 The root repository (`pf-base`) contains ecosystem-level documentation, architecture
 descriptions, and coordination rules. The Postman collection and environments are
@@ -98,7 +98,7 @@ python3 scripts/update-workspace.py
 | Financial reference-data domain and service behavior | `pf-svc-reference` | `pf-svc-income`, `pf-sheets` |
 | Payroll and tax domain and service behavior | `pf-svc-income` | ecosystem clients |
 | Spreadsheet synchronization and Apps Script Web App | `pf-sheets` | Google Sheets and service clients |
-| Shared development/build infrastructure | `pf-common` | ecosystem repositories |
+| Shared development/build infrastructure | `pf-svc-common` | ecosystem repositories |
 
 Schema ownership and domain ownership are different responsibilities. `pf-db` owns
 how shared database objects are defined and migrated. A service owns the business

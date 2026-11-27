@@ -2,7 +2,7 @@
 # ============================================================================
 # search-words.sh - case-insensitive word search across the whole pf
 #                    ecosystem (this repo + modules/pf-db, pf-svc-reference,
-#                    pf-svc-income, pf-common, pf-sheets), in code and
+#                    pf-svc-income, pf-svc-common, pf-sheets), in code and
 #                    comments alike.
 #
 # Why this exists: modules/ is gitignored at the root repo (each module is
@@ -66,7 +66,7 @@
 #
 # Automatic .gitignore awareness:
 #   Beyond the excludes above, this script asks `git` what each MODULE
-#   ignores (modules/pf-db, pf-svc-reference, pf-svc-income, pf-common, pf-sheets --
+#   ignores (modules/pf-db, pf-svc-reference, pf-svc-income, pf-svc-common, pf-sheets --
 #   each its own git repo with its own .gitignore) and skips those too
 #   (.venv, __pycache__, node_modules, coverage, etc.) -- no need to
 #   hand-maintain that list, it can never drift out of sync. The ROOT

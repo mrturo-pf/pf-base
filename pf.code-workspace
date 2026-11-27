@@ -9,20 +9,20 @@
       "path": "improvements"
     },
     {
-      "name": "pf-common",
-      "path": "modules/pf-common"
-    },
-    {
       "name": "pf-db",
       "path": "modules/pf-db"
     },
     {
-      "name": "pf-gateway-proxy",
-      "path": "modules/pf-gateway-proxy"
-    },
-    {
       "name": "pf-sheets",
       "path": "modules/pf-sheets"
+    },
+    {
+      "name": "pf-svc-common",
+      "path": "modules/pf-svc-common"
+    },
+    {
+      "name": "pf-svc-gateway-proxy",
+      "path": "modules/pf-svc-gateway-proxy"
     },
     {
       "name": "pf-svc-income",
@@ -40,7 +40,7 @@
   "settings": {
     "git.autoRepositoryDetection": true,
     "git.scanRepositories": [
-      "modules/pf-common",
+      "modules/pf-svc-common",
       "modules/pf-db",
       "modules/pf-sheets",
       "modules/pf-svc-income",
